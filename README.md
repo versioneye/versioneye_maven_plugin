@@ -1,6 +1,6 @@
 # VersionEye Maven Plugin
 
-This is the maven plugin for http://www.VersionEye.com. With this plugin you can create or update a project at VersionEye. 
+This is the maven plugin for [VersionEye](http://www.VersionEye.com). With this plugin you can create or update a project at VersionEye. 
 
 ## Intro
 
@@ -17,7 +17,7 @@ You can add the plugin to your project by adding this snippet to your pom.xml fi
     </plugin>
 </build>
 ```
-Now you can check if the VersionEye API is available: 
+Now you can check if the [VersionEye API](https://www.versioneye.com/api?version=v2) is available: 
 
 ```
 mvn versioneye:ping
