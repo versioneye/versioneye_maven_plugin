@@ -2,6 +2,7 @@ package versioneye;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -20,8 +21,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class ListMojo extends AbstractMojo {
+/**
+ * Created with IntelliJ IDEA.
+ * User: robertreiz
+ * Date: 7/13/13
+ * Time: 2:08 PM
+ */
+@Mojo( name = "json", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+public class JsonMojo extends AbstractMojo {
 
     @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
     private File outputDirectory;
@@ -38,8 +45,7 @@ public class ListMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project.remoteProjectRepositories}")
     private List<RemoteRepository> repos;
 
-    public void execute() throws MojoExecutionException {
-        versionEyeOutput();
+    public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             DependencyUtils dependencyUtils = new DependencyUtils();
             CollectRequest collectRequest = dependencyUtils.getCollectRequest(project, repos);
@@ -56,7 +62,13 @@ public class ListMojo extends AbstractMojo {
             List<Artifact> recursiveDependencies = new ArrayList<Artifact>(dependencies);
             recursiveDependencies.removeAll(directDependencies);
 
-            produceNiceOutput(dependencies, directDependencies, recursiveDependencies);
+            JsonUtils jsonUtils = new JsonUtils();
+            String filePath = outputDirectory + "/maven.json";
+            jsonUtils.dependenciesToJsonFile(directDependencies, filePath);
+
+            getLog().info("");
+            getLog().info("You find your json file here: " + filePath);
+            getLog().info("");
         } catch( Exception exception ){
             exception.printStackTrace();
             getLog().error("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.");
@@ -64,45 +76,6 @@ public class ListMojo extends AbstractMojo {
         }
     }
 
-    private void produceNiceOutput(List<Artifact> dependencies, List<Artifact> directDependencies, List<Artifact> recursiveDependencies){
-        productNiceOutputForDirectDependencies(directDependencies);
-        productNiceOutputForRecursiveDependencies(recursiveDependencies);
-        produceNiceOutputSummary(directDependencies.size(), recursiveDependencies.size(), dependencies.size());
-    }
 
-    private void versionEyeOutput(){
-        getLog().info("");
-        getLog().info("************* \\_/ VersionEye \\_/ *************");
-        getLog().info("");
-    }
-
-    private void productNiceOutputForDirectDependencies(List<Artifact> directDependencies){
-        getLog().info("");
-        getLog().info("Direct Dependencies: ");
-        getLog().info("--------------------");
-        for (Artifact artifact : directDependencies){
-            getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
-        }
-        getLog().info("");
-    }
-
-    private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
-        getLog().info("");
-        getLog().info("Recursive Dependencies: ");
-        getLog().info("--------------------");
-        for (Artifact artifact : recursiveDependencies){
-            getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
-        }
-        getLog().info("");
-    }
-
-    private void produceNiceOutputSummary(int directCount, int recursiveCount, int allCount){
-        getLog().info("");
-        getLog().info(directCount + " Direct dependencies and " +
-                recursiveCount + " recursive dependencies. This project has " +
-                allCount + " dependencies.");
-        getLog().info("");
-        getLog().info("");
-    }
 
 }

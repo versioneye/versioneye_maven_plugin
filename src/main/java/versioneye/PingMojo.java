@@ -36,7 +36,7 @@ public class PingMojo extends AbstractMojo {
             input.close();
         } catch (Exception ex){
             getLog().error( ex );
-            getLog().error("Dam it! The API seems to be down. Get in touch with the VersionEye guys and give them feedback.");
+            getLog().error("Oh no! The API or your internet connection seems to be down. Get in touch with the VersionEye guys and give them feedback.");
             throw new MojoExecutionException( ex.toString() );
         }
     }
