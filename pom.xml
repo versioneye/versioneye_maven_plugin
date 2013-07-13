@@ -9,6 +9,11 @@
 
   <name>versioneye-maven-plugin</name>
   <url>https://github.com/versioneye/versioneye_maven_plugin</url>
+  <description>
+      This is the maven plugin for http://www.VersionEye.com. It allows you to create and update
+      a project at VersionEye. You can find a complete documentation of this project on GitHub:
+      https://github.com/versioneye/versioneye_maven_plugin.
+  </description>
 
   <licenses>
     <license>
