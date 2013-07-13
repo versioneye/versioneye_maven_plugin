@@ -36,4 +36,12 @@ mvn versioneye:list
 ```
 
 This will list all your direct and recursive dependencies and tell you how many dependencies you have in your project all together.
- 
+
+This is how you convert your pom.xml to a maven.json 
+
+```
+mvn versioneye:json 
+```
+This will take all your direct dependencies and write them into "/target/pom.json". This is just for fun. You don't really need it, but we thought it's fun to write a small pom.xml to pom.json converter :-)  
+
+
