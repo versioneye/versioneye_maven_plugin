@@ -41,8 +41,7 @@ public class ListMojo extends AbstractMojo {
     private List<RemoteRepository> repos;
 
     public void execute() throws MojoExecutionException {
-        System.out.println("VersionEye rocks! ");
-
+        versionEyeOutput();
         try{
             CollectRequest collectRequest = getCollectRequest();
             DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
@@ -75,6 +74,18 @@ public class ListMojo extends AbstractMojo {
     }
 
     private void produceNiceOutput(List<Artifact> dependencies, List<Artifact> directDependencies, List<Artifact> recursiveDependencies){
+        productNiceOutputForDirectDependencies(directDependencies);
+        productNiceOutputForRecursiveDependencies(recursiveDependencies);
+        produceNiceOutputSummary(directDependencies.size(), recursiveDependencies.size(), dependencies.size());
+    }
+
+    private void versionEyeOutput(){
+        getLog().info("");
+        getLog().info("************* \\_/ VersionEye \\_/ *************");
+        getLog().info("");
+    }
+
+    private void productNiceOutputForDirectDependencies(List<Artifact> directDependencies){
         getLog().info("");
         getLog().info("Direct Dependencies: ");
         getLog().info("--------------------");
@@ -82,18 +93,23 @@ public class ListMojo extends AbstractMojo {
             getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
         }
         getLog().info("");
+    }
+
+    private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
         getLog().info("");
         getLog().info("Recursive Dependencies: ");
         getLog().info("--------------------");
         for (Artifact artifact : recursiveDependencies){
             getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
         }
+        getLog().info("");
+    }
 
+    private void produceNiceOutputSummary(int directCount, int recursiveCount, int allCount){
         getLog().info("");
-        getLog().info("");
-        getLog().info(directDependencies.size() + " Direct dependencies and " +
-                recursiveDependencies.size() + " recursive dependencies. This project has " +
-                dependencies.size() + " dependencies.");
+        getLog().info(directCount + " Direct dependencies and " +
+                recursiveCount + " recursive dependencies. This project has " +
+                allCount + " dependencies.");
         getLog().info("");
         getLog().info("");
     }
