@@ -17,10 +17,22 @@ You can add the plugin to your project by adding this snippet to your pom.xml fi
     </plugin>
 </build>
 ```
-Now you can run it lie this: 
+Now you can check if the VersionEye API is available: 
+
+```
+mvn versioneye:ping
+```
+That should return an output like this: 
+
+```
+{"success":true,"message":"pong"}
+```
+ 
+Now try this: 
 
 ```
 mvn versioneye:list
 ```
 
-This will list all your direct and recursive dependencies and tell you how many dependencies you have in your project all together. 
+This will list all your direct and recursive dependencies and tell you how many dependencies you have in your project all together.
+ 
