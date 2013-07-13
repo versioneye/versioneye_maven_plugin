@@ -45,17 +45,17 @@ public class JsonUtils {
 
     public List<Map<String, Object>> getHashes(List<Artifact> directDependencies){
         List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>(directDependencies.size());
-        hashes.addAll( generateHashForJsonOutput( directDependencies   , true ));
+        hashes.addAll( generateHashForJsonOutput( directDependencies));
         return hashes;
     }
 
-    public static List<Map<String, Object>> generateHashForJsonOutput(List<Artifact> input, boolean direct) {
+    public static List<Map<String, Object>> generateHashForJsonOutput(List<Artifact> input) {
          List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
-         for (Artifact a : input) {
-             HashMap<String, Object> h = new HashMap<String, Object>(3);
-             h.put("version", a.getVersion());
-             h.put("name", a.getGroupId() + ":" + a.getArtifactId());
-             output.add(h);
+         for (Artifact artifact : input) {
+             HashMap<String, Object> hash = new HashMap<String, Object>(2);
+             hash.put("version", artifact.getVersion());
+             hash.put("name", artifact.getGroupId() + ":" + artifact.getArtifactId());
+             output.add(hash);
          }
          return output;
     }
