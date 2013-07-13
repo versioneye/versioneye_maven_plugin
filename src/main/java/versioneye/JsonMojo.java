@@ -63,7 +63,7 @@ public class JsonMojo extends AbstractMojo {
             recursiveDependencies.removeAll(directDependencies);
 
             JsonUtils jsonUtils = new JsonUtils();
-            String filePath = outputDirectory + "/maven.json";
+            String filePath = outputDirectory + "/pom.json";
             jsonUtils.dependenciesToJsonFile(directDependencies, filePath);
 
             getLog().info("");
