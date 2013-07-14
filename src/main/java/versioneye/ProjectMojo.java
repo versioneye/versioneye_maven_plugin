@@ -27,7 +27,7 @@ public class ProjectMojo extends AbstractMojo {
     @Parameter( defaultValue = "${basedir}", property = "basedir", required = true)
     protected File projectDirectory;
 
-    @Parameter( property = "create.baseUrl", defaultValue = "http://127.0.0.1:3000/" )
+    @Parameter( property = "create.baseUrl", defaultValue = "http://www.versioneye.com/" )
     protected String baseUrl;
 
     @Component
@@ -43,7 +43,7 @@ public class ProjectMojo extends AbstractMojo {
     protected List<RemoteRepository> repos;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        // implement me
+        // implement me in child class.
     }
 
     protected void writeProperties(Properties properties, ProjectJsonResponse response) throws Exception {
