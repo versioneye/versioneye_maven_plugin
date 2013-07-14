@@ -1,3 +1,5 @@
+[![Dependency Status](http://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.png)](http://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
+
 # VersionEye Maven Plugin
 
 This is the maven plugin for [VersionEye](http://www.VersionEye.com). With this plugin you can create or update a project at VersionEye. 
