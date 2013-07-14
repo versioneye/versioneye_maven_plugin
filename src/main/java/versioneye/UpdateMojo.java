@@ -64,9 +64,7 @@ public class UpdateMojo extends ProjectMojo {
             prettyPrint( response );
             writeProperties( properties, response );
         } catch( Exception exception ){
-            exception.printStackTrace();
-            getLog().error("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.");
-            getLog().error( exception );
+            throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
 

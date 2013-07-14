@@ -1,6 +1,5 @@
 package versioneye;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sonatype.aether.artifact.Artifact;
 
@@ -34,13 +33,8 @@ public class JsonUtils {
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
-         try {
-             ObjectMapper mapper = new ObjectMapper();
-             mapper.writeValue(output, input);
-         }
-         catch (java.lang.Exception e) {
-             throw new MojoExecutionException("Fatal error while attempting to construct JSON document", e);
-         }
+         ObjectMapper mapper = new ObjectMapper();
+         mapper.writeValue(output, input);
     }
 
     public List<Map<String, Object>> getHashes(List<Artifact> directDependencies){
