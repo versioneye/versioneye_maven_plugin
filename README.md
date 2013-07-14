@@ -1,7 +1,7 @@
 # VersionEye Maven Plugin
 
 This is the maven plugin for [VersionEye](http://www.VersionEye.com). With this plugin you can create or update a project at VersionEye. 
-VersionEye is a platform for Continuous Updating. It will help you to keep your project up-to-date and notify you automatically about out-daten dependencies in your project.
+VersionEye is a platform for Continuous Updating. It will help you to keep your project up-to-date and notify you automatically about out-daten dependencies in your project. You can check it out here: [www.VersionEye.com](http://www.versioneye.com). 
 
 ## Install
 
@@ -71,9 +71,9 @@ This will take all your direct dependencies and write them into "/target/pom.jso
 
 ## API Key
 
-This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will check your project automatically and notify you about out-dated dependencies. Some of the resources at the VersionEye API you can use without an API KEY. But for the project resource you need an API KEY. If you [signed up](https://www.versioneye.com/signup) you can find your API KEY here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
+This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will check your project automatically and notify you about out-dated dependencies. Some of the resources at the VersionEye API you can use without an API KEY. But for the project resource you need an API KEY. If you are [signed up](https://www.versioneye.com/signup) you can find your API KEY here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
 
-If you have your API KEY than create a properties file in your project root and add your KEY like this:  
+If you have your API KEY, create a properties file in your project root and add your KEY like this:  
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
@@ -89,7 +89,7 @@ mvn versioneye:create
 
 If that was successfull you will see in the output the URL where you can check your new VersionEye project. Beside that the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
 
-With this command here you can update your VersionEye project. 
+With this command here you can update an existing VersionEye project. 
 
 ```
 mvn versioneye:update
@@ -98,5 +98,5 @@ That will simply update the existing VersionEye project with the dependencies fr
 
 ## Feedback
 
-If you have questions, bugs or feature requests to this project, feel free to open a ticket here. 
+If you have questions, bugs or feature requests to this project, feel free to open a ticket [here](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull-Requests are welcome! 
 
