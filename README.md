@@ -93,7 +93,7 @@ If that was successfull you will see in the output the URL to your new created V
 
 ![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
 
-Beside that the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
+Beside that, the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
 
 With this command here you can update an existing VersionEye project. 
 
