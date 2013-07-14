@@ -18,7 +18,7 @@ import java.io.Reader;
  */
 public class HttpUtils {
 
-    public static Reader post(String url,byte[] data, String dataName) throws Exception {
+    public static Reader post(String url, byte[] data, String dataName) throws Exception {
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
