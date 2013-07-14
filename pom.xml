@@ -83,6 +83,16 @@
       <artifactId>jackson-mapper-lgpl</artifactId>
       <version>1.9.12</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.2.2</version>
+    </dependency>
   </dependencies>
 
   <build>

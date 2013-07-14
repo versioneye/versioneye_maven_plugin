@@ -21,16 +21,16 @@ import java.util.Vector;
  */
 public class JsonUtils {
 
-    public void dependenciesToJson(List<Artifact> directDependencies) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(List<Artifact> directDependencies) throws Exception {
         List<Map<String, Object>> hashes = getHashes(directDependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         toJson(outstream, hashes);
+        return outstream;
     }
 
     public void dependenciesToJsonFile(List<Artifact> directDependencies, String file) throws Exception {
         List<Map<String, Object>> hashes = getHashes(directDependencies);
-        FileOutputStream outstream = new FileOutputStream(new File(file));
-        toJson(outstream, hashes);
+        toJson(new FileOutputStream(new File(file)), hashes);
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {

@@ -76,6 +76,4 @@ public class JsonMojo extends AbstractMojo {
         }
     }
 
-
-
 }
