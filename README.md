@@ -89,7 +89,11 @@ Now you can create a VersionEye project based on the dependencies in your pom.xm
 mvn versioneye:create
 ```
 
-If that was successfull you will see in the output the URL where you can check your new VersionEye project. Beside that the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
+If that was successfull you will see in the output the URL to your new created VersionEye project. Just copy and paste it into you browser to check it out: Here is an example how it could look like: 
+
+![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
+
+Beside that the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
 
 With this command here you can update an existing VersionEye project. 
 
