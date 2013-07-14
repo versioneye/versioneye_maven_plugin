@@ -41,7 +41,7 @@ Now switch to your project! The project where you want to use this plugin. You c
 
 That's it. The plugin is now installed and added to your project
 
-## Usage
+## Getting Started
 
 Now you can check if the [VersionEye API](https://www.versioneye.com/api?version=v2) is available: 
 
@@ -69,4 +69,34 @@ mvn versioneye:json
 ```
 This will take all your direct dependencies and write them into "/target/pom.json". This is just for fun! You don't really need it, but I thought it's fun to write a small pom.xml to pom.json converter :-)  
 
+## API Key
+
+This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will check your project automatically and notify you about out-dated dependencies. Some of the resources at the VersionEye API you can use without an API KEY. But for the project resource you need an API KEY. If you [signed up](https://www.versioneye.com/signup) you can find your API KEY here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
+
+If you have your API KEY than create a properties file in your project root and add your KEY like this:  
+
+```
+echo "api_key=YOUR_API_KEY" > versioneye.properties
+```
+
+The versioneye-maven-plugin will read from there the API KEY for create and update operations on the project API resource. 
+
+Now you can create a VersionEye project based on the dependencies in your pom.xml. Just execute this: 
+
+```
+mvn versioneye:create
+```
+
+If that was successfull you will see in the output the URL where you can check your new VersionEye project. Beside that the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
+
+With this command here you can update your VersionEye project. 
+
+```
+mvn versioneye:update
+``` 
+That will simply update the existing VersionEye project with the dependencies from your pom.xml. 
+
+## Feedback
+
+If you have questions, bugs or feature requests to this project, feel free to open a ticket here. 
 
