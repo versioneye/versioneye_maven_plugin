@@ -75,6 +75,8 @@ This will take all your direct dependencies and write them into "/target/pom.jso
 
 This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will check your project automatically and notify you about out-dated dependencies. Some of the resources at the VersionEye API you can use without an API KEY. But for the project resource you need an API KEY. If you are [signed up](https://www.versioneye.com/signup) you can find your API KEY here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
 
+![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
+
 If you have your API KEY, create a properties file in your project root and add your KEY like this:  
 
 ```
