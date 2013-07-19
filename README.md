@@ -3,7 +3,7 @@
 # VersionEye Maven Plugin
 
 This is the maven plugin for [VersionEye](http://www.VersionEye.com). With this plugin you can create or update a project at VersionEye. 
-VersionEye is a platform for Continuous Updating. It will help you to keep your project up-to-date and notify you automatically about out-daten dependencies in your project. You can check it out here: [www.VersionEye.com](http://www.versioneye.com). 
+VersionEye is a platform for Continuous Updating. It will help you to keep your project up-to-date and notify you automatically about outdated dependencies in your project. You can check it out here: [www.VersionEye.com](http://www.versioneye.com). 
 
 ## Install
 
@@ -37,7 +37,7 @@ Now switch to your project! The project where you want to use this plugin. You c
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </plugin>
-  </plugin>
+  </plugins>
 </build>
 ```
 
