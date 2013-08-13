@@ -70,13 +70,12 @@ public class SuperMojo extends AbstractMojo {
         if (properties != null)
             return properties;
 
-        PropertiesUtils propertiesUtils = new PropertiesUtils();
         String propFile = projectDirectory + "/src/main/resources/" + propertiesFile;
-
         File file = new File(propFile);
         if (!file.exists())
             throw new MojoExecutionException(propFile + " is missing! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
 
+        PropertiesUtils propertiesUtils = new PropertiesUtils();
         properties = propertiesUtils.readProperties(propFile);
         return properties;
     }
