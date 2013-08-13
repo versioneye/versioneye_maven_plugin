@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.0.10</version>
+      <version>3.0.12</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.aether</groupId>
@@ -76,12 +76,12 @@
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-core-lgpl</artifactId>
-      <version>1.9.12</version>
+      <version>1.9.13</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-lgpl</artifactId>
-      <version>1.9.12</version>
+      <version>1.9.13</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
