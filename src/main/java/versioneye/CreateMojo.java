@@ -6,46 +6,28 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.collection.CollectRequest;
-import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.resolution.DependencyRequest;
-import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
 import versioneye.dto.ProjectJsonResponse;
-import versioneye.utils.DependencyUtils;
 import versioneye.utils.HttpUtils;
-import versioneye.utils.JsonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Reader;
-import java.util.List;
 
 /**
  * Creates a project at VersionEye based on the dependencies from the current project.
  */
 @Mojo( name = "create", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class CreateMojo extends SuperMojo {
+public class CreateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects?api_key=")
     private String resource;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
-            DependencyUtils dependencyUtils = new DependencyUtils();
-            CollectRequest collectRequest = dependencyUtils.getCollectRequest(project, repos);
-            DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
-            DependencyRequest dependencyRequest = new DependencyRequest(root, null);
-            system.resolveDependencies(session, dependencyRequest);
-            root.accept(new PreorderNodeListGenerator());
-
-            List<Artifact> directDependencies = dependencyUtils.collectDirectDependencies(root.getChildren());
-            JsonUtils jsonUtils = new JsonUtils();
-            ByteArrayOutputStream outStream = jsonUtils.dependenciesToJson(directDependencies);
-
             prettyPrintStart();
-            ProjectJsonResponse response = uploadDependencies(outStream);
+            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
+            ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
             writeProperties( response );
-            prettyPrint( response );
+            prettyPrintEnd(response);
         } catch( Exception exception ){
             throw new MojoExecutionException("Oh no! Something went wrong :-( " +
                     "Get in touch with the VersionEye guys and give them feedback." +
@@ -68,8 +50,7 @@ public class CreateMojo extends SuperMojo {
         getLog().info(".");
     }
 
-    private void prettyPrint(ProjectJsonResponse response) throws Exception {
-        getLog().info(".");
+    private void prettyPrintEnd(ProjectJsonResponse response) throws Exception {
         getLog().info(".");
         getLog().info("Dependencies: " + response.getDep_number());
         getLog().info("Outdated: "     + response.getOut_number());
