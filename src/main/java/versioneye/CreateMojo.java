@@ -11,6 +11,11 @@ import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
+import versioneye.dto.ProjectJsonResponse;
+import versioneye.utils.DependencyUtils;
+import versioneye.utils.HttpUtils;
+import versioneye.utils.JsonUtils;
+import versioneye.utils.PropertiesUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,16 +24,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/13/13
- * Time: 5:23 PM
+ * Creates a project at VersionEye based on the dependencies from the current project.
  */
 @Mojo( name = "create", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class CreateMojo extends ProjectMojo {
+public class CreateMojo extends SuperMojo {
 
-    @Parameter( property = "create.basePath", defaultValue = "api/v2/projects?api_key=")
-    private String basePath;
+    @Parameter( property = "resource", defaultValue = "/projects?api_key=")
+    private String resource;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -57,7 +59,7 @@ public class CreateMojo extends ProjectMojo {
             getLog().info("Starting to upload dependencies. This can take a couple seconds ... ");
             getLog().info(".");
 
-            String url = baseUrl + basePath + apiKey;
+            String url = baseUrl + apiPath + resource + apiKey;
             HttpUtils httpUtils = new HttpUtils();
             Reader reader = httpUtils.post(url, outStream.toByteArray(), "upload");
 

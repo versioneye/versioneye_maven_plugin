@@ -1,13 +1,10 @@
-package versioneye;
+package versioneye.utils;
 
 import java.io.*;
 import java.util.Properties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/14/13
- * Time: 1:21 PM
+ * Methods to deal with properties files.
  */
 public class PropertiesUtils {
 

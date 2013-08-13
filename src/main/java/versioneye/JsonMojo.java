@@ -1,49 +1,25 @@
 package versioneye;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
+import versioneye.utils.DependencyUtils;
+import versioneye.utils.JsonUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/13/13
- * Time: 2:08 PM
+ * Writes all direct dependencies into a JSON file.
  */
 @Mojo( name = "json", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class JsonMojo extends AbstractMojo {
-
-    @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
-    private File outputDirectory;
-
-    @Component
-    private RepositorySystem system;
-
-    @Parameter( defaultValue="${project}" )
-    private MavenProject project;
-
-    @Parameter( defaultValue="${repositorySystemSession}" )
-    private RepositorySystemSession session;
-
-    @Parameter( defaultValue = "${project.remoteProjectRepositories}")
-    private List<RemoteRepository> repos;
+public class JsonMojo extends SuperMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{

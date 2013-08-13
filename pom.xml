@@ -98,6 +98,14 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>versioneye</groupId>
+        <artifactId>versioneye-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <configuration>
+            <baseUrl>http://localhost:3000</baseUrl>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>3.2</version>

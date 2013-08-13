@@ -1,4 +1,4 @@
-package versioneye;
+package versioneye.utils;
 
 import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.artifact.Artifact;
@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/11/13
- * Time: 8:12 PM
+ * Utility methods for Maven Dependencies.
  */
 public class DependencyUtils {
 

@@ -1,4 +1,4 @@
-package versioneye;
+package versioneye.utils;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sonatype.aether.artifact.Artifact;
@@ -13,10 +13,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/13/13
- * Time: 2:25 PM
+ * Methods to deal with JSON.
  */
 public class JsonUtils {
 

@@ -9,26 +9,19 @@ import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
+import versioneye.dto.ProjectJsonResponse;
+import versioneye.utils.PropertiesUtils;
 
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/14/13
- * Time: 2:07 PM
+ * The Mother of all Mojos!
  */
-public class ProjectMojo extends AbstractMojo {
+public class SuperMojo extends AbstractMojo {
 
     protected static final String propertiesFile = "versioneye.properties";
-
-    @Parameter( defaultValue = "${basedir}", property = "basedir", required = true)
-    protected File projectDirectory;
-
-    @Parameter( property = "create.baseUrl", defaultValue = "http://www.versioneye.com/" )
-    protected String baseUrl;
 
     @Component
     protected RepositorySystem system;
@@ -41,6 +34,19 @@ public class ProjectMojo extends AbstractMojo {
 
     @Parameter( defaultValue = "${project.remoteProjectRepositories}")
     protected List<RemoteRepository> repos;
+
+    @Parameter( defaultValue = "${basedir}", property = "basedir", required = true)
+    protected File projectDirectory;
+
+    @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
+    protected File outputDirectory;
+
+    @Parameter( property = "baseUrl", defaultValue = "https://www.versioneye.com" )
+    protected String baseUrl;
+
+    @Parameter( property = "apiPath", defaultValue = "/api/v2" )
+    protected String apiPath;
+
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         // implement me in child class.

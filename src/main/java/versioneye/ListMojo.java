@@ -1,42 +1,23 @@
 package versioneye;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
+import versioneye.utils.DependencyUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lists all direct and recursive dependencies.
+ */
 @Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class ListMojo extends AbstractMojo {
-
-    @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
-    private File outputDirectory;
-
-    @Component
-    private RepositorySystem system;
-
-    @Parameter( defaultValue="${project}" )
-    private MavenProject project;
-
-    @Parameter( defaultValue="${repositorySystemSession}" )
-    private RepositorySystemSession session;
-
-    @Parameter( defaultValue = "${project.remoteProjectRepositories}")
-    private List<RemoteRepository> repos;
+public class ListMojo extends SuperMojo {
 
     public void execute() throws MojoExecutionException {
         versionEyeOutput();

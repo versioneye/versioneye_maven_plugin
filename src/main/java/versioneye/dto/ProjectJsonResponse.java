@@ -1,12 +1,9 @@
-package versioneye;
+package versioneye.dto;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/14/13
- * Time: 12:21 PM
+ * Java representation of the project JSON response from VersionEye API.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectJsonResponse {

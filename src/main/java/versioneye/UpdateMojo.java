@@ -4,12 +4,18 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
+import versioneye.dto.ProjectJsonResponse;
+import versioneye.utils.DependencyUtils;
+import versioneye.utils.HttpUtils;
+import versioneye.utils.JsonUtils;
+import versioneye.utils.PropertiesUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -18,13 +24,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/13/13
- * Time: 12:59 PM
+ * Updates an existing project at VersionEye with the dependencies from the current project.
  */
 @Mojo( name = "update", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class UpdateMojo extends ProjectMojo {
+public class UpdateMojo extends SuperMojo {
+
+    @Parameter( property = "resource", defaultValue = "/projects?api_key=")
+    private String resource;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -54,7 +60,7 @@ public class UpdateMojo extends ProjectMojo {
             getLog().info("Starting to update dependencies on server. This can take a couple seconds ... ");
             getLog().info(".");
 
-            String url = baseUrl + "api/v2/projects/" + projectId + "?api_key=" + apiKey;
+            String url = baseUrl + apiPath + resource + apiKey;
             HttpUtils httpUtils = new HttpUtils();
             Reader reader = httpUtils.post(url, outStream.toByteArray(), "project_file");
 

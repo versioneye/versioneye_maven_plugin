@@ -1,4 +1,4 @@
-package versioneye;
+package versioneye.utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * Created with IntelliJ IDEA.
- * User: robertreiz
- * Date: 7/13/13
- * Time: 5:25 PM
+ * Methods to deal with the HTTP protocol.
  */
 public class HttpUtils {
 
