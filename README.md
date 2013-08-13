@@ -22,7 +22,7 @@ cd versioneye_maven_plugin
 And install it in your local maven repository: 
 
 ```
-mvn install 
+mvn clean install 
 ```
 
 Now the plugin is installed on your local machine! 
@@ -44,6 +44,13 @@ Switch to the project where you want to use this plugin. You can add the plugin 
 That's it. The plugin is installed and added to your project.
 
 ## Getting Started
+
+You can check out all goals like this
+
+```
+mvn versioneye:help
+```
+That will output all possible goals on the versioneye plugin. 
 
 Now you can check if the [VersionEye API](https://www.versioneye.com/api?version=v2) is available: 
 
@@ -77,15 +84,29 @@ This plugin can push your dependencies to the VersionEye API, create a project a
 
 ![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
 
-If you have your API KEY, create a properties file in your project root and add your KEY like this:  
+If you have your API KEY, create a properties file and add your KEY like this:  
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
 ```
 
-The versioneye-maven-plugin will read from there the API KEY for create and update operations on the project API resource. 
+The versioneye-maven-plugin will look in 2 places for the versioneye.properties file. First of all it will look in your project root directory under: 
 
-Now you can create a project at VersionEye based on the dependencies in your pom.xml. Just execute this: 
+```
+src/main/resources/versioneye.properties
+```
+
+If it can't find the file there it will look it up at this place: 
+
+```
+~/.m2/versioneye.properties
+```
+
+That means if you don't want to commit your API KEY to the server and share it with your team you can place the file in your home directory and keep it for you. 
+
+## Create
+
+If your API KEY is in place you can create a project at VersionEye based on the dependencies in your pom.xml. Just execute this: 
 
 ```
 mvn versioneye:create
@@ -95,14 +116,16 @@ This command will NOT change your local project. It just sends your dependencies
 
 ![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
 
-Besides that, the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project. 
+Besides that, the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project.
+
+## Update 
 
 With this command here you can update an existing VersionEye project: 
 
 ```
 mvn versioneye:update
 ``` 
-That will simply update the existing VersionEye project with the dependencies from your pom.xml. 
+That will simply update the existing VersionEye project with the dependencies from your pom.xml. It will NOT change your pom.xml.
 
 ## Feedback
 
