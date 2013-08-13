@@ -4,9 +4,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
 import versioneye.utils.DependencyUtils;
 
@@ -17,26 +15,18 @@ import java.util.List;
  * Lists all direct and recursive dependencies.
  */
 @Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class ListMojo extends SuperMojo {
+public class ListMojo extends ProjectMojo {
 
     public void execute() throws MojoExecutionException {
         versionEyeOutput();
         try{
-            DependencyUtils dependencyUtils = new DependencyUtils();
-            CollectRequest collectRequest = dependencyUtils.getCollectRequest(project, repos);
-            DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
-            DependencyRequest dependencyRequest = new DependencyRequest(root, null);
-
-            system.resolveDependencies(session, dependencyRequest);
-
             PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
-            root.accept(nlg);
-
+            DependencyNode root = getDependencyNode(nlg);
+            DependencyUtils dependencyUtils = new DependencyUtils();
             List<Artifact> dependencies          = dependencyUtils.collectAllDependencies(nlg.getDependencies(true));
             List<Artifact> directDependencies    = dependencyUtils.collectDirectDependencies(root.getChildren());
             List<Artifact> recursiveDependencies = new ArrayList<Artifact>(dependencies);
             recursiveDependencies.removeAll(directDependencies);
-
             produceNiceOutput(dependencies, directDependencies, recursiveDependencies);
         } catch( Exception exception ){
             throw new MojoExecutionException( "Oh no! Something went wrong. " +
