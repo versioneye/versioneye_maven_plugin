@@ -47,16 +47,46 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
     protected String apiPath;
 
+    @Parameter( property = "apiKey", defaultValue = "" )
+    protected String apiKey;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        // implement me in child class.
+    protected Properties properties;
+
+    public void execute() throws MojoExecutionException, MojoFailureException {  }
+
+    protected String fetchApiKey() throws Exception {
+        if (apiKey != null && !apiKey.isEmpty() )
+            return apiKey;
+
+        Properties properties = fetchProperties();
+        String key = properties.getProperty("api_key");
+        if (key == null || key.isEmpty())
+            throw new MojoExecutionException("versioneye.properties found but without an API Key! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+
+        return key;
     }
 
-    protected void writeProperties(Properties properties, ProjectJsonResponse response) throws Exception {
+    protected Properties fetchProperties() throws Exception {
+        if (properties != null)
+            return properties;
+
+        PropertiesUtils propertiesUtils = new PropertiesUtils();
+        String propFile = projectDirectory + "/src/main/resources/" + propertiesFile;
+
+        File file = new File(propFile);
+        if (!file.exists())
+            throw new MojoExecutionException(propFile + " is missing! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+
+        properties = propertiesUtils.readProperties(propFile);
+        return properties;
+    }
+
+    protected void writeProperties(ProjectJsonResponse response) throws Exception {
+        Properties properties = fetchProperties();
         properties.setProperty("project_key", response.getProject_key());
         properties.setProperty("project_id", response.getId());
         PropertiesUtils utils = new PropertiesUtils();
-        utils.writeProperties(properties, projectDirectory + "/" + propertiesFile);
+        utils.writeProperties(properties, projectDirectory + "/src/main/resources/" + propertiesFile);
     }
 
 }
