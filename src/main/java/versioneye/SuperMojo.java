@@ -41,43 +41,57 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( defaultValue = "${project.build.directory}", property = "outputDir", required = true )
     protected File outputDirectory;
 
+    @Parameter( defaultValue = "${user.home}" )
+    protected File homeDirectory;
+
     @Parameter( property = "baseUrl", defaultValue = "https://www.versioneye.com" )
     protected String baseUrl;
 
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
     protected String apiPath;
 
-    @Parameter( property = "apiKey", defaultValue = "" )
+    @Parameter( property = "apiKey" )
     protected String apiKey;
 
-    protected Properties properties;
+    protected Properties properties = null;
+    protected String propertiesPath = null;
 
     public void execute() throws MojoExecutionException, MojoFailureException {  }
 
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
-
         Properties properties = fetchProperties();
         String key = properties.getProperty("api_key");
         if (key == null || key.isEmpty())
-            throw new MojoExecutionException("versioneye.properties found but without an API Key! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
-
+            throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
+                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
         return key;
     }
 
     protected Properties fetchProperties() throws Exception {
         if (properties != null)
             return properties;
-
-        String propFile = projectDirectory + "/src/main/resources/" + propertiesFile;
-        File file = new File(propFile);
-        if (!file.exists())
-            throw new MojoExecutionException(propFile + " is missing! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
-
+        String propertiesPath = getPropertiesPath();
         PropertiesUtils propertiesUtils = new PropertiesUtils();
-        properties = propertiesUtils.readProperties(propFile);
+        properties = propertiesUtils.readProperties(propertiesPath);
         return properties;
+    }
+
+    protected String getPropertiesPath() throws Exception {
+        if (this.propertiesPath != null)
+            return this.propertiesPath;
+        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        File file = new File(propertiesPath);
+        if (!file.exists()){
+            propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+            file = new File(propertiesPath);
+        }
+        if (!file.exists())
+            throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
+                    "https://github.com/versioneye/versioneye_maven_plugin");
+        this.propertiesPath = propertiesPath;
+        return propertiesPath;
     }
 
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
@@ -85,7 +99,7 @@ public class SuperMojo extends AbstractMojo {
         properties.setProperty("project_key", response.getProject_key());
         properties.setProperty("project_id", response.getId());
         PropertiesUtils utils = new PropertiesUtils();
-        utils.writeProperties(properties, projectDirectory + "/src/main/resources/" + propertiesFile);
+        utils.writeProperties(properties, getPropertiesPath());
     }
 
 }
