@@ -30,9 +30,9 @@ public class PingMojo extends SuperMojo {
             getLog().info("");
             input.close();
         } catch (Exception ex){
-            getLog().error( ex );
-            getLog().error("Oh no! The API or your internet connection seems to be down. Get in touch with the VersionEye guys and give them feedback.");
-            throw new MojoExecutionException( ex.toString() );
+            throw new MojoExecutionException( "Oh no! The API or your internet connection seems to be down. " +
+                    "Get in touch with the VersionEye guys and give them feedback. " +
+                    "You find them on Twitter at https//twitter.com/VersionEye. ", ex );
         }
     }
 

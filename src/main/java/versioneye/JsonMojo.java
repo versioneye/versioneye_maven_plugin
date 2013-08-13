@@ -46,9 +46,9 @@ public class JsonMojo extends SuperMojo {
             getLog().info("You find your json file here: " + filePath);
             getLog().info("");
         } catch( Exception exception ){
-            exception.printStackTrace();
-            getLog().error("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.");
-            getLog().error( exception );
+            throw new MojoExecutionException( "Oh no! Something went wrong. " +
+                    "Get in touch with the VersionEye guys and give them feedback. " +
+                    "You find them on Twitter at https//twitter.com/VersionEye. ", exception );
         }
     }
 
