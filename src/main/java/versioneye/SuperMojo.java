@@ -12,7 +12,13 @@ import org.sonatype.aether.repository.RemoteRepository;
 import versioneye.dto.ProjectJsonResponse;
 import versioneye.utils.PropertiesUtils;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Properties;
 
@@ -100,6 +106,23 @@ public class SuperMojo extends AbstractMojo {
         properties.setProperty("project_id", response.getId());
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
+    }
+
+    protected void initTls(){
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+            public X509Certificate[] getAcceptedIssuers(){return null;}
+            public void checkClientTrusted(X509Certificate[] certs, String authType){}
+            public void checkServerTrusted(X509Certificate[] certs, String authType){}
+        }};
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
