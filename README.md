@@ -90,7 +90,7 @@ If you have your API KEY, create a properties file and add your KEY like this:
 echo "api_key=YOUR_API_KEY" > versioneye.properties
 ```
 
-The versioneye-maven-plugin will look in 2 places for the versioneye.properties file. First of all it will look in your project root directory under: 
+The versioneye-maven-plugin will look in 2 places for the versioneye.properties file. First of all it will look in your project resource directory under:
 
 ```
 src/main/resources/versioneye.properties
