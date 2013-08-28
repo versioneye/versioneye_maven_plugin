@@ -1,5 +1,6 @@
 package versioneye.utils;
 
+import org.apache.maven.model.Dependency;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sonatype.aether.artifact.Artifact;
 
@@ -17,7 +18,14 @@ import java.util.Vector;
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(List<Artifact> directDependencies) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(List<Dependency> dependencies) throws Exception {
+        List<Map<String, Object>> hashes = getDependencyHashes(dependencies);
+        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+        toJson(outstream, hashes);
+        return outstream;
+    }
+
+    public ByteArrayOutputStream artifactsToJson(List<Artifact> directDependencies) throws Exception {
         List<Map<String, Object>> hashes = getHashes(directDependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         toJson(outstream, hashes);
@@ -40,6 +48,12 @@ public class JsonUtils {
         return hashes;
     }
 
+    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies){
+        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>(directDependencies.size());
+        hashes.addAll( generateHashFromDependencyList( directDependencies));
+        return hashes;
+    }
+
     public static List<Map<String, Object>> generateHashForJsonOutput(List<Artifact> input) {
          List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
          for (Artifact artifact : input) {
@@ -49,6 +63,17 @@ public class JsonUtils {
              output.add(hash);
          }
          return output;
+    }
+
+    public static List<Map<String, Object>> generateHashFromDependencyList(List<Dependency> input) {
+        List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
+        for (Dependency dependency : input) {
+            HashMap<String, Object> hash = new HashMap<String, Object>(2);
+            hash.put("version", dependency.getVersion());
+            hash.put("name", dependency.getGroupId() + ":" + dependency.getArtifactId());
+            output.add(hash);
+        }
+        return output;
     }
 
 }

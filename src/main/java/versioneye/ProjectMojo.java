@@ -17,11 +17,16 @@ import java.util.List;
 public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream() throws Exception {
+        JsonUtils jsonUtils = new JsonUtils();
+        return jsonUtils.dependenciesToJson(project.getDependencies());
+    }
+
+    protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
         DependencyUtils dependencyUtils = new DependencyUtils();
         DependencyNode root = getDependencyNode(new PreorderNodeListGenerator());
         List<Artifact> directDependencies = dependencyUtils.collectDirectDependencies(root.getChildren());
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(directDependencies);
+        return jsonUtils.artifactsToJson(directDependencies);
     }
 
     protected DependencyNode getDependencyNode(PreorderNodeListGenerator nlg) throws Exception {
