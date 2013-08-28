@@ -17,6 +17,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -59,7 +60,8 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "apiKey" )
     protected String apiKey;
 
-    protected Properties properties = null;
+    protected Properties properties = null;     // Properties in src/main/resources
+    protected Properties homeProperties = null; // Properties in ~/.m2/
     protected String propertiesPath = null;
 
     public void execute() throws MojoExecutionException, MojoFailureException {  }
@@ -67,21 +69,39 @@ public class SuperMojo extends AbstractMojo {
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
-        Properties properties = fetchProperties();
-        String key = properties.getProperty("api_key");
-        if (key == null || key.isEmpty())
+        Properties properties = fetchProjectProperties();
+        if (properties == null || properties.getProperty("api_key") == null)
+            properties = fetchHomeProperties();
+        apiKey = properties.getProperty("api_key");
+        if (apiKey == null || apiKey.isEmpty())
             throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
                     "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
-        return key;
+        return apiKey;
     }
 
-    protected Properties fetchProperties() throws Exception {
+    protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
-        String propertiesPath = getPropertiesPath();
+        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        File file = new File(propertiesPath);
+        if (!file.exists())
+            createPropertiesFile(file);
         PropertiesUtils propertiesUtils = new PropertiesUtils();
         properties = propertiesUtils.readProperties(propertiesPath);
         return properties;
+    }
+
+    protected Properties fetchHomeProperties() throws Exception {
+        if (homeProperties != null)
+            return homeProperties;
+        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+        File file = new File(propertiesPath);
+        if (!file.exists())
+            throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
+                    "https://github.com/versioneye/versioneye_maven_plugin");
+        PropertiesUtils propertiesUtils = new PropertiesUtils();
+        homeProperties = propertiesUtils.readProperties(propertiesPath);
+        return homeProperties;
     }
 
     protected String getPropertiesPath() throws Exception {
@@ -101,21 +121,28 @@ public class SuperMojo extends AbstractMojo {
     }
 
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
-        Properties properties = fetchProperties();
+        Properties properties = fetchProjectProperties();
         properties.setProperty("project_key", response.getProject_key());
         properties.setProperty("project_id", response.getId());
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
     }
 
+    private void createPropertiesFile(File file) throws IOException {
+        String resoucesPath = projectDirectory + "/src/main/resources/";
+        File resource = new File(resoucesPath);
+        if (!resource.exists()){
+            resource.mkdir();
+        }
+        file.createNewFile();
+    }
+
     protected void initTls(){
-        // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
             public X509Certificate[] getAcceptedIssuers(){return null;}
             public void checkClientTrusted(X509Certificate[] certs, String authType){}
             public void checkServerTrusted(X509Certificate[] certs, String authType){}
         }};
-        // Install the all-trusting trust manager
         try {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new SecureRandom());
