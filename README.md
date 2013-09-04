@@ -3,7 +3,7 @@
 # VersionEye Maven Plugin
 
 The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create or update a project at VersionEye. 
-VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and notify you automatically about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com). 
+VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com). 
 
 ## Install
 
@@ -27,7 +27,7 @@ mvn clean install
 
 Now the plugin is installed on your local machine! 
 
-Switch to the project where you want to use this plugin. You can add the plugin to your project by adding this snippet to your pom.xml file.  
+Switch to the project where you want to use this plugin. You can add the plugin to your project by adding this snippet to your `pom.xml` file.  
 
 ```
 <build>
@@ -71,26 +71,26 @@ mvn versioneye:list
 
 That will get you a list with all your direct and recursive dependencies and it will tell you how many dependencies you have in your project altogether.
 
-Here you can convert your pom.xml to a pom.json 
+Here you can convert your `pom.xml` to a `pom.json`
 
 ```
 mvn versioneye:json 
 ```
-It will take all your direct dependencies and convert them into "/target/pom.json". This is just for fun! You don't really need it, but I thought it's fun to write a small pom.xml to pom.json converter :-)  
+It will take all your direct dependencies and convert them into `/target/pom.json`. This is just for fun! You don't really need it, but I thought it's fun to write a small `pom.xml` to `pom.json` converter :-)  
 
 ## API Key
 
-This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will check your project automatically and notify you about outdated dependencies. You can use some of the resources at the VersionEye API without an API KEY, but for the project resource you need one. If you are [signed up](https://www.versioneye.com/signup) you can find your API KEY here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
+This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will automatically check your project and notify you about outdated dependencies. You can use some of the resources at the VersionEye API without an *API KEY*, but for the project resource you need one. If you are [signed up](https://www.versioneye.com/signup) you can find your *API KEY* here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api). 
 
 ![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
 
-If you have your API KEY, create a properties file and add your KEY like this:  
+If you have your *API KEY*, create a properties file and add your key like this:  
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
 ```
 
-The versioneye-maven-plugin will look in 2 places for the versioneye.properties file. First of all it will look in your project resource directory under:
+The versioneye-maven-plugin will look in 2 places for the `versioneye.properties` file. First of all it will look in your project resource directory under:
 
 ```
 src/main/resources/versioneye.properties
@@ -102,21 +102,21 @@ If it can't find the file there it will look it up at this place:
 ~/.m2/versioneye.properties
 ```
 
-That means if you don't want to commit your API KEY to the server and share it with your team you can place the file in your home directory and keep it for you. 
+That means if you don't want to commit your *API KEY* to the server and share it with your team you can place the file in your *home* directory and keep it for you. 
 
 ## Create
 
-If your API KEY is in place you can create a project at VersionEye based on the dependencies in your pom.xml. Just execute this: 
+If your *API KEY* is in place you can create a project at VersionEye based on the dependencies in your `pom.xml`. Just execute this: 
 
 ```
 mvn versioneye:create
 ```
 
-This command will NOT change your local project. It just sends your dependencies to the VersionEye server and creates, based on that, a projct at [www.versioneye.com](http://www.versioneye.com). If everything went right you will see in the output the URL to your new created VersionEye project. Just copy and paste it into you browser to check it out. Here is an example how it could look like: 
+This command will **not** change your local project. It just sends your dependencies to the VersionEye server and creates, based on that, a project at [www.versioneye.com](http://www.versioneye.com). If everything went right you will see in the output the URL to your new created VersionEye project. Just copy and paste it into you browser to check it out. Here is an example how it could look like: 
 
 ![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
 
-Besides that, the plugin will add a project_id and project_key to the versioneye.properties file. The project_id is the connection between your pom.xml and the VersionEye project.
+Besides that, the plugin will add a `project_id` and `project_key` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project.
 
 ## Update 
 
@@ -125,7 +125,7 @@ With this command here you can update an existing VersionEye project:
 ```
 mvn versioneye:update
 ``` 
-That will simply update the existing VersionEye project with the dependencies from your pom.xml. It will NOT change your pom.xml.
+That will simply update the existing VersionEye project with the dependencies from your `pom.xml`. It will **not** change your `pom.xml`.
 
 ## Feedback
 
