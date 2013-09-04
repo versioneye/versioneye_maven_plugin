@@ -35,7 +35,7 @@ Switch to the project where you want to use this plugin. You can add the plugin 
     <plugin>
       <groupId>versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
     </plugin>
   </plugins>
 </build>
