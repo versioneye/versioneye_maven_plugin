@@ -4,7 +4,7 @@
 
   <groupId>versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -17,8 +17,8 @@
 
   <licenses>
     <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <name>MIT</name>
+      <url>http://choosealicense.com/licenses/mit/</url>
     </license>
   </licenses>
 
@@ -100,7 +100,7 @@
       <plugin>
         <groupId>versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <configuration>
             <baseUrl>https://www.versioneye.com</baseUrl>
         </configuration>
