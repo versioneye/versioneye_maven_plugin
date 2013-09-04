@@ -15,6 +15,10 @@
       https://github.com/versioneye/versioneye_maven_plugin.
   </description>
 
+  <scm>
+      <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
+  </scm>
+
   <licenses>
     <license>
       <name>MIT</name>
