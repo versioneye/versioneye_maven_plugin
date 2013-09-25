@@ -129,10 +129,9 @@ public class SuperMojo extends AbstractMojo {
     }
 
     private void createPropertiesFile(File file) throws IOException {
-        String resoucesPath = projectDirectory + "/src/main/resources/";
-        File resource = new File(resoucesPath);
-        if (!resource.exists()){
-            resource.mkdir();
+        File parent = file.getParentFile();
+        if (!parent.exists()){
+            parent.mkdirs();
         }
         file.createNewFile();
     }
