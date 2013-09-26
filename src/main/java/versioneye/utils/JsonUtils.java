@@ -34,7 +34,12 @@ public class JsonUtils {
 
     public void dependenciesToJsonFile(List<Artifact> directDependencies, String file) throws Exception {
         List<Map<String, Object>> hashes = getHashes(directDependencies);
-        toJson(new FileOutputStream(new File(file)), hashes);
+        File targetFile = new File(file);
+        File parent = targetFile.getParentFile();
+        if (!parent.exists()){
+            parent.mkdirs();
+        }
+        toJson(new FileOutputStream(targetFile), hashes);
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
