@@ -42,7 +42,7 @@ public class JsonMojo extends ProjectMojo {
     private String writeToJson(List<Artifact> dependencies) throws Exception {
         JsonUtils jsonUtils = new JsonUtils();
         String filePath = outputDirectory + "/pom.json";
-        jsonUtils.dependenciesToJsonFile(dependencies, filePath);
+        jsonUtils.dependenciesToJsonFile(project.getName(), dependencies, filePath);
         return filePath;
     }
 

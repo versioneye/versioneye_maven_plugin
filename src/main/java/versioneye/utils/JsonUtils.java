@@ -8,20 +8,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Methods to deal with JSON.
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(List<Dependency> dependencies) throws Exception {
-        List<Map<String, Object>> hashes = getDependencyHashes(dependencies);
+    public ByteArrayOutputStream dependenciesToJson(String name, List<Dependency> dependencies) throws Exception {
+        List<Map<String, Object>> dependencyHashes = getDependencyHashes(dependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        toJson(outstream, hashes);
+        toJson(outstream, getJsonPom(name, dependencyHashes));
         return outstream;
     }
 
@@ -32,14 +29,14 @@ public class JsonUtils {
         return outstream;
     }
 
-    public void dependenciesToJsonFile(List<Artifact> directDependencies, String file) throws Exception {
-        List<Map<String, Object>> hashes = getHashes(directDependencies);
+    public void dependenciesToJsonFile(String name, List<Artifact> directDependencies, String file) throws Exception {
+        List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
         File targetFile = new File(file);
         File parent = targetFile.getParentFile();
         if (!parent.exists()){
             parent.mkdirs();
         }
-        toJson(new FileOutputStream(targetFile), hashes);
+        toJson(new FileOutputStream(targetFile), getJsonPom(name, dependencyHashes));
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
@@ -79,6 +76,13 @@ public class JsonUtils {
             output.add(hash);
         }
         return output;
+    }
+
+    private Map<String, Object> getJsonPom(String name, List<Map<String, Object>> dependencyHashes){
+        Map<String, Object> pom = new HashMap<String, Object>();
+        pom.put("name", name);
+        pom.put("dependencies", dependencyHashes);
+        return pom;
     }
 
 }

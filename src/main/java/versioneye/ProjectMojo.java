@@ -18,7 +18,7 @@ public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream() throws Exception {
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project.getDependencies());
+        return jsonUtils.dependenciesToJson(project.getName(), project.getDependencies());
     }
 
     protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
