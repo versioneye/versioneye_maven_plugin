@@ -1,4 +1,4 @@
-package versioneye.utils;
+package com.versioneye.utils;
 
 import org.apache.maven.model.Dependency;
 import org.codehaus.jackson.map.ObjectMapper;

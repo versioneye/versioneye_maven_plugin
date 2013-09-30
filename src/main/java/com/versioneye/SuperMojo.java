@@ -1,4 +1,4 @@
-package versioneye;
+package com.versioneye;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -9,8 +9,8 @@ import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
-import versioneye.dto.ProjectJsonResponse;
-import versioneye.utils.PropertiesUtils;
+import com.versioneye.dto.ProjectJsonResponse;
+import com.versioneye.utils.PropertiesUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -51,7 +51,7 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( defaultValue = "${user.home}" )
     protected File homeDirectory;
 
-    @Parameter( property = "baseUrl", defaultValue = "https://www.versioneye.com" )
+    @Parameter( property = "baseUrl", defaultValue = "https://www.com.versioneye.com" )
     protected String baseUrl;
 
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
@@ -74,8 +74,8 @@ public class SuperMojo extends AbstractMojo {
             properties = fetchHomeProperties();
         apiKey = properties.getProperty("api_key");
         if (apiKey == null || apiKey.isEmpty())
-            throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
-                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+            throw new MojoExecutionException("com.versioneye.properties found but without an API Key! " +
+                    "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
         return apiKey;
     }
 
@@ -98,7 +98,7 @@ public class SuperMojo extends AbstractMojo {
         File file = new File(propertiesPath);
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/versioneye/versioneye_maven_plugin");
+                    "https://github.com/com.versioneye/versioneye_maven_plugin");
         PropertiesUtils propertiesUtils = new PropertiesUtils();
         homeProperties = propertiesUtils.readProperties(propertiesPath);
         return homeProperties;
@@ -115,7 +115,7 @@ public class SuperMojo extends AbstractMojo {
         }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/versioneye/versioneye_maven_plugin");
+                    "https://github.com/com.versioneye/versioneye_maven_plugin");
         this.propertiesPath = propertiesPath;
         return propertiesPath;
     }

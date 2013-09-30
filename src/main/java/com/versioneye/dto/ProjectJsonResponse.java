@@ -1,4 +1,4 @@
-package versioneye.dto;
+package com.versioneye.dto;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 

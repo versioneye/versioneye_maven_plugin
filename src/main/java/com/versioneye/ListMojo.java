@@ -1,4 +1,4 @@
-package versioneye;
+package com.versioneye;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -7,7 +7,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.graph.DependencyNode;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
-import versioneye.utils.DependencyUtils;
+import com.versioneye.utils.DependencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;

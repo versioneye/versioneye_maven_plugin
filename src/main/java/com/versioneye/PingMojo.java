@@ -1,4 +1,4 @@
-package versioneye;
+package com.versioneye;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

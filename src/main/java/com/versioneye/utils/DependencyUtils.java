@@ -1,4 +1,4 @@
-package versioneye.utils;
+package com.versioneye.utils;
 
 import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.artifact.Artifact;

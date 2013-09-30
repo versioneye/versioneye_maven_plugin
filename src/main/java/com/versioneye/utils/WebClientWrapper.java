@@ -1,4 +1,4 @@
-package versioneye.utils;
+package com.versioneye.utils;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;

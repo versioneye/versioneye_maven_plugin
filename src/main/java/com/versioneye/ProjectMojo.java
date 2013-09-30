@@ -1,12 +1,12 @@
-package versioneye;
+package com.versioneye;
 
 import org.sonatype.aether.artifact.Artifact;
 import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
-import versioneye.utils.DependencyUtils;
-import versioneye.utils.JsonUtils;
+import com.versioneye.utils.DependencyUtils;
+import com.versioneye.utils.JsonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

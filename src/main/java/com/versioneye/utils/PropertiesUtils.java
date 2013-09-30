@@ -1,4 +1,4 @@
-package versioneye.utils;
+package com.versioneye.utils;
 
 import java.io.*;
 import java.util.Properties;

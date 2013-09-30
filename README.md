@@ -2,8 +2,8 @@
 
 # VersionEye Maven Plugin
 
-The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create or update a project at VersionEye.
-VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com).
+The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.com.versioneye.com) helps you to create or update a project at VersionEye.
+VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.com.versioneye.com](http://www.com.versioneye.com).
 
 ## Install
 
@@ -33,7 +33,7 @@ Switch to the project where you want to use this plugin. You can add the plugin 
 <build>
   <plugins>
     <plugin>
-      <groupId>versioneye</groupId>
+      <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>1.0.0</version>
     </plugin>
@@ -43,7 +43,7 @@ Switch to the project where you want to use this plugin. You can add the plugin 
 That's it. The plugin is installed and added to your project. Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
 ```
 <pluginGroups>
-  <pluginGroup>versioneye</pluginGroup>
+  <pluginGroup>com.versioneye</pluginGroup>
 </pluginGroups>
 ```
 to the user's Maven settings file (`~/.m2/settings.xml`). This will allow to use the `versioneye:*`
