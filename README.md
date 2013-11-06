@@ -2,7 +2,7 @@
 
 # VersionEye Maven Plugin
 
-The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.com.versioneye.com) helps you to create or update a project at VersionEye.
+The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create or update a project at VersionEye.
 VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.com.versioneye.com](http://www.com.versioneye.com).
 
 ## Install
