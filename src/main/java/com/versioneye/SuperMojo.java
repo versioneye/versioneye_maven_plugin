@@ -51,7 +51,7 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( defaultValue = "${user.home}" )
     protected File homeDirectory;
 
-    @Parameter( property = "baseUrl", defaultValue = "https://www.com.versioneye.com" )
+    @Parameter( property = "baseUrl", defaultValue = "https://www.versioneye.com" )
     protected String baseUrl;
 
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
