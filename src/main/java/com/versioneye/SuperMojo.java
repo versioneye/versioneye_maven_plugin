@@ -122,8 +122,14 @@ public class SuperMojo extends AbstractMojo {
 
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
         Properties properties = fetchProjectProperties();
-        properties.setProperty("project_key", response.getProject_key());
-        properties.setProperty("project_id", response.getId());
+        if (response.getProject_key() != null) {
+            if (response.getProject_key() != null) {
+                properties.setProperty("project_key", response.getProject_key());
+            }
+            if (response.getId() != null) {
+                properties.setProperty("project_id", response.getId());
+            }
+        }
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
     }
