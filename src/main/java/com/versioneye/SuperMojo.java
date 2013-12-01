@@ -82,8 +82,15 @@ public class SuperMojo extends AbstractMojo {
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
-        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        String propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
         File file = new File(propertiesPath);
+        if (!file.exists()) {
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+            if (file.exists()) {
+            	getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
+            }
+        }
         if (!file.exists())
             createPropertiesFile(file);
         PropertiesUtils propertiesUtils = new PropertiesUtils();
@@ -96,6 +103,13 @@ public class SuperMojo extends AbstractMojo {
             return homeProperties;
         String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
         File file = new File(propertiesPath);
+        if (!file.exists()) {
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+            if (file.exists()) {
+            	getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
+            }
+        }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
                     "https://github.com/com.versioneye/versioneye_maven_plugin");
@@ -107,8 +121,12 @@ public class SuperMojo extends AbstractMojo {
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null)
             return this.propertiesPath;
-        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        String propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
         File file = new File(propertiesPath);
+        if (!file.exists()) {
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+        }
         if (!file.exists()){
             propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
             file = new File(propertiesPath);
@@ -122,8 +140,14 @@ public class SuperMojo extends AbstractMojo {
 
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
         Properties properties = fetchProjectProperties();
-        properties.setProperty("project_key", response.getProject_key());
-        properties.setProperty("project_id", response.getId());
+        if (response.getProject_key() != null) {
+            if (response.getProject_key() != null) {
+                properties.setProperty("project_key", response.getProject_key());
+            }
+            if (response.getId() != null) {
+                properties.setProperty("project_id", response.getId());
+            }
+        }
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
     }
