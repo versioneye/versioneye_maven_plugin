@@ -143,3 +143,7 @@ That will simply update the existing VersionEye project with the dependencies fr
 ## Feedback
 
 If you have questions, find bugs or feature requests to this project, feel free to open a ticket [here](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome!
+
+## License
+
+[MIT](http://choosealicense.com/licenses/mit/)
