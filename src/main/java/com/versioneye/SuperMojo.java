@@ -88,7 +88,7 @@ public class SuperMojo extends AbstractMojo {
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
             file = new File(propertiesPath);
             if (file.exists()) {
-            	getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
+                getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
             }
         }
         if (!file.exists())
@@ -107,7 +107,7 @@ public class SuperMojo extends AbstractMojo {
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
             file = new File(propertiesPath);
             if (file.exists()) {
-            	getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
+                getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
             }
         }
         if (!file.exists())
