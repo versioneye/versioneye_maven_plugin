@@ -139,7 +139,6 @@
         </executions>
       </plugin>
 
-      <!-- Actually already provided by oss-parent -->
       <plugin>
       <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -154,7 +153,6 @@
         </executions>
       </plugin>
 
-      <!-- Actually already provided by oss-parent -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
