@@ -57,6 +57,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
     protected String apiPath;
 
+    @Parameter( property = "projectId" )
+    protected String projectId;
+
     @Parameter( property = "apiKey" )
     protected String apiKey;
 
@@ -71,14 +74,30 @@ public class SuperMojo extends AbstractMojo {
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
-        Properties properties = fetchProjectProperties();
-        if (properties == null || properties.getProperty("api_key") == null)
-            properties = fetchHomeProperties();
+        Properties properties = fetchPropertiesFor("api_key");
         apiKey = properties.getProperty("api_key");
         if (apiKey == null || apiKey.isEmpty())
             throw new MojoExecutionException("com.versioneye.properties found but without an API Key! " +
                     "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
         return apiKey;
+    }
+
+    protected String fetchProjectId() throws Exception {
+        if (projectId != null && !projectId.isEmpty() )
+            return projectId;
+        Properties properties = fetchPropertiesFor("project_id");
+        projectId = properties.getProperty("project_id");
+        if (projectId == null || projectId.isEmpty())
+            throw new MojoExecutionException("com.versioneye.properties found but without project_id! " +
+                    "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
+        return apiKey;
+    }
+
+    protected Properties fetchPropertiesFor( String key ) throws Exception {
+        Properties properties = fetchProjectProperties();
+        if (properties == null || properties.getProperty( key ) == null)
+            properties = fetchHomeProperties();
+        return properties;
     }
 
     protected Properties fetchProjectProperties() throws Exception {
