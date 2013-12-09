@@ -60,9 +60,11 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "apiKey" )
     protected String apiKey;
 
+    @Parameter( property = "propertiesPath" )
+    protected String propertiesPath = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
-    protected String propertiesPath = null;
 
     public void execute() throws MojoExecutionException, MojoFailureException {  }
 
