@@ -113,7 +113,7 @@
         <version>2.1.0-SNAPSHOT</version>
         <configuration>
             <baseUrl>https://www.versioneye.com</baseUrl>
-            <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
+            <projectId>51e2af93cbe2eb000203df22</projectId>
         </configuration>
       </plugin>
       <plugin>
