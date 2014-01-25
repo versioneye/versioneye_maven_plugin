@@ -29,8 +29,9 @@ public class UpdateMojo extends ProjectMojo {
             writeProperties( response );
             prettyPrint( response );
         } catch( Exception exception ){
+            exception.printStackTrace();
             throw new MojoExecutionException("Oh no! Something went wrong. " +
-                    "Get in touch with the VersionEye guys and give them feedback." +
+                    "Get in touch with the VersionEye guys and give them feedback. " +
                     "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }

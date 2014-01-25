@@ -103,7 +103,7 @@ public class SuperMojo extends AbstractMojo {
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
-        String propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
+        String propertiesPath = getPropertiesPath();
         File file = new File(propertiesPath);
         if (!file.exists()) {
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
