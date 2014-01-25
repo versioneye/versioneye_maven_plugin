@@ -77,8 +77,8 @@ public class SuperMojo extends AbstractMojo {
         Properties properties = fetchPropertiesFor("api_key");
         apiKey = properties.getProperty("api_key");
         if (apiKey == null || apiKey.isEmpty())
-            throw new MojoExecutionException("com.versioneye.properties found but without an API Key! " +
-                    "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
+            throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
+                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
         return apiKey;
     }
 
@@ -88,8 +88,8 @@ public class SuperMojo extends AbstractMojo {
         Properties properties = fetchPropertiesFor("project_id");
         projectId = properties.getProperty("project_id");
         if (projectId == null || projectId.isEmpty())
-            throw new MojoExecutionException("com.versioneye.properties found but without project_id! " +
-                    "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
+            throw new MojoExecutionException("versioneye.properties found but without project_id! " +
+                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
         return apiKey;
     }
 
@@ -133,7 +133,7 @@ public class SuperMojo extends AbstractMojo {
         }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/com.versioneye/versioneye_maven_plugin");
+                    "https://github.com/versioneye/versioneye_maven_plugin");
         PropertiesUtils propertiesUtils = new PropertiesUtils();
         homeProperties = propertiesUtils.readProperties(propertiesPath);
         return homeProperties;
@@ -154,7 +154,7 @@ public class SuperMojo extends AbstractMojo {
         }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/com.versioneye/versioneye_maven_plugin");
+                    "https://github.com/versioneye/versioneye_maven_plugin");
         this.propertiesPath = propertiesPath;
         return propertiesPath;
     }
