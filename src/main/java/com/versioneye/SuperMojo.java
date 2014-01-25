@@ -105,13 +105,6 @@ public class SuperMojo extends AbstractMojo {
             return properties;
         String propertiesPath = getPropertiesPath();
         File file = new File(propertiesPath);
-        if (!file.exists()) {
-            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            file = new File(propertiesPath);
-            if (file.exists()) {
-                getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
-            }
-        }
         if (!file.exists())
             createPropertiesFile(file);
         PropertiesUtils propertiesUtils = new PropertiesUtils();
@@ -174,6 +167,7 @@ public class SuperMojo extends AbstractMojo {
     }
 
     private void createPropertiesFile(File file) throws IOException {
+        getLog().info("createPropertiesFile " + file.toString());
         File parent = file.getParentFile();
         if (!parent.exists()){
             parent.mkdirs();
