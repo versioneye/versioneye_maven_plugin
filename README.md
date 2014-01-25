@@ -97,7 +97,7 @@ If you have your *API KEY*, create a properties file and add your key like this:
 echo "api_key=YOUR_API_KEY" > versioneye.properties
 ```
 
-The versioneye-maven-plugin will look in 3 places for the `versioneye.properties` file. First of all it will look in your project resource directory under:
+The versioneye-maven-plugin will look at this places for the `versioneye.properties` file:
 
 ```
 /src/qa/resources/versioneye.properties
@@ -109,7 +109,25 @@ If it can't find the file there it will look it up at this place:
 src/main/resources/versioneye.properties
 ```
 
-If it can't find the file there it will look it up at this place:
+If you want so you can configure another place for the versioneye.properties file. Just set the path explicitly in the pom.xml on the versioneye plugin configuration:
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>2.0.0</version>
+      <configuration>
+	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+
+```
+
+If the plugin can't find the API KEY in any of this locations it will look it up at this place:
 
 ```
 ~/.m2/versioneye.properties
@@ -129,7 +147,7 @@ This command will **not** change your local project. It just sends your dependen
 
 ![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
 
-Besides that, the plugin will add a `project_id` and `project_key` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project.
+Besides that, the plugin will add a `project_id` and `project_key` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
 
 ## Update
 
@@ -139,6 +157,23 @@ With this command here you can update an existing VersionEye project:
 mvn versioneye:update
 ```
 That will simply update the existing VersionEye project with the dependencies from your `pom.xml`. It will **not** change your `pom.xml`.
+
+By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>2.0.0</version>
+      <configuration>
+	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
 
 ## Feedback
 
