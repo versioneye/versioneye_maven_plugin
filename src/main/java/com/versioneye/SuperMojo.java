@@ -90,7 +90,7 @@ public class SuperMojo extends AbstractMojo {
         if (projectId == null || projectId.isEmpty())
             throw new MojoExecutionException("com.versioneye.properties found but without project_id! " +
                     "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
-        return apiKey;
+        return projectId;
     }
 
     protected Properties fetchPropertiesFor( String key ) throws Exception {
