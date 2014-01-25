@@ -167,7 +167,6 @@ public class SuperMojo extends AbstractMojo {
     }
 
     private void createPropertiesFile(File file) throws IOException {
-        getLog().info("createPropertiesFile " + file.toString());
         File parent = file.getParentFile();
         if (!parent.exists()){
             parent.mkdirs();
