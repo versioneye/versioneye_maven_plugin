@@ -40,8 +40,7 @@ public class UpdateMojo extends ProjectMojo {
         String apiKey = fetchApiKey();
         String projectId = fetchProjectId();
         String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
-        HttpUtils httpUtils = new HttpUtils();
-        Reader reader = httpUtils.post(url, outStream.toByteArray(), "project_file");
+        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(reader, ProjectJsonResponse.class );
     }
