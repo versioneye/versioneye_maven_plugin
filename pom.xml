@@ -10,7 +10,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>2.1.0-SNAPSHOT</version>
+  <version>2.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -107,15 +107,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>com.versioneye</groupId>
-        <artifactId>versioneye-maven-plugin</artifactId>
-        <version>2.1.0-SNAPSHOT</version>
-        <configuration>
-            <baseUrl>https://www.versioneye.com</baseUrl>
-            <projectId>51e2af93cbe2eb000203df22</projectId>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>

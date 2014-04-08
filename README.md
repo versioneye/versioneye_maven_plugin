@@ -7,7 +7,36 @@ VersionEye is a platform for Continuous Updating. It will help you to keep your 
 
 ## Install
 
-Currently this plugin is not on any maven repository server. That's why you have to use the code:
+The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
+That means Maven will find it automatically, without adding any other repositories.
+
+Switch to the project where you want to use this plugin.
+You can add the plugin to your project by adding this snippet to your
+`pom.xml` file.
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>2.0.1</version>
+    </plugin>
+  </plugins>
+</build>
+```
+That's it. The plugin is installed and added to your project. Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
+```
+<pluginGroups>
+  <pluginGroup>com.versioneye</pluginGroup>
+</pluginGroups>
+```
+to the user's Maven settings file (`~/.m2/settings.xml`). This will allow to use the `versioneye:*`
+command line goals interactively in all projects.
+
+## Install from source
+
+If you wanna install the plugin from source, you have to follow this steps.
 
 ```
 git clone https://github.com/versioneye/versioneye_maven_plugin.git
@@ -26,28 +55,6 @@ mvn clean install
 ```
 
 Now the plugin is installed on your local machine!
-
-Switch to the project where you want to use this plugin. You can add the plugin to your project by adding this snippet to your `pom.xml` file.
-
-```
-<build>
-  <plugins>
-    <plugin>
-      <groupId>com.versioneye</groupId>
-      <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.0</version>
-    </plugin>
-  </plugins>
-</build>
-```
-That's it. The plugin is installed and added to your project. Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
-```
-<pluginGroups>
-  <pluginGroup>com.versioneye</pluginGroup>
-</pluginGroups>
-```
-to the user's Maven settings file (`~/.m2/settings.xml`). This will allow to use the `versioneye:*`
-command line goals interactively in all projects.
 
 
 ## Getting Started
@@ -117,7 +124,7 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
       <configuration>
 	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
 	  </configuration>
@@ -166,7 +173,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
       <configuration>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
 	  </configuration>
