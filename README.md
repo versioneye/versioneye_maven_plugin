@@ -8,7 +8,9 @@ VersionEye is a platform for Continuous Updating. It will help you to keep your 
 ## Install
 
 The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
-That means Maven will find it automatically, without adding any other repositories.
+That means Maven will find it automatically, without adding any other
+repositories! And you can find the project on [bintray](https://bintray.com/versioneye/versioneye/versioneye-maven-plugin/)
+as well. 
 
 Switch to the project where you want to use this plugin.
 You can add the plugin to your project by adding this snippet to your
