@@ -107,6 +107,18 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <groupId>com.versioneye</groupId>
+        <artifactId>versioneye-maven-plugin</artifactId>
+        <version>2.1.0-SNAPSHOT</version>
+        <configuration>
+            <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
+            <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
+            <projectId>51e2af93cbe2eb000203df22</projectId>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
