@@ -1,16 +1,17 @@
 package com.versioneye;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
-import com.versioneye.utils.DependencyUtils;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.versioneye.utils.DependencyUtils;
 
 /**
  * Lists all direct and recursive dependencies.

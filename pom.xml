@@ -68,14 +68,14 @@
       <version>3.0.17</version>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.aether</groupId>
+      <groupId>org.eclipse.aether</groupId>
       <artifactId>aether-api</artifactId>
-      <version>1.13.1</version>
+      <version>0.9.0.M2</version>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.aether</groupId>
+      <groupId>org.eclipse.aether</groupId>
       <artifactId>aether-util</artifactId>
-      <version>1.13.1</version>
+      <version>0.9.0.M2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
