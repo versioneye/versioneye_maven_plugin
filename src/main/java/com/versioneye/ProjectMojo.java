@@ -22,16 +22,14 @@ public class ProjectMojo extends SuperMojo {
     }
 
     protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
-        DependencyUtils dependencyUtils = new DependencyUtils();
         DependencyNode root = getDependencyNode(new PreorderNodeListGenerator());
-        List<Artifact> directDependencies = dependencyUtils.collectDirectDependencies(root.getChildren());
+        List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
         JsonUtils jsonUtils = new JsonUtils();
         return jsonUtils.artifactsToJson(directDependencies);
     }
 
     protected DependencyNode getDependencyNode(PreorderNodeListGenerator nlg) throws Exception {
-        DependencyUtils dependencyUtils = new DependencyUtils();
-        CollectRequest collectRequest = dependencyUtils.getCollectRequest(project, repos);
+        CollectRequest collectRequest = DependencyUtils.getCollectRequest(project, repos);
         DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
         DependencyRequest dependencyRequest = new DependencyRequest(root, null);
         system.resolveDependencies(session, dependencyRequest);
