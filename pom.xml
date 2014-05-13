@@ -2,6 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- Doesn't work on previous versions because of Eclipse/Sonatype Aether incompatibility. -->
+  <prerequisites>
+    <maven>3.1</maven>
+  </prerequisites>
+
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
@@ -10,19 +15,19 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>2.0.1</version>
+  <version>2.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
   <url>https://github.com/versioneye/versioneye_maven_plugin</url>
   <description>
-      This is the maven plugin for http://www.VersionEye.com. It allows you to create and update
-      a project at VersionEye. You can find a complete documentation of this project on GitHub:
-      https://github.com/versioneye/versioneye_maven_plugin.
+    This is the maven plugin for http://www.VersionEye.com. It allows you to create and update
+    a project at VersionEye. You can find a complete documentation of this project on GitHub:
+    https://github.com/versioneye/versioneye_maven_plugin.
   </description>
 
   <scm>
-      <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
+    <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
   </scm>
 
   <licenses>
@@ -42,66 +47,48 @@
   </developers>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- The minimum Maven version that should be supported. -->
+    <maven.version>3.1.0</maven.version>
+    <jackson.version>1.9.13</jackson.version>
+    <httpcomponents.version>4.3.3</httpcomponents.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.2.1</version>
+      <version>${maven.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.2</version>
+      <version>3.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-compat</artifactId>
-      <version>3.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>3.0.17</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-api</artifactId>
-      <version>1.13.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-util</artifactId>
-      <version>1.13.1</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-core-lgpl</artifactId>
-      <version>1.9.13</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-lgpl</artifactId>
-      <version>1.9.13</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.3</version>
+      <version>${httpcomponents.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpmime</artifactId>
-      <version>4.3.3</version>
+      <version>${httpcomponents.version}</version>
     </dependency>
   </dependencies>
 
@@ -113,9 +100,9 @@
         <artifactId>versioneye-maven-plugin</artifactId>
         <version>2.0.1</version>
         <configuration>
-            <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
-            <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
-            <projectId>51e2af93cbe2eb000203df22</projectId>
+          <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
+          <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
+          <projectId>51e2af93cbe2eb000203df22</projectId>
         </configuration>
       </plugin>
 
@@ -144,16 +131,16 @@
       </plugin>
 
       <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>2.2.1</version>
         <executions>
-            <execution>
-                <id>attach-sources</id>
-                <goals>
-                    <goal>jar-no-fork</goal>
-                </goals>
-            </execution>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
@@ -162,12 +149,12 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.9.1</version>
         <executions>
-            <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                    <goal>jar</goal>
-                </goals>
-            </execution>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
