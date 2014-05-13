@@ -51,7 +51,6 @@
     <maven.version>3.1.0</maven.version>
     <jackson.version>1.9.13</jackson.version>
     <httpcomponents.version>4.3.3</httpcomponents.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
