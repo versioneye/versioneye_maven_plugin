@@ -95,7 +95,7 @@
         <version>3.0.0-SNAPSHOT</version>
         <configuration>
           <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
-          <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
+          <!-- <baseUrl>http://127.0.0.1:3000</baseUrl> -->
           <projectId>51e2af93cbe2eb000203df22</projectId>
         </configuration>
       </plugin>
