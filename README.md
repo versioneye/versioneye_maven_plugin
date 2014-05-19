@@ -188,7 +188,9 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
 
 ## Feedback
 
-If you have questions, find bugs or feature requests to this project, feel free to open a ticket [here](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome!
+For bugs and feature requests please use the [ticket system](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome ;-) 
+
+For short questions contact me on [Twitter](https://twitter.com/RobertReiz).
 
 ## License
 
