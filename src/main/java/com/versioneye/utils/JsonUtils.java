@@ -2,7 +2,7 @@ package com.versioneye.utils;
 
 import org.apache.maven.model.Dependency;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.sonatype.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.Artifact;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
