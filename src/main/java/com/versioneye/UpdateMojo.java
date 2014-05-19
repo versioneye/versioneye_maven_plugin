@@ -29,18 +29,18 @@ public class UpdateMojo extends ProjectMojo {
             writeProperties( response );
             prettyPrint( response );
         } catch( Exception exception ){
+            exception.printStackTrace();
             throw new MojoExecutionException("Oh no! Something went wrong. " +
-                    "Get in touch with the VersionEye guys and give them feedback." +
+                    "Get in touch with the VersionEye guys and give them feedback. " +
                     "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
 
     private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         String apiKey = fetchApiKey();
-        String projectId = properties.getProperty("project_id");
+        String projectId = fetchProjectId();
         String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
-        HttpUtils httpUtils = new HttpUtils();
-        Reader reader = httpUtils.post(url, outStream.toByteArray(), "project_file");
+        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(reader, ProjectJsonResponse.class );
     }

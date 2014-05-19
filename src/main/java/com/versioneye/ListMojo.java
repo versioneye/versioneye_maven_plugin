@@ -23,9 +23,8 @@ public class ListMojo extends ProjectMojo {
         try{
             PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
             DependencyNode root = getDependencyNode(nlg);
-            DependencyUtils dependencyUtils = new DependencyUtils();
-            List<Artifact> dependencies          = dependencyUtils.collectAllDependencies(nlg.getDependencies(true));
-            List<Artifact> directDependencies    = dependencyUtils.collectDirectDependencies(root.getChildren());
+            List<Artifact> dependencies          = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
+            List<Artifact> directDependencies    = DependencyUtils.collectDirectDependencies(root.getChildren());
             List<Artifact> recursiveDependencies = new ArrayList<Artifact>(dependencies);
             recursiveDependencies.removeAll(directDependencies);
             List<Dependency> deps = project.getDependencies();

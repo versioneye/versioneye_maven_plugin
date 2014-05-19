@@ -38,8 +38,7 @@ public class CreateMojo extends ProjectMojo {
     private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         String apiKey = fetchApiKey();
         String url = baseUrl + apiPath + resource + apiKey;
-        HttpUtils httpUtils = new HttpUtils();
-        Reader reader = httpUtils.post(url, outStream.toByteArray(), "upload");
+        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "upload");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(reader, ProjectJsonResponse.class );
     }

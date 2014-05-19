@@ -2,9 +2,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -43,23 +49,23 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.2</version>
+      <version>3.3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
-      <version>3.1.0</version>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.0.15</version>
+      <version>3.0.17</version>
     </dependency>
     <dependency>
       <groupId>org.sonatype.aether</groupId>
@@ -90,25 +96,29 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3</version>
+      <version>4.3.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpmime</artifactId>
-      <version>4.3</version>
+      <version>4.3.3</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
+
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <configuration>
-            <baseUrl>https://www.versioneye.com</baseUrl>
+            <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
+            <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
+            <projectId>51e2af93cbe2eb000203df22</projectId>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
@@ -132,19 +142,21 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+      <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>2.2.1</version>
         <executions>
             <execution>
                 <id>attach-sources</id>
                 <goals>
-                    <goal>jar</goal>
+                    <goal>jar-no-fork</goal>
                 </goals>
             </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -158,6 +170,7 @@
             </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 

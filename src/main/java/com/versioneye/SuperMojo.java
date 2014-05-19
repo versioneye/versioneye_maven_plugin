@@ -51,38 +51,59 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( defaultValue = "${user.home}" )
     protected File homeDirectory;
 
-    @Parameter( property = "baseUrl", defaultValue = "https://www.com.versioneye.com" )
+    @Parameter( property = "baseUrl", defaultValue = "https://www.versioneye.com" )
     protected String baseUrl;
 
     @Parameter( property = "apiPath", defaultValue = "/api/v2" )
     protected String apiPath;
 
+    @Parameter( property = "projectId" )
+    protected String projectId;
+
     @Parameter( property = "apiKey" )
     protected String apiKey;
 
+    @Parameter( property = "propertiesPath" )
+    protected String propertiesPath = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
-    protected String propertiesPath = null;
 
     public void execute() throws MojoExecutionException, MojoFailureException {  }
 
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
-        Properties properties = fetchProjectProperties();
-        if (properties == null || properties.getProperty("api_key") == null)
-            properties = fetchHomeProperties();
+        Properties properties = fetchPropertiesFor("api_key");
         apiKey = properties.getProperty("api_key");
         if (apiKey == null || apiKey.isEmpty())
-            throw new MojoExecutionException("com.versioneye.properties found but without an API Key! " +
-                    "Read the instructions at https://github.com/com.versioneye/versioneye_maven_plugin");
+            throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
+                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
         return apiKey;
+    }
+
+    protected String fetchProjectId() throws Exception {
+        if (projectId != null && !projectId.isEmpty() )
+            return projectId;
+        Properties properties = fetchPropertiesFor("project_id");
+        projectId = properties.getProperty("project_id");
+        if (projectId == null || projectId.isEmpty())
+            throw new MojoExecutionException("versioneye.properties found but without project_id! " +
+                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+        return projectId;
+    }
+
+    protected Properties fetchPropertiesFor( String key ) throws Exception {
+        Properties properties = fetchProjectProperties();
+        if (properties == null || properties.getProperty( key ) == null)
+            properties = fetchHomeProperties();
+        return properties;
     }
 
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
-        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        String propertiesPath = getPropertiesPath();
         File file = new File(propertiesPath);
         if (!file.exists())
             createPropertiesFile(file);
@@ -96,9 +117,16 @@ public class SuperMojo extends AbstractMojo {
             return homeProperties;
         String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
         File file = new File(propertiesPath);
+        if (!file.exists()) {
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+            if (file.exists()) {
+                getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
+            }
+        }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/com.versioneye/versioneye_maven_plugin");
+                    "https://github.com/versioneye/versioneye_maven_plugin");
         PropertiesUtils propertiesUtils = new PropertiesUtils();
         homeProperties = propertiesUtils.readProperties(propertiesPath);
         return homeProperties;
@@ -107,23 +135,33 @@ public class SuperMojo extends AbstractMojo {
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null)
             return this.propertiesPath;
-        String propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        String propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
         File file = new File(propertiesPath);
+        if (!file.exists()) {
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+        }
         if (!file.exists()){
             propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
             file = new File(propertiesPath);
         }
         if (!file.exists())
             throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/com.versioneye/versioneye_maven_plugin");
+                    "https://github.com/versioneye/versioneye_maven_plugin");
         this.propertiesPath = propertiesPath;
         return propertiesPath;
     }
 
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
         Properties properties = fetchProjectProperties();
-        properties.setProperty("project_key", response.getProject_key());
-        properties.setProperty("project_id", response.getId());
+        if (response.getProject_key() != null) {
+            if (response.getProject_key() != null) {
+                properties.setProperty("project_key", response.getProject_key());
+            }
+            if (response.getId() != null) {
+                properties.setProperty("project_id", response.getId());
+            }
+        }
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
     }
