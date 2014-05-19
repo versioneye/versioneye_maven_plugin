@@ -4,8 +4,8 @@
 
 # VersionEye Maven Plugin
 
-The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create or update a project at VersionEye.
-VersionEye is a platform for Continuous Updating. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com).
+The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create/update a project at VersionEye.
+VersionEye is a Notification System for Software Libraries. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com).
 
 ## Install
 
@@ -146,7 +146,7 @@ If the plugin can't find the API KEY in any of this locations it will look it up
 
 That means if you don't want to commit your *API KEY* to the server and share it with your team you can place the file in your *home* directory and keep it for you.
 
-## Create
+## mvn versioneye:create
 
 If your *API KEY* is in place you can create a project at VersionEye based on the dependencies in your `pom.xml`. Just execute this:
 
@@ -160,7 +160,7 @@ This command will **not** change your local project. It just sends your dependen
 
 Besides that, the plugin will add a `project_id` and `project_key` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
 
-## Update
+## mvn versioneye:update
 
 With this command here you can update an existing VersionEye project:
 
