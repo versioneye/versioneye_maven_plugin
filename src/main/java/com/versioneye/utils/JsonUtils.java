@@ -1,14 +1,17 @@
 package com.versioneye.utils;
 
-import org.apache.maven.model.Dependency;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.sonatype.aether.artifact.Artifact;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import org.apache.maven.model.Dependency;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.eclipse.aether.artifact.Artifact;
 
 /**
  * Methods to deal with JSON.

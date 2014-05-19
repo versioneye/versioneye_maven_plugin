@@ -1,15 +1,16 @@
 package com.versioneye;
 
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.collection.CollectRequest;
-import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.resolution.DependencyRequest;
-import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
-import com.versioneye.utils.DependencyUtils;
-import com.versioneye.utils.JsonUtils;
-
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.resolution.DependencyRequest;
+import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
+
+import com.versioneye.utils.DependencyUtils;
+import com.versioneye.utils.JsonUtils;
 
 /**
  * Methods required to deal with projects resource
