@@ -1,6 +1,6 @@
 
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.png)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.X with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
+- Version 3.0.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
 
 # VersionEye Maven Plugin
 
@@ -12,7 +12,7 @@ VersionEye is a Notification System for Software Libraries. It will help you to 
 The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
 That means Maven will find it automatically, without adding any other
 repositories! And you can find the project on [bintray](https://bintray.com/versioneye/versioneye/versioneye-maven-plugin/)
-as well. 
+as well.
 
 Switch to the project where you want to use this plugin.
 You can add the plugin to your project by adding this snippet to your
@@ -24,12 +24,16 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.1</version>
+      <version>3.0.0</version>
     </plugin>
   </plugins>
 </build>
 ```
-That's it. The plugin is installed and added to your project. Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
+The `versioneye-maven-plugin` is tested again Maven 3.2.1.
+If you are using Maven 3.0.5 or older you should use the
+`versioneye-maven-plugin` version 2.0.1.
+
+Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
 ```
 <pluginGroups>
   <pluginGroup>com.versioneye</pluginGroup>
@@ -128,7 +132,7 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.1</version>
+      <version>3.0.0</version>
       <configuration>
 	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
 	  </configuration>
@@ -177,7 +181,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>2.0.1</version>
+      <version>3.0.0</version>
       <configuration>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
 	  </configuration>
@@ -188,7 +192,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
 
 ## Feedback
 
-For bugs and feature requests please use the [ticket system](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome ;-) 
+For bugs and feature requests please use the [ticket system](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome ;-)
 
 For short questions contact me on [Twitter](https://twitter.com/RobertReiz).
 
