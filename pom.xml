@@ -42,7 +42,7 @@
 
   <properties>
     <!-- The minimum Maven version that should be supported. -->
-    <maven.version>3.2.1</maven.version>
+    <maven.version>3.2.2</maven.version>
     <jackson.version>1.9.13</jackson.version>
     <httpcomponents.version>4.3.4</httpcomponents.version>
   </properties>
