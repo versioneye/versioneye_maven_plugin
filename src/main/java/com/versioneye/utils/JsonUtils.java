@@ -1,6 +1,7 @@
 package com.versioneye.utils;
 
 import org.apache.maven.model.Dependency;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.aether.artifact.Artifact;
 
@@ -41,6 +42,7 @@ public class JsonUtils {
 
     public static void toJson(OutputStream output, Object input) throws Exception {
          ObjectMapper mapper = new ObjectMapper();
+         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
          mapper.writeValue(output, input);
     }
 
