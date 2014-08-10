@@ -23,6 +23,7 @@ public class CreateMojo extends ProjectMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
+            setProxy();
             prettyPrintStart();
             ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);

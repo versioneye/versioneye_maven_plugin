@@ -66,6 +66,18 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "propertiesPath" )
     protected String propertiesPath = null;
 
+    @Parameter( property = "proxyHost" )
+    protected String proxyHost = null;
+
+    @Parameter( property = "proxyPort" )
+    protected String proxyPort = null;
+
+    @Parameter( property = "proxyUser" )
+    protected String proxyUser = null;
+
+    @Parameter( property = "proxyPassword" )
+    protected String proxyPassword = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
@@ -187,6 +199,27 @@ public class SuperMojo extends AbstractMojo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void setProxy(){
+        boolean emptyProxyHost = proxyHost == null || proxyHost.isEmpty();
+        boolean emptyProxyPort = proxyPort == null || proxyPort.isEmpty();
+        if (emptyProxyHost && emptyProxyPort){
+            return ;
+        }
+        System.setProperty("proxySet", "true");
+        System.setProperty("http.proxyHost", proxyHost);
+        System.setProperty("http.proxyPort", proxyPort);
+        System.setProperty("https.proxyHost", proxyHost);
+        System.setProperty("https.proxyPort", proxyPort);
+
+        boolean emptyProxyUser = proxyUser == null || proxyUser.isEmpty();
+        boolean emptyProxyPass = proxyPassword == null || proxyPassword.isEmpty();
+        if (emptyProxyUser && emptyProxyPass){
+            return ;
+        }
+        System.getProperties().put("http.proxyUser", proxyUser);
+        System.getProperties().put("http.proxyPassword", proxyPassword);
     }
 
 }

@@ -20,6 +20,7 @@ public class PingMojo extends SuperMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
+            setProxy();
             initTls();
             InputStream inputStream = getInputStream(baseUrl + apiPath + "/services/ping");
             BufferedReader input =  new BufferedReader( new InputStreamReader( inputStream ) );
