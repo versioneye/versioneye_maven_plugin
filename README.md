@@ -190,6 +190,33 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
 </build>
 ```
 
+## VersionEye Enterprise 
+
+If you are using the VersionEye Enterprise VM in your own private network you probably want to use this plugin against the VersionEye Enterprise API. In that case you can change the baseUrl with this line:
+
+
+```
+<baseUrl>http://versioneye.my-company.com</baseUrl>
+```
+The whole plugin snippet would look similar to this one. 
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>3.0.0</version>
+      <configuration>
+        <baseUrl>http://versioneye.my-company.com</baseUrl>
+	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+
 ## Feedback
 
 For bugs and feature requests please use the [ticket system](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome ;-)
