@@ -27,7 +27,6 @@ public class UpdateMojo extends ProjectMojo {
             prettyPrintStart();
             ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
-            writeProperties( response );
             prettyPrint( response );
         } catch( Exception exception ){
             exception.printStackTrace();
