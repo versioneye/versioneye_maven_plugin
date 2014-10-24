@@ -1,5 +1,6 @@
 package com.versioneye;
 
+import com.versioneye.utils.PropertiesUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -9,8 +10,6 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
-import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.PropertiesUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -77,6 +76,9 @@ public class SuperMojo extends AbstractMojo {
 
     @Parameter( property = "proxyPassword" )
     protected String proxyPassword = null;
+
+    @Parameter( property = "updatePropertiesAfterCreate" )
+    protected boolean updatePropertiesAfterCreate = true;
 
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
@@ -157,20 +159,12 @@ public class SuperMojo extends AbstractMojo {
             propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
             file = new File(propertiesPath);
         }
-        if (!file.exists())
-            throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/versioneye/versioneye_maven_plugin");
+        if (!file.exists()){
+            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+            file = new File(propertiesPath);
+        }
         this.propertiesPath = propertiesPath;
         return propertiesPath;
-    }
-
-    protected void writeProperties(ProjectJsonResponse response) throws Exception {
-        Properties properties = fetchProjectProperties();
-        if (response.getId() != null) {
-            properties.setProperty("project_id", response.getId());
-        }
-        PropertiesUtils utils = new PropertiesUtils();
-        utils.writeProperties(properties, getPropertiesPath());
     }
 
     private void createPropertiesFile(File file) throws IOException {
