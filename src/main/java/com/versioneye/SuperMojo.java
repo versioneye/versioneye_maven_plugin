@@ -90,9 +90,11 @@ public class SuperMojo extends AbstractMojo {
             return apiKey;
         Properties properties = fetchPropertiesFor("api_key");
         apiKey = properties.getProperty("api_key");
-        if (apiKey == null || apiKey.isEmpty())
-            throw new MojoExecutionException("versioneye.properties found but without an API Key! " +
-                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+        if (apiKey == null || apiKey.isEmpty()){
+            String msg = "versioneye.properties found but without an API Key! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
+            getLog().error(msg);
+            throw new MojoExecutionException(msg);
+        }
         return apiKey;
     }
 
@@ -101,9 +103,12 @@ public class SuperMojo extends AbstractMojo {
             return projectId;
         Properties properties = fetchPropertiesFor("project_id");
         projectId = properties.getProperty("project_id");
-        if (projectId == null || projectId.isEmpty())
-            throw new MojoExecutionException("versioneye.properties found but without project_id! " +
-                    "Read the instructions at https://github.com/versioneye/versioneye_maven_plugin");
+        if (projectId == null || projectId.isEmpty()){
+            String msg = "versioneye.properties found but without project_id! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
+            getLog().error(msg);
+            throw new MojoExecutionException(msg);
+        }
+
         return projectId;
     }
 
@@ -138,9 +143,12 @@ public class SuperMojo extends AbstractMojo {
                 getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
             }
         }
-        if (!file.exists())
-            throw new MojoExecutionException(propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/versioneye/versioneye_maven_plugin");
+        if (!file.exists()){
+            String msg = propertiesPath + " is missing! Read the instructions at " +
+                    "https://github.com/versioneye/versioneye_maven_plugin";
+            getLog().error(msg);
+            throw new MojoExecutionException(msg);
+        }
         PropertiesUtils propertiesUtils = new PropertiesUtils();
         homeProperties = propertiesUtils.readProperties(propertiesPath);
         return homeProperties;
