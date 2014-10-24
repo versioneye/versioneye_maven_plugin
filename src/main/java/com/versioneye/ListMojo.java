@@ -1,5 +1,6 @@
 package com.versioneye;
 
+import com.versioneye.utils.DependencyUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -7,7 +8,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
-import com.versioneye.utils.DependencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;

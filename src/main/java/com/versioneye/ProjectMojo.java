@@ -1,12 +1,12 @@
 package com.versioneye;
 
+import com.versioneye.utils.DependencyUtils;
+import com.versioneye.utils.JsonUtils;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.resolution.DependencyRequest;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
-import com.versioneye.utils.DependencyUtils;
-import com.versioneye.utils.JsonUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

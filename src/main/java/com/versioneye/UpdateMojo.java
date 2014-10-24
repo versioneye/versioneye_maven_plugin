@@ -1,13 +1,13 @@
 package com.versioneye;
 
+import com.versioneye.dto.ProjectJsonResponse;
+import com.versioneye.utils.HttpUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.jackson.map.ObjectMapper;
-import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.HttpUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Reader;
