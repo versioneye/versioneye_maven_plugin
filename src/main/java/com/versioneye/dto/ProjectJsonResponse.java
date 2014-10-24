@@ -9,7 +9,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ProjectJsonResponse {
 
     private String name;
-    private String project_key;
     private String id;
     private String dep_number;
     private String out_number;
@@ -20,14 +19,6 @@ public class ProjectJsonResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getProject_key() {
-        return project_key;
-    }
-
-    public void setProject_key(String project_key) {
-        this.project_key = project_key;
     }
 
     public String getId() {
