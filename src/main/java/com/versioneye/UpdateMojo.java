@@ -53,6 +53,8 @@ public class UpdateMojo extends ProjectMojo {
 
     private void prettyPrint(ProjectJsonResponse response) throws Exception {
         getLog().info(".");
+        getLog().info("Project name: " + response.getName());
+        getLog().info("Project id: "   + response.getId());
         getLog().info("Dependencies: " + response.getDep_number());
         getLog().info("Outdated: "     + response.getOut_number());
         getLog().info("");
