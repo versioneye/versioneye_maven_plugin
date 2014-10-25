@@ -181,7 +181,7 @@ That means if you don't want to commit your *API KEY* to the server and share it
 
 ## mvn versioneye:create
 
-If your *API KEY* is in place you can create a project at VersionEye based on the dependencies in your `pom.xml`. Just execute this:
+If your *API KEY* is in place you can create a new project at VersionEye based on the dependencies in your `pom.xml` file with this goal:
 
 ```
 mvn versioneye:create
@@ -193,14 +193,21 @@ This command will **not** change your local project. It just sends your dependen
 
 Besides that, the plugin will add a `project_id` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
 
+If you don't want that the versioneye maven plugin creates/updates the `versioneye.properties` file you can skip that step with this line in the plugin configuration: 
+
+```
+<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>
+```
+If you do so, you have to add the `project_id` by hand to the plugin configuration for the next step, the `versioneye:update` goal. 
+
 ## mvn versioneye:update
 
-With this command here you can update an existing VersionEye project:
+After you created a new project on VersionEye you can update it with the dependencies from the `pom.xml` file with this goal:
 
 ```
 mvn versioneye:update
 ```
-That will simply update the existing VersionEye project with the dependencies from your `pom.xml`. It will **not** change your `pom.xml`.
+That will simply update the existing VersionEye project with the dependencies from your `pom.xml` file. It will **not** change your `pom.xml`. This goal usually gets executed on a Continuous Integration server after each build. 
 
 By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
 
