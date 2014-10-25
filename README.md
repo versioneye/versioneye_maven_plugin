@@ -187,11 +187,11 @@ If your *API KEY* is in place you can create a project at VersionEye based on th
 mvn versioneye:create
 ```
 
-This command will **not** change your local project. It just sends your dependencies to the VersionEye server and creates, based on that, a project at [www.versioneye.com](http://www.versioneye.com). If everything went right you will see in the output the URL to your new created VersionEye project. Just copy and paste it into you browser to check it out. Here is an example how it could look like:
+This command will **not** change your local project. It just sends your dependencies to the VersionEye server and creates, based on that, a new project at [www.versioneye.com](http://www.versioneye.com). If everything went right you will see in the output the URL to your new created VersionEye project. Just copy and paste it into you browser to check it out. Here is an example how it could look like:
 
 ![VersionEye Dependencies](src/site/images/VersionEyeDependencies.png)
 
-Besides that, the plugin will add a `project_id` and `project_key` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
+Besides that, the plugin will add a `project_id` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
 
 ## mvn versioneye:update
 
