@@ -28,6 +28,10 @@ public class CreateMojo extends ProjectMojo {
             setProxy();
             prettyPrintStart();
             ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
+            if (jsonDirectDependenciesStream == null){
+                prettyPrint0End();
+                return ;
+            }
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
@@ -62,6 +66,12 @@ public class CreateMojo extends ProjectMojo {
         getLog().info("Outdated: "     + response.getOut_number());
         getLog().info(".");
         getLog().info("You can find your project here: " + baseUrl + "/user/projects/" + response.getId() );
+        getLog().info(".");
+    }
+
+    private void prettyPrint0End() throws Exception {
+        getLog().info(".");
+        getLog().info("There are no dependencies in this project! - " + project.getGroupId() + "/" + project.getArtifactId() );
         getLog().info(".");
     }
 
