@@ -60,7 +60,7 @@ public class ListMojo extends ProjectMojo {
 
     private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
         getLog().info("");
-        getLog().info(recursiveDependencies.size() + " Recursive Dependencies: ");
+        getLog().info(recursiveDependencies.size() + " Transitive Dependencies: ");
         getLog().info("--------------------");
         for (Artifact artifact : recursiveDependencies){
             getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
@@ -72,7 +72,7 @@ public class ListMojo extends ProjectMojo {
         int allCount = directCount + recursiveCount;
         getLog().info("");
         getLog().info(directCount + " Direct dependencies and " +
-                recursiveCount + " recursive dependencies. This project has " +
+                recursiveCount + " transitive dependencies. This project has " +
                 allCount + " dependencies.");
         getLog().info("");
         getLog().info("");
