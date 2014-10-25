@@ -15,6 +15,7 @@ Summary
  - [API Key](#api-key)
  - [mvn versioneye:create](#mvn-versioneyecreate)
  - [mvn versioneye:update](#mvn-versioneyeupdate)
+ - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Feedback](#feedback)
  - [License](#license)
@@ -220,6 +221,30 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
       <version>3.0.0</version>
       <configuration>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+## Proxy
+
+If you are behind a proxy server you can configure the plugin for that like this. 
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>3.0.0</version>
+      <configuration>
+        <baseUrl>http://versioneye.my-company.com</baseUrl>
+	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+	    <proxyHost>127.0.0.1</proxyHost>
+        <proxyPort>8888</proxyPort>
+        <proxyUser>proxy_hopsi</proxyUser>
+        <proxyPassword>dont_tell_anybody</proxyPassword>
 	  </configuration>
     </plugin>
   </plugins>
