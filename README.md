@@ -141,7 +141,7 @@ If you don't want to store the api key in the pom.xml, alternatively you can sto
 echo "api_key=YOUR_API_KEY" > versioneye.properties
 ```
 
-The versioneye-maven-plugin will look at this places for the `versioneye.properties` file:
+If the API Key is not set directly in the pom.xml file, the versioneye-maven-plugin will try to fetch the API Key from the `versioneye.properties` file and it will look up the file in this places:
 
 ```
 /src/qa/resources/versioneye.properties
