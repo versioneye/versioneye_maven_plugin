@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -92,7 +92,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.1.0-SNAPSHOT</version>
         <configuration>
           <projectId>51e2af93cbe2eb000203df22</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
