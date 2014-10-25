@@ -7,7 +7,19 @@
 The [maven](http://maven.apache.org/) plugin for [VersionEye](http://www.versioneye.com) helps you to create/update a project at VersionEye.
 VersionEye is a Notification System for Software Libraries. It will help you to keep your projects up-to-date and automatically notify you about outdated dependencies. You can check it out here: [www.versioneye.com](http://www.versioneye.com).
 
-## Install
+Summary
+
+ - [Install binary](#install-binary)
+ - [Install from source](#install-from-source)
+ - [Getting started](#getting-started)
+ - [API Key](#api-key)
+ - [mvn versioneye:create](#mvn-versioneyecreate)
+ - [mvn versioneye:update](#mvn-versioneyeupdate)
+ - [VersionEye Enterprise](#versioneye-enterprise)
+ - [Feedback](#feedback)
+ - [License](#license)
+ 
+## Install binary
 
 The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
 That means Maven will find it automatically, without adding any other
