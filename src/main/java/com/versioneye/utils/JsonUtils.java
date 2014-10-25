@@ -33,13 +33,14 @@ public class JsonUtils {
         return outstream;
     }
 
+    public void dependenciesToJsonFile(String name, Map<String, Object> directDependencies, String file) throws Exception {
+        File targetFile = getTargetFile(file);
+        toJson(new FileOutputStream(targetFile), directDependencies);
+    }
+
     public void dependenciesToJsonFile(String name, List<Artifact> directDependencies, String file) throws Exception {
         List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
-        File targetFile = new File(file);
-        File parent = targetFile.getParentFile();
-        if (!parent.exists()){
-            parent.mkdirs();
-        }
+        File targetFile = getTargetFile(file);
         toJson(new FileOutputStream(targetFile), getJsonPom(name, dependencyHashes));
     }
 
@@ -83,11 +84,20 @@ public class JsonUtils {
         return output;
     }
 
-    private Map<String, Object> getJsonPom(String name, List<Map<String, Object>> dependencyHashes){
+    public Map<String, Object> getJsonPom(String name, List<Map<String, Object>> dependencyHashes){
         Map<String, Object> pom = new HashMap<String, Object>();
         pom.put("name", name);
         pom.put("dependencies", dependencyHashes);
         return pom;
+    }
+
+    private File getTargetFile(String file){
+        File targetFile = new File(file);
+        File parent = targetFile.getParentFile();
+        if (!parent.exists()){
+            parent.mkdirs();
+        }
+        return targetFile;
     }
 
 }

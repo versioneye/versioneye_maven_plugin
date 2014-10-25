@@ -2,6 +2,7 @@ package com.versioneye;
 
 import com.versioneye.utils.DependencyUtils;
 import com.versioneye.utils.JsonUtils;
+import org.apache.maven.model.Dependency;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.DependencyNode;
@@ -10,6 +11,7 @@ import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Methods required to deal with projects resource
@@ -17,8 +19,26 @@ import java.util.List;
 public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream() throws Exception {
+        List<Dependency> dependencies = project.getDependencies();
+        if (dependencies == null || dependencies.isEmpty()){
+            return null;
+        } else {
+            iterateThrough(dependencies);
+        }
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project.getName(), project.getDependencies());
+        return jsonUtils.dependenciesToJson(project.getName(), dependencies);
+    }
+
+    protected Map<String, Object> getDirectDependenciesJsonMap() throws Exception {
+        List<Dependency> dependencies = project.getDependencies();
+        if (dependencies == null || dependencies.isEmpty()){
+            return null;
+        } else {
+            iterateThrough(dependencies);
+        }
+        JsonUtils jsonUtils = new JsonUtils();
+        List<Map<String, Object>> dependencyHashes = jsonUtils.getDependencyHashes(dependencies);
+        return jsonUtils.getJsonPom(project.getName(), dependencyHashes);
     }
 
     protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
@@ -35,6 +55,12 @@ public class ProjectMojo extends SuperMojo {
         system.resolveDependencies(session, dependencyRequest);
         root.accept(nlg);
         return root;
+    }
+
+    private void iterateThrough(List<Dependency> dependencies){
+        for(Dependency dep: dependencies){
+            getLog().info(" - dependency: " + dep.getGroupId() + "/" + dep.getArtifactId() + " " + dep.getVersion());
+        }
     }
 
 }
