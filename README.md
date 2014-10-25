@@ -239,9 +239,7 @@ If you are behind a proxy server you can configure the plugin for that like this
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>3.0.0</version>
       <configuration>
-        <baseUrl>http://versioneye.my-company.com</baseUrl>
-	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
-	    <proxyHost>127.0.0.1</proxyHost>
+        <proxyHost>127.0.0.1</proxyHost>
         <proxyPort>8888</proxyPort>
         <proxyUser>proxy_hopsi</proxyUser>
         <proxyPassword>dont_tell_anybody</proxyPassword>
