@@ -99,6 +99,8 @@
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
           <!--<proxyPort>8888</proxyPort>-->
+          <!--<proxyUser>proxy_hopsi</proxyUser>-->
+          <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
           <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
         </configuration>
       </plugin>
