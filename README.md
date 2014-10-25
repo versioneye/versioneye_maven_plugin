@@ -118,7 +118,24 @@ This plugin can push your dependencies to the VersionEye API, create a project a
 
 ![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
 
-If you have your *API KEY*, create a properties file and add your key like this:
+Now let the versioneye-maven-plugin know what your *API KEY* is. 
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>3.0.0</version>
+      <configuration>
+	    <apiKey>MY_SECRET_API_KEY</apiKey>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+
+```
+If you don't want to store the api key in the pom.xml, alternatively you can store it in a `versioneye.properties` file. 
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
