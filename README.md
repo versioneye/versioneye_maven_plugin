@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.png)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.0.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
+- Version 3.1.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -20,7 +20,7 @@ Summary
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Feedback](#feedback)
  - [License](#license)
- 
+
 ## Install binary
 
 The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
@@ -38,7 +38,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
     </plugin>
   </plugins>
 </build>
@@ -120,7 +120,7 @@ This plugin can push your dependencies to the VersionEye API, create a project a
 
 ![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
 
-Now let the versioneye-maven-plugin know what your *API KEY* is. 
+Now let the versioneye-maven-plugin know what your *API KEY* is.
 
 ```
 <build>
@@ -128,7 +128,7 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
       <configuration>
 	    <apiKey>MY_SECRET_API_KEY</apiKey>
 	  </configuration>
@@ -137,7 +137,7 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
 </build>
 
 ```
-If you don't want to store the api key in the pom.xml, alternatively you can store it in a `versioneye.properties` file. 
+If you don't want to store the api key in the pom.xml, alternatively you can store it in a `versioneye.properties` file.
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
@@ -163,7 +163,7 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
       <configuration>
 	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
 	  </configuration>
@@ -195,12 +195,12 @@ This command will **not** change your local project. It just sends your dependen
 
 Besides that, the plugin will add a `project_id` to the `versioneye.properties` file. The `project_id` is the connection between your `pom.xml` and the VersionEye project. If the `versioneye.properties` file doesn't exist yet, it will be created now.
 
-If you don't want that the versioneye maven plugin creates/updates the `versioneye.properties` file you can skip that step with this line in the plugin configuration: 
+If you don't want that the versioneye maven plugin creates/updates the `versioneye.properties` file you can skip that step with this line in the plugin configuration:
 
 ```
 <updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>
 ```
-If you do so, you have to add the `project_id` by hand to the plugin configuration for the next step, the `versioneye:update` goal. 
+If you do so, you have to add the `project_id` by hand to the plugin configuration for the next step, the `versioneye:update` goal.
 
 ## mvn versioneye:update
 
@@ -209,7 +209,7 @@ After you created a new project on VersionEye you can update it with the depende
 ```
 mvn versioneye:update
 ```
-That will simply update the existing VersionEye project with the dependencies from your `pom.xml` file. It will **not** change your `pom.xml`. This goal usually gets executed on a Continuous Integration server after each build. 
+That will simply update the existing VersionEye project with the dependencies from your `pom.xml` file. It will **not** change your `pom.xml`. This goal usually gets executed on a Continuous Integration server after each build.
 
 By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
 
@@ -219,7 +219,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
       <configuration>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
 	  </configuration>
@@ -230,7 +230,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
 
 ## Proxy
 
-If you are behind a proxy server you can configure the plugin for that like this. 
+If you are behind a proxy server you can configure the plugin for that like this.
 
 ```
 <build>
@@ -238,7 +238,7 @@ If you are behind a proxy server you can configure the plugin for that like this
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
       <configuration>
         <proxyHost>127.0.0.1</proxyHost>
         <proxyPort>8888</proxyPort>
@@ -250,7 +250,7 @@ If you are behind a proxy server you can configure the plugin for that like this
 </build>
 ```
 
-## VersionEye Enterprise 
+## VersionEye Enterprise
 
 If you are using the VersionEye Enterprise VM in your own private network you probably want to use this plugin against the VersionEye Enterprise API. In that case you can change the baseUrl with this line:
 
@@ -258,7 +258,7 @@ If you are using the VersionEye Enterprise VM in your own private network you pr
 ```
 <baseUrl>http://versioneye.my-company.com</baseUrl>
 ```
-The whole plugin snippet would look similar to this one. 
+The whole plugin snippet would look similar to this one.
 
 ```
 <build>
@@ -266,7 +266,7 @@ The whole plugin snippet would look similar to this one.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.0.0</version>
+      <version>3.1.0</version>
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
