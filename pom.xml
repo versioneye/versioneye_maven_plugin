@@ -40,6 +40,14 @@
     </developer>
   </developers>
 
+  <distributionManagement>
+      <downloadUrl>http://repo1.maven.org/maven2/com/versioneye/versioneye-maven-plugin</downloadUrl>
+      <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+  </distributionManagement>
+
   <properties>
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.2.3</maven.version>
@@ -103,6 +111,23 @@
           <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
           <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
         </configuration>
+      </plugin>
+
+      <!-- mvn gpg:sign -->
+      <!-- mvn gpg:sign-and-deploy-file -->
+      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                    <goal>sign</goal>
+                </goals>
+            </execution>
+        </executions>
       </plugin>
 
       <plugin>
