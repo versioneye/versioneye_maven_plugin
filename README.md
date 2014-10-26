@@ -318,6 +318,9 @@ mvn versioneye:update
 
 This will update the project on VersionEye with the current dependencies in the modules pom.xml file. Executing this command in the parent pom directory will update all modules. Ideally this goal is executed on the Continuous Integration System after each build. 
 
+Here is a YouTube video which demonstrates how to setup a multi-module project with the VersionEye Maven Plugin. 
+
+[![VersionEye Maven Plugin Video](src/site/images/VersionEyeMavenPlugin.png)](http://www.youtube.com/watch?v=JPVEuqGHbeU)
 
 ## Feedback
 
