@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.1.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg?style=flat)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
+- Version 3.1.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -43,6 +43,7 @@ You can add the plugin to your project by adding this snippet to your
   </plugins>
 </build>
 ```
+
 The `versioneye-maven-plugin` is tested against Maven 3.2.1.
 If you are using Maven 3.0.5 or older you should use the
 `versioneye-maven-plugin` version 2.0.1.
@@ -53,6 +54,7 @@ Alternatively you can add `versioneye` to the plugin group search path. You do t
   <pluginGroup>com.versioneye</pluginGroup>
 </pluginGroups>
 ```
+
 to the user's Maven settings file (`~/.m2/settings.xml`). This will allow to use the `versioneye:*`
 command line goals interactively in all projects.
 
@@ -86,6 +88,7 @@ You can check out all goals like this
 ```
 mvn versioneye:help
 ```
+
 That will output all possible goals on the versioneye plugin.
 
 Now you can check if the [VersionEye API](https://www.versioneye.com/api?version=v2) is available:
@@ -93,6 +96,7 @@ Now you can check if the [VersionEye API](https://www.versioneye.com/api?version
 ```
 mvn versioneye:ping
 ```
+
 That should return an output like this:
 
 ```
@@ -112,6 +116,7 @@ Here you can convert your `pom.xml` to a `pom.json`
 ```
 mvn versioneye:json
 ```
+
 It will take all your direct dependencies and convert them into `/target/pom.json`. This is just for fun! You don't really need it, but I thought it's fun to write a small `pom.xml` to `pom.json` converter :-)
 
 ## API Key
@@ -135,8 +140,8 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
     </plugin>
   </plugins>
 </build>
-
 ```
+
 If you don't want to store the api key in the pom.xml, alternatively you can store it in a `versioneye.properties` file.
 
 ```
@@ -170,7 +175,6 @@ If you want so you can configure another place for the versioneye.properties fil
     </plugin>
   </plugins>
 </build>
-
 ```
 
 If the plugin can't find the API KEY in any of this locations it will look it up at this place:
@@ -200,6 +204,7 @@ If you don't want that the versioneye maven plugin creates/updates the `versione
 ```
 <updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>
 ```
+
 If you do so, you have to add the `project_id` by hand to the plugin configuration for the next step, the `versioneye:update` goal.
 
 ## mvn versioneye:update
@@ -209,6 +214,7 @@ After you created a new project on VersionEye you can update it with the depende
 ```
 mvn versioneye:update
 ```
+
 That will simply update the existing VersionEye project with the dependencies from your `pom.xml` file. It will **not** change your `pom.xml`. This goal usually gets executed on a Continuous Integration server after each build.
 
 By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
@@ -275,6 +281,41 @@ The whole plugin snippet would look similar to this one.
   </plugins>
 </build>
 ```
+
+## Multi-Module Projects
+
+Assume you have a big Java Enterprise multi-module project with Maven and you want to have all modules monitored by VersionEye. I furhter assume that all modules have the same parent pom and the modules are listed in the parent pom.xml file. In that case all you have to do is configuring the VersionEye Maven Plugin once in the parent pom. 
+
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.versioneye</groupId>
+      <artifactId>versioneye-maven-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+	    <apiKey>MY_SECRET_API_KEY</apiKey>
+	  </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+Now run this command in the parent directory:
+
+```
+mvn versioneye:create
+```
+
+This command will be executed on each module. The plugin will create for each module a new project on VersionEye. Beside that the plugin will create for each module a `versioneye.properties` file with the corresponding project_id. The file will be created/updated in the `src/main/resources` directory of each module. 
+
+After the projects are created on VersionEye we don't need the `create` goal anymore. Now we can perform the `update` goal on each build. 
+
+```
+mvn versioneye:update
+```
+
+This will update the project on VersionEye with the current dependencies in the modules pom.xml file. Executing this command in the parent pom directory will update all modules. Ideally this goal is executed on the Continuous Integration System after each build. 
 
 
 ## Feedback
