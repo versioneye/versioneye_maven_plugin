@@ -102,7 +102,7 @@
         <artifactId>versioneye-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <projectId>51e2af93cbe2eb000203df22</projectId>
+          <projectId>544d0ff9512592562c000003</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
