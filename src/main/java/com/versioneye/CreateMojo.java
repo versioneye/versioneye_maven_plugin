@@ -36,7 +36,7 @@ public class CreateMojo extends ProjectMojo {
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
             }
-            prettyPrintEnd(response);
+            prettyPrint(response);
         } catch( Exception exception ){
             throw new MojoExecutionException("Oh no! Something went wrong :-( " +
                     "Get in touch with the VersionEye guys and give them feedback." +
@@ -55,23 +55,6 @@ public class CreateMojo extends ProjectMojo {
     private void prettyPrintStart(){
         getLog().info(".");
         getLog().info("Starting to upload dependencies. This can take a couple seconds ... ");
-        getLog().info(".");
-    }
-
-    private void prettyPrintEnd(ProjectJsonResponse response) throws Exception {
-        getLog().info(".");
-        getLog().info("Project name: " + response.getName());
-        getLog().info("Project id: "   + response.getId());
-        getLog().info("Dependencies: " + response.getDep_number());
-        getLog().info("Outdated: "     + response.getOut_number());
-        getLog().info(".");
-        getLog().info("You can find your project here: " + baseUrl + "/user/projects/" + response.getId() );
-        getLog().info(".");
-    }
-
-    private void prettyPrint0End() throws Exception {
-        getLog().info(".");
-        getLog().info("There are no dependencies in this project! - " + project.getGroupId() + "/" + project.getArtifactId() );
         getLog().info(".");
     }
 

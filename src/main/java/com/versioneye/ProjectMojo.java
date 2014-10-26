@@ -1,5 +1,6 @@
 package com.versioneye;
 
+import com.versioneye.dto.ProjectJsonResponse;
 import com.versioneye.utils.DependencyUtils;
 import com.versioneye.utils.JsonUtils;
 import org.apache.maven.model.Dependency;
@@ -55,6 +56,23 @@ public class ProjectMojo extends SuperMojo {
         system.resolveDependencies(session, dependencyRequest);
         root.accept(nlg);
         return root;
+    }
+
+    protected void prettyPrint0End() throws Exception {
+        getLog().info(".");
+        getLog().info("There are no dependencies in this project! - " + project.getGroupId() + "/" + project.getArtifactId() );
+        getLog().info(".");
+    }
+
+    protected void prettyPrint(ProjectJsonResponse response) throws Exception {
+        getLog().info(".");
+        getLog().info("Project name: " + response.getName());
+        getLog().info("Project id: "   + response.getId());
+        getLog().info("Dependencies: " + response.getDep_number());
+        getLog().info("Outdated: "     + response.getOut_number());
+        getLog().info("");
+        getLog().info("You can find your updated project here: " + baseUrl + "/user/projects/" + response.getId() );
+        getLog().info("");
     }
 
     private void iterateThrough(List<Dependency> dependencies){

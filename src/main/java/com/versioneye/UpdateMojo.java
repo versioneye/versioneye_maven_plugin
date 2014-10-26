@@ -26,6 +26,10 @@ public class UpdateMojo extends ProjectMojo {
             setProxy();
             prettyPrintStart();
             ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
+            if (jsonDirectDependenciesStream == null){
+                prettyPrint0End();
+                return ;
+            }
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
             prettyPrint( response );
         } catch( Exception exception ){
@@ -49,17 +53,6 @@ public class UpdateMojo extends ProjectMojo {
         getLog().info(".");
         getLog().info("Starting to update dependencies to server. This can take a couple seconds ... ");
         getLog().info(".");
-    }
-
-    private void prettyPrint(ProjectJsonResponse response) throws Exception {
-        getLog().info(".");
-        getLog().info("Project name: " + response.getName());
-        getLog().info("Project id: "   + response.getId());
-        getLog().info("Dependencies: " + response.getDep_number());
-        getLog().info("Outdated: "     + response.getOut_number());
-        getLog().info("");
-        getLog().info("You can find your updated project here: " + baseUrl + "/user/projects/" + response.getId() );
-        getLog().info("");
     }
 
 }
