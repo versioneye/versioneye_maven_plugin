@@ -1,5 +1,5 @@
-- Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.png)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.1.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
+- Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
+- Version 3.1.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg?style=flat)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
