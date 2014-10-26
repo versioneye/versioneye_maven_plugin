@@ -1,7 +1,7 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.png)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
 - Version 3.0.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22/badge.svg)](https://www.versioneye.com/user/projects/51e2af93cbe2eb000203df22)
 
-[![VersionEye Dependencies](src/site/images/VersionEyeLogo.png =100x100)](https://www.versioneye.com)
+[![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
 # VersionEye Maven Plugin
 
