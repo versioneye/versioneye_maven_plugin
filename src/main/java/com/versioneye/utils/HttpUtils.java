@@ -29,7 +29,7 @@ public class HttpUtils {
         HttpResponse response = client.execute(httpPost);
 
         int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != 200){
+        if (statusCode != 200 && statusCode != 201){
             String err = getErrorMessage(response);
             String errMsg = "Status Code: " + statusCode + " -> " + err;
             throw new Exception(errMsg);
