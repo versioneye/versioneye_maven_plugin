@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.1.1-SNAPSHOT</version>
+  <version>3.1.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -36,7 +36,7 @@
       <name>Robert Reiz</name>
       <id>reiz</id>
       <organization>VersionEye</organization>
-      <organizationUrl>http://www.VersionEye.com</organizationUrl>
+      <organizationUrl>https://www.VersionEye.com</organizationUrl>
     </developer>
   </developers>
 
@@ -119,9 +119,23 @@
         </configuration>
       </plugin>
 
+      <!--mvn clean deploy -Dgpg.passphrase=-->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
       <!-- mvn gpg:sign -->
       <!-- mvn gpg:sign-and-deploy-file -->
       <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
