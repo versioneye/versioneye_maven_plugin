@@ -8,6 +8,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +34,7 @@ public class CreateMojo extends ProjectMojo {
                 return ;
             }
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
+            merge(response.getId());
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
             }
@@ -65,6 +67,24 @@ public class CreateMojo extends ProjectMojo {
         }
         PropertiesUtils utils = new PropertiesUtils();
         utils.writeProperties(properties, getPropertiesPath());
+    }
+
+    protected void merge(String childId) {
+        try {
+            MavenProject mp = project.getParent();
+            if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
+                    mp.getArtifactId() == null || mp.getArtifactId().isEmpty()){
+                return ;
+            }
+            String groupId = mp.getGroupId().replaceAll("\\.", "~").replaceAll("/", ":");
+            String artifactId = mp.getArtifactId().replaceAll("\\.", "~").replaceAll("/", ":");
+            getLog().debug("group: " + groupId + " artifact: " + artifactId);
+            String url = baseUrl + apiPath + "/projects/" + groupId + "/" + artifactId + "/merge_ga/" + childId + "?api_key=" + fetchApiKey();
+            String response = HttpUtils.get(url);
+            getLog().debug("merge response: " + response);
+        } catch (Exception ex) {
+            getLog().error(ex);
+        }
     }
 
 }

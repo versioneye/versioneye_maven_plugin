@@ -1,6 +1,7 @@
 package com.versioneye.utils;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.aether.artifact.Artifact;
@@ -19,10 +20,10 @@ import java.util.Vector;
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(String name, List<Dependency> dependencies) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies) throws Exception {
         List<Map<String, Object>> dependencyHashes = getDependencyHashes(dependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        toJson(outstream, getJsonPom(name, dependencyHashes));
+        toJson(outstream, getJsonPom(project, dependencyHashes));
         return outstream;
     }
 
@@ -38,10 +39,10 @@ public class JsonUtils {
         toJson(new FileOutputStream(targetFile), directDependencies);
     }
 
-    public void dependenciesToJsonFile(String name, List<Artifact> directDependencies, String file) throws Exception {
+    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file) throws Exception {
         List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
         File targetFile = getTargetFile(file);
-        toJson(new FileOutputStream(targetFile), getJsonPom(name, dependencyHashes));
+        toJson(new FileOutputStream(targetFile), getJsonPom(project, dependencyHashes));
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
@@ -84,9 +85,17 @@ public class JsonUtils {
         return output;
     }
 
-    public Map<String, Object> getJsonPom(String name, List<Map<String, Object>> dependencyHashes){
+    public Map<String, Object> getJsonPom(MavenProject project, List<Map<String, Object>> dependencyHashes){
+        String name = project.getName();
+        if (name == null || name.isEmpty()){
+            name = project.getArtifactId();
+        }
         Map<String, Object> pom = new HashMap<String, Object>();
         pom.put("name", name);
+        pom.put("group_id", project.getGroupId());
+        pom.put("artifact_id", project.getArtifactId());
+        pom.put("language", "Java");
+        pom.put("prod_type", "Maven2");
         pom.put("dependencies", dependencyHashes);
         return pom;
     }

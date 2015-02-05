@@ -27,7 +27,7 @@ public class ProjectMojo extends SuperMojo {
             iterateThrough(dependencies);
         }
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project.getName(), dependencies);
+        return jsonUtils.dependenciesToJson(project, dependencies);
     }
 
     protected Map<String, Object> getDirectDependenciesJsonMap() throws Exception {
@@ -39,7 +39,7 @@ public class ProjectMojo extends SuperMojo {
         }
         JsonUtils jsonUtils = new JsonUtils();
         List<Map<String, Object>> dependencyHashes = jsonUtils.getDependencyHashes(dependencies);
-        return jsonUtils.getJsonPom(project.getName(), dependencyHashes);
+        return jsonUtils.getJsonPom(project, dependencyHashes);
     }
 
     protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
