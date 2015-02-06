@@ -119,6 +119,7 @@
         </configuration>
       </plugin>
 
+      <!--http://central.sonatype.org/pages/apache-maven.html-->
       <!--mvn clean deploy -Dgpg.passphrase=-->
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
