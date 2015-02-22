@@ -80,6 +80,7 @@ public class JsonUtils {
             HashMap<String, Object> hash = new HashMap<String, Object>(2);
             hash.put("version", dependency.getVersion());
             hash.put("name", dependency.getGroupId() + ":" + dependency.getArtifactId());
+            hash.put("scope", dependency.getScope() );
             output.add(hash);
         }
         return output;
