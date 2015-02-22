@@ -116,6 +116,7 @@
           <!--<proxyUser>proxy_hopsi</proxyUser>-->
           <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
           <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
+          <mergeAfterCreate>false</mergeAfterCreate>
         </configuration>
       </plugin>
 

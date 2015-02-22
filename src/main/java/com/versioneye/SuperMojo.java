@@ -80,6 +80,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "updatePropertiesAfterCreate" )
     protected boolean updatePropertiesAfterCreate = true;
 
+    @Parameter( property = "mergeAfterCreate" )
+    protected boolean mergeAfterCreate = true;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 

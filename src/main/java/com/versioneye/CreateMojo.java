@@ -70,6 +70,9 @@ public class CreateMojo extends ProjectMojo {
     }
 
     protected void merge(String childId) {
+        if (mergeAfterCreate == false) {
+            return ;
+        }
         try {
             MavenProject mp = project.getParent();
             if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
