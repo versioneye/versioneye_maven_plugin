@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.1.1 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
+- Version 3.2.0-SNAPSHOT with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -19,6 +19,7 @@ Summary
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Multi-Module Projects](#multi-module-projects)
+ - [Configuration Options](#configuration-options)
  - [Feedback](#feedback)
  - [License](#license)
 
@@ -39,7 +40,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
     </plugin>
   </plugins>
 </build>
@@ -134,7 +135,7 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
 	    <apiKey>MY_SECRET_API_KEY</apiKey>
 	  </configuration>
@@ -169,7 +170,7 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
 	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
 	  </configuration>
@@ -226,7 +227,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
 	  </configuration>
@@ -245,7 +246,7 @@ If you are behind a proxy server you can configure the plugin for that like this
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
         <proxyHost>127.0.0.1</proxyHost>
         <proxyPort>8888</proxyPort>
@@ -273,7 +274,7 @@ The whole plugin snippet would look similar to this one.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
 	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
@@ -293,7 +294,7 @@ Assume you have a big Java Enterprise multi-module project with Maven and you wa
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2.0-SNAPSHOT</version>
       <configuration>
 	    <apiKey>MY_SECRET_API_KEY</apiKey>
 	  </configuration>
@@ -321,6 +322,49 @@ This will update the project on VersionEye with the current dependencies in the 
 Here is a YouTube video which demonstrates how to setup a multi-module project with the VersionEye Maven Plugin. 
 
 [![VersionEye Maven Plugin Video](src/site/images/VersionEyeMavenPlugin.png)](http://www.youtube.com/watch?v=JPVEuqGHbeU)
+
+## Confuguration Options
+
+The VersionEye Maven Plugin has many configuration options. 
+
+```
+      <plugin>
+        <groupId>com.versioneye</groupId>
+        <artifactId>versioneye-maven-plugin</artifactId>
+        <version>3.2.0-SNAPSHOT</version>
+        <configuration>
+          <projectId>544d0ff9512592562c000003</projectId>
+          <!--<apiKey>my_secret_api_key</apiKey>-->
+          <!--<baseUrl>http://localhost:3000</baseUrl>-->
+          <!--<proxyHost>127.0.0.1</proxyHost>-->
+          <!--<proxyPort>8888</proxyPort>-->
+          <!--<proxyUser>proxy_hopsi</proxyUser>-->
+          <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
+          <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
+          <!--<mergeAfterCreate>false</mergeAfterCreate>--> 
+          <!--<parentGroupId>com.versioneye</parentGroupId>-->
+          <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
+          <!--<nameStrategy>name</nameStrategy>--> 
+        </configuration>
+      </plugin>
+```
+Here is a more detailed documentation of the configuration options. 
+
+Config option | Description 
+------------- | -----------
+apiKey        | Your secret API Key for the VersionEye API. Get it here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api)
+baseUrl       | Set the base URL for the VersionEye API. Only needed for VersionEye Enterprise!
+proxyHost     | Set your proxy host name or IP. 
+proxyPort     | Set your proxy port here. 
+proxyUser     | Set you proxy user name here. 
+proxyPassword | Set your proxy password here. 
+updatePropertiesAfterCreate | This is related to this [issue](https://github.com/versioneye/versioneye_maven_plugin/issues/34)
+mergeAfterCreate | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project by default. If this behaviour is not desired it can be switched off with this configuraiton option! 
+parentGroupId | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project on the server. the parent project is determined from the pom.xml. However it is possible to set the group_id of the parent project exeplicitly! That way the submodules can be merged into any other Java project at VersionEye.
+parentArtifactId | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project on the server. the parent project is determined from the pom.xml. However it is possible to set the artifact_id of the parent project exeplicitly! That way the submodules can be merged into any other Java project at VersionEye.
+nameStrategy  | If a new project is created the plugin will take the `name` attribute from the pom.xml as the name of the project at VersionEye. Other naming strategies are possible <ul><li><b>GA</b>: Takes "GroupID / ArtifactID" as name</li><li><b>artifact_id</b>: Takes the "ArtifactID" as name</li></ul> The project name can be changed on the server afterwards and is not needed to identify a project! 
+
+
 
 ## Feedback
 
