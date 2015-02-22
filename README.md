@@ -323,7 +323,7 @@ Here is a YouTube video which demonstrates how to setup a multi-module project w
 
 [![VersionEye Maven Plugin Video](src/site/images/VersionEyeMavenPlugin.png)](http://www.youtube.com/watch?v=JPVEuqGHbeU)
 
-## Confuguration Options
+## Configuration Options
 
 The VersionEye Maven Plugin has many configuration options. 
 
