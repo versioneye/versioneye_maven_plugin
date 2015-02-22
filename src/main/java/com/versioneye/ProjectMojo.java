@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class ProjectMojo extends SuperMojo {
 
-    protected ByteArrayOutputStream getDirectDependenciesJsonStream() throws Exception {
+    protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
         List<Dependency> dependencies = project.getDependencies();
         if (dependencies == null || dependencies.isEmpty()){
             return null;
@@ -27,10 +27,10 @@ public class ProjectMojo extends SuperMojo {
             iterateThrough(dependencies);
         }
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project, dependencies);
+        return jsonUtils.dependenciesToJson(project, dependencies, nameStrategy);
     }
 
-    protected Map<String, Object> getDirectDependenciesJsonMap() throws Exception {
+    protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) throws Exception {
         List<Dependency> dependencies = project.getDependencies();
         if (dependencies == null || dependencies.isEmpty()){
             return null;
@@ -39,7 +39,7 @@ public class ProjectMojo extends SuperMojo {
         }
         JsonUtils jsonUtils = new JsonUtils();
         List<Map<String, Object>> dependencyHashes = jsonUtils.getDependencyHashes(dependencies);
-        return jsonUtils.getJsonPom(project, dependencyHashes);
+        return jsonUtils.getJsonPom(project, dependencyHashes, nameStrategy);
     }
 
     protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {

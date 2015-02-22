@@ -25,7 +25,7 @@ public class UpdateMojo extends ProjectMojo {
         try{
             setProxy();
             prettyPrintStart();
-            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream();
+            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
             if (jsonDirectDependenciesStream == null){
                 prettyPrint0End();
                 return ;

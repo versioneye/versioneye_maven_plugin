@@ -16,7 +16,7 @@ public class JsonMojo extends ProjectMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
-            Map<String, Object> jsonMap = getDirectDependenciesJsonMap();
+            Map<String, Object> jsonMap = getDirectDependenciesJsonMap(nameStrategy);
             JsonUtils jsonUtils = new JsonUtils();
             String filePath = outputDirectory + "/pom.json";
             jsonUtils.dependenciesToJsonFile(project.getName(), jsonMap, filePath);

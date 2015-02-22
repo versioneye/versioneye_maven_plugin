@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.1.2-SNAPSHOT</version>
+  <version>3.2.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -106,7 +106,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.1.2-SNAPSHOT</version>
+        <version>3.2.0-SNAPSHOT</version>
         <configuration>
           <projectId>544d0ff9512592562c000003</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
@@ -119,6 +119,7 @@
           <!--<mergeAfterCreate>false</mergeAfterCreate>--> <!-- This is only for multi module projects! -->
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
+          <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
         </configuration>
       </plugin>
 

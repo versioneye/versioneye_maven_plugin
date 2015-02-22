@@ -20,10 +20,10 @@ import java.util.Vector;
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = getDependencyHashes(dependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        toJson(outstream, getJsonPom(project, dependencyHashes));
+        toJson(outstream, getJsonPom(project, dependencyHashes, nameStrategy));
         return outstream;
     }
 
@@ -39,10 +39,10 @@ public class JsonUtils {
         toJson(new FileOutputStream(targetFile), directDependencies);
     }
 
-    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file) throws Exception {
+    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
         File targetFile = getTargetFile(file);
-        toJson(new FileOutputStream(targetFile), getJsonPom(project, dependencyHashes));
+        toJson(new FileOutputStream(targetFile), getJsonPom(project, dependencyHashes, nameStrategy));
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
@@ -86,19 +86,33 @@ public class JsonUtils {
         return output;
     }
 
-    public Map<String, Object> getJsonPom(MavenProject project, List<Map<String, Object>> dependencyHashes){
-        String name = project.getName();
-        if (name == null || name.isEmpty()){
-            name = project.getArtifactId();
-        }
+    public Map<String, Object> getJsonPom(MavenProject project, List<Map<String, Object>> dependencyHashes, String nameStrategy){
         Map<String, Object> pom = new HashMap<String, Object>();
-        pom.put("name", name);
+        pom.put("name", getNameFor(project, nameStrategy));
         pom.put("group_id", project.getGroupId());
         pom.put("artifact_id", project.getArtifactId());
         pom.put("language", "Java");
         pom.put("prod_type", "Maven2");
         pom.put("dependencies", dependencyHashes);
         return pom;
+    }
+
+    private String getNameFor(MavenProject project, String nameStrategy){
+        String name = "project";
+        if (nameStrategy == null || nameStrategy.isEmpty()){
+            nameStrategy = "name";
+        }
+        if (nameStrategy.equals("name")){
+            name = project.getName();
+            if (name == null || name.isEmpty()){
+                name = project.getArtifactId();
+            }
+        } else if (nameStrategy.equals("artifact_id")){
+            name = project.getArtifactId();
+        } else if (nameStrategy.equals("GA")){
+            name = project.getGroupId() + "/" + project.getArtifactId();
+        }
+        return name;
     }
 
     private File getTargetFile(String file){
