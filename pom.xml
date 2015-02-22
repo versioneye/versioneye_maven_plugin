@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.1.1</version>
+  <version>3.1.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -106,7 +106,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.1.1-SNAPSHOT</version>
+        <version>3.1.2-SNAPSHOT</version>
         <configuration>
           <projectId>544d0ff9512592562c000003</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
@@ -117,6 +117,8 @@
           <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
           <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
           <!--<mergeAfterCreate>false</mergeAfterCreate>--> <!-- This is only for multi module projects! -->
+          <!--<parentGroupId>com.versioneye</parentGroupId>-->
+          <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
         </configuration>
       </plugin>
 

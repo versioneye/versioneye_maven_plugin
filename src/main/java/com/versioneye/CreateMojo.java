@@ -74,15 +74,24 @@ public class CreateMojo extends ProjectMojo {
             return ;
         }
         try {
-            MavenProject mp = project.getParent();
-            if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
-                    mp.getArtifactId() == null || mp.getArtifactId().isEmpty()){
-                return ;
+
+            if (parentGroupId == null || parentGroupId.isEmpty() ||
+                    parentArtifactId == null || parentArtifactId.isEmpty()){
+                MavenProject mp = project.getParent();
+                if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
+                        mp.getArtifactId() == null || mp.getArtifactId().isEmpty()){
+                    return ;
+                }
+                parentGroupId = mp.getGroupId();
+                parentArtifactId = mp.getArtifactId();
             }
-            String groupId = mp.getGroupId().replaceAll("\\.", "~").replaceAll("/", ":");
-            String artifactId = mp.getArtifactId().replaceAll("\\.", "~").replaceAll("/", ":");
-            getLog().debug("group: " + groupId + " artifact: " + artifactId);
-            String url = baseUrl + apiPath + "/projects/" + groupId + "/" + artifactId + "/merge_ga/" + childId + "?api_key=" + fetchApiKey();
+
+            parentGroupId = parentGroupId.replaceAll("\\.", "~").replaceAll("/", ":");
+            parentArtifactId = parentArtifactId.replaceAll("\\.", "~").replaceAll("/", ":");
+
+            getLog().debug("group: " + parentGroupId + " artifact: " + parentArtifactId);
+            String url = baseUrl + apiPath + "/projects/" + parentGroupId + "/" + parentArtifactId + "/merge_ga/" + childId + "?api_key=" + fetchApiKey();
+
             String response = HttpUtils.get(url);
             getLog().debug("merge response: " + response);
         } catch (Exception ex) {

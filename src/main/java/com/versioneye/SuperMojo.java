@@ -83,6 +83,12 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "mergeAfterCreate" )
     protected boolean mergeAfterCreate = true;
 
+    @Parameter( property = "parentGroupId" )
+    protected String parentGroupId = null;
+
+    @Parameter( property = "parentArtifactId" )
+    protected String parentArtifactId = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
