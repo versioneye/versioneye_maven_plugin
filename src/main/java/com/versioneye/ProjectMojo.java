@@ -21,11 +21,6 @@ public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
         List<Dependency> dependencies = project.getDependencies();
-        if (dependencies == null || dependencies.isEmpty()){
-            return null;
-        } else {
-            iterateThrough(dependencies);
-        }
         JsonUtils jsonUtils = new JsonUtils();
         return jsonUtils.dependenciesToJson(project, dependencies, nameStrategy);
     }

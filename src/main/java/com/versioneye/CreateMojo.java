@@ -89,6 +89,10 @@ public class CreateMojo extends ProjectMojo {
             parentGroupId = parentGroupId.replaceAll("\\.", "~").replaceAll("/", ":");
             parentArtifactId = parentArtifactId.replaceAll("\\.", "~").replaceAll("/", ":");
 
+            if (project.getGroupId().equals(parentGroupId) && project.getArtifactId().equals(parentArtifactId)){
+                return ;
+            }
+
             getLog().debug("group: " + parentGroupId + " artifact: " + parentArtifactId);
             String url = baseUrl + apiPath + "/projects/" + parentGroupId + "/" + parentArtifactId + "/merge_ga/" + childId + "?api_key=" + fetchApiKey();
 

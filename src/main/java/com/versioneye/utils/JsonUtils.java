@@ -10,10 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Methods to deal with JSON.
@@ -21,7 +18,10 @@ import java.util.Vector;
 public class JsonUtils {
 
     public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, String nameStrategy) throws Exception {
-        List<Map<String, Object>> dependencyHashes = getDependencyHashes(dependencies);
+        List<Map<String, Object>> dependencyHashes = new ArrayList<Map<String, Object>>();
+        if (dependencies != null && !dependencies.isEmpty()) {
+            dependencyHashes = getDependencyHashes(dependencies);
+        }
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         toJson(outstream, getJsonPom(project, dependencyHashes, nameStrategy));
         return outstream;
@@ -75,6 +75,9 @@ public class JsonUtils {
     }
 
     public static List<Map<String, Object>> generateHashFromDependencyList(List<Dependency> input) {
+        if (input == null || input.isEmpty()){
+            return null;
+        }
         List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
         for (Dependency dependency : input) {
             HashMap<String, Object> hash = new HashMap<String, Object>(2);
