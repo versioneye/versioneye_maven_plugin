@@ -6,7 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -42,7 +42,7 @@ public class HttpUtils {
     }
 
     public static Reader post(String url, byte[] data, String dataName) throws Exception {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = new SystemDefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
         MultipartEntity multipartEntity = new MultipartEntity();
