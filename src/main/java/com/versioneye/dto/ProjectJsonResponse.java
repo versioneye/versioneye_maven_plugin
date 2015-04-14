@@ -10,8 +10,26 @@ public class ProjectJsonResponse {
 
     private String name;
     private String id;
-    private String dep_number;
-    private String out_number;
+    private Integer dep_number;
+    private Integer out_number;
+    private Integer licenses_red = 0;
+    private Integer licenses_unknown = 0;
+
+    public Integer getLicenses_red() {
+        return licenses_red;
+    }
+
+    public void setLicenses_red(Integer licenses_red) {
+        this.licenses_red = licenses_red;
+    }
+
+    public Integer getLicenses_unknown() {
+        return licenses_unknown;
+    }
+
+    public void setLicenses_unknown(Integer licenses_unknown) {
+        this.licenses_unknown = licenses_unknown;
+    }
 
     public String getName() {
         return name;
@@ -29,20 +47,19 @@ public class ProjectJsonResponse {
         this.id = id;
     }
 
-    public String getDep_number() {
+    public Integer getDep_number() {
         return dep_number;
     }
 
-    public void setDep_number(String dep_number) {
+    public void setDep_number(Integer dep_number) {
         this.dep_number = dep_number;
     }
 
-    public String getOut_number() {
+    public Integer getOut_number() {
         return out_number;
     }
 
-    public void setOut_number(String out_number) {
+    public void setOut_number(Integer out_number) {
         this.out_number = out_number;
     }
-
 }

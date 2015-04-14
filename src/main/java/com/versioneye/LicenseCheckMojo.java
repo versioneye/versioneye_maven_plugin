@@ -1,25 +1,19 @@
 package com.versioneye;
 
 import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.HttpUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Reader;
 
 /**
- * Updates an existing project at VersionEye with the dependencies from the current project.
+ * Updates an existing project at VersionEye with the dependencies from the current project AND
+ * ensures that all used licenses are on a whitelist. If that is not the case it breaks the build.
  */
-@Mojo( name = "update", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class UpdateMojo extends ProjectMojo {
-
-    @Parameter( property = "resource", defaultValue = "/projects")
-    private String resource;
+@Mojo( name = "licenseCheck", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+public class LicenseCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -31,6 +25,14 @@ public class UpdateMojo extends ProjectMojo {
                 return ;
             }
             ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
+
+            System.out.println(response.getLicenses_red());
+
+            if (response.getLicenses_red() > 0){
+                throw new MojoExecutionException("Some components violate the license whitelist! " +
+                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+            }
+
             prettyPrint( response );
         } catch( Exception exception ){
             exception.printStackTrace();
@@ -38,21 +40,6 @@ public class UpdateMojo extends ProjectMojo {
                     "Get in touch with the VersionEye guys and give them feedback. " +
                     "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
-    }
-
-    protected ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
-        String apiKey = fetchApiKey();
-        String projectId = fetchProjectId();
-        String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
-        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file");
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(reader, ProjectJsonResponse.class );
-    }
-
-    protected void prettyPrintStart(){
-        getLog().info(".");
-        getLog().info("Starting to update dependencies to server. This can take a couple seconds ... ");
-        getLog().info(".");
     }
 
 }
