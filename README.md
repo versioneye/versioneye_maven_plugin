@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.2.1 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
+- Version 3.3.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -16,6 +16,7 @@ Summary
  - [API Key](#api-key)
  - [mvn versioneye:create](#mvn-versioneyecreate)
  - [mvn versioneye:update](#mvn-versioneyeupdate)
+ - [mvn versioneye:licenseCheck](#mvn-versioneyelicensecheck)
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Multi-Module Projects](#multi-module-projects)
@@ -40,7 +41,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.2.1</version>
+      <version>3.3.0</version>
     </plugin>
   </plugins>
 </build>
@@ -234,6 +235,17 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     </plugin>
   </plugins>
 </build>
+```
+
+## mvn versioneye:licenseCheck
+
+On VersionEye you can have [License Whitelists](http://blog.versioneye.com/2014/09/15/license-whitelist/). If you
+are working with License Whitelists you probably want to break the build if there is a license violation.
+The next goal will update your VersionEye project with the current dependencies and check them against a
+License Whitelist. If there is a violation of the License Whitelist this goal will break your build:
+
+```
+mvn versioneye:licenseCheck
 ```
 
 ## Proxy
