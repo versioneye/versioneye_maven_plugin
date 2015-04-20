@@ -92,6 +92,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "nameStrategy" )
     protected String nameStrategy = "name";
 
+    @Parameter( property = "trackPlugins" )
+    protected Boolean trackPlugins = Boolean.TRUE;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 

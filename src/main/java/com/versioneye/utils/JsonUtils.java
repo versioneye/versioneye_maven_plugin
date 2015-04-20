@@ -1,6 +1,7 @@
 package com.versioneye.utils;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -17,10 +18,10 @@ import java.util.*;
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, String nameStrategy) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = new ArrayList<Map<String, Object>>();
         if (dependencies != null && !dependencies.isEmpty()) {
-            dependencyHashes = getDependencyHashes(dependencies);
+            dependencyHashes = getDependencyHashes(dependencies, plugins);
         }
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         toJson(outstream, getJsonPom(project, dependencyHashes, nameStrategy));
@@ -57,9 +58,12 @@ public class JsonUtils {
         return hashes;
     }
 
-    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies){
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>(directDependencies.size());
+    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
+        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
         hashes.addAll( generateHashFromDependencyList( directDependencies));
+        if (plugins != null && plugins.size() > 0){
+            hashes.addAll( generateHashFromPluginList(plugins));
+        }
         return hashes;
     }
 
@@ -84,6 +88,21 @@ public class JsonUtils {
             hash.put("version", dependency.getVersion());
             hash.put("name", dependency.getGroupId() + ":" + dependency.getArtifactId());
             hash.put("scope", dependency.getScope() );
+            output.add(hash);
+        }
+        return output;
+    }
+
+    public static List<Map<String, Object>> generateHashFromPluginList(List<Plugin> input) {
+        if (input == null || input.isEmpty()){
+            return null;
+        }
+        List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
+        for (Plugin plugin : input) {
+            HashMap<String, Object> hash = new HashMap<String, Object>(2);
+            hash.put("version", plugin.getVersion());
+            hash.put("name", plugin.getGroupId() + ":" + plugin.getArtifactId());
+            hash.put("scope", "plugin" );
             output.add(hash);
         }
         return output;

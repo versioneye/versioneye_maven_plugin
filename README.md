@@ -356,7 +356,8 @@ The VersionEye Maven Plugin has many configuration options.
           <!--<mergeAfterCreate>false</mergeAfterCreate>--> 
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
-          <!--<nameStrategy>name</nameStrategy>--> 
+          <!--<nameStrategy>name</nameStrategy>-->
+          <!--<trackPlugins>true</trackPlugins>-->
         </configuration>
       </plugin>
 ```
@@ -374,7 +375,8 @@ updatePropertiesAfterCreate | This is related to this [issue](https://github.com
 mergeAfterCreate | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project by default. If this behaviour is not desired it can be switched off with this configuraiton option! 
 parentGroupId | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project on the server. the parent project is determined from the pom.xml. However it is possible to set the group_id of the parent project exeplicitly! That way the submodules can be merged into any other Java project at VersionEye.
 parentArtifactId | If the plugin is executed on a multi module project, the plugin will merge all submodules into the parent project on the server. the parent project is determined from the pom.xml. However it is possible to set the artifact_id of the parent project exeplicitly! That way the submodules can be merged into any other Java project at VersionEye.
-nameStrategy  | If a new project is created the plugin will take the `name` attribute from the pom.xml as the name of the project at VersionEye. Other naming strategies are possible <ul><li><b>GA</b>: Takes "GroupID / ArtifactID" as name</li><li><b>artifact_id</b>: Takes the "ArtifactID" as name</li></ul> The project name can be changed on the server afterwards and is not needed to identify a project! 
+nameStrategy  | If a new project is created the plugin will take the `name` attribute from the pom.xml as the name of the project at VersionEye. Other naming strategies are possible <ul><li><b>GA</b>: Takes "GroupID / ArtifactID" as name</li><li><b>artifact_id</b>: Takes the "ArtifactID" as name</li></ul> The project name can be changed on the server afterwards and is not needed to identify a project!
+trackPlugins  | By default the plugins who are defined in the pom.xml file are handled like regular dependencies with the "plugin" scope. Plugins can be ignored by setting this property to "false".
 
 
 
