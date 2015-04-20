@@ -33,6 +33,11 @@ public class LicenseCheckMojo extends UpdateMojo {
                         "More details here: " + baseUrl + "/user/projects/" + response.getId() );
             }
 
+            if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown == true ){
+                throw new MojoExecutionException("Some components are without any license! " +
+                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+            }
+
             prettyPrint( response );
         } catch( Exception exception ){
             exception.printStackTrace();

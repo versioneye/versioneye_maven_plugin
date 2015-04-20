@@ -95,6 +95,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "trackPlugins" )
     protected Boolean trackPlugins = Boolean.TRUE;
 
+    @Parameter( property = "licenseCheckBreakByUnknown" )
+    protected Boolean licenseCheckBreakByUnknown = Boolean.FALSE;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
