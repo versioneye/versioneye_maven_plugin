@@ -30,6 +30,7 @@ public class HttpUtils {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setConnectTimeout(TEN_MINUTE);
+        con.setReadTimeout(TEN_MINUTE);
         con.setRequestProperty( "User-Agent", "VersionEye Maven Plugin" );
 
         int responseCode = con.getResponseCode();
