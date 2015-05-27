@@ -21,10 +21,15 @@ import java.net.URL;
  */
 public class HttpUtils {
 
+    public static Integer ONE_SECOND = 1000;
+    public static Integer ONE_MINUTE = ONE_SECOND * 60;
+    public static Integer TEN_MINUTE = ONE_MINUTE * 10;
+
     public static String get(String url) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
+        con.setConnectTimeout(TEN_MINUTE);
         con.setRequestProperty( "User-Agent", "VersionEye Maven Plugin" );
 
         int responseCode = con.getResponseCode();
