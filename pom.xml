@@ -52,7 +52,7 @@
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.3.3</maven.version>
     <jackson.version>1.9.13</jackson.version>
-    <httpcomponents.version>4.4.1</httpcomponents.version>
+    <httpcomponents.version>4.5</httpcomponents.version>
   </properties>
 
   <dependencies>
@@ -108,8 +108,8 @@
         <artifactId>versioneye-maven-plugin</artifactId>
         <version>3.4.0</version>
         <configuration>
-          <projectId>544d0ff9512592562c000003</projectId>
-          <!--<apiKey>my_secret_api_key</apiKey>-->
+          <!-- <projectId>544d0ff9512592562c000003</projectId> -->
+          <apiKey>bb241d0bb6fcbba54063</apiKey>
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
           <!--<proxyPort>8888</proxyPort>-->
