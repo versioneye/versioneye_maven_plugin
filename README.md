@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.4.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
+- Version 3.5.0 with Maven 3.2.1 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -41,7 +41,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.4.0</version>
+      <version>3.5.0</version>
     </plugin>
   </plugins>
 </build>
