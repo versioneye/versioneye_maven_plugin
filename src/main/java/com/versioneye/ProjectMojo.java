@@ -42,8 +42,9 @@ public class ProjectMojo extends SuperMojo {
                 project.getDependencyManagement().getDependencies().size() > 0){
             dependencies.addAll(project.getDependencyManagement().getDependencies());
         }
+        List<Dependency> filteredDependencies = filterForScopes(dependencies);
         JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project, dependencies, plugins, nameStrategy);
+        return jsonUtils.dependenciesToJson(project, filteredDependencies, plugins, nameStrategy);
     }
 
     protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) throws Exception {
@@ -149,6 +150,26 @@ public class ProjectMojo extends SuperMojo {
             version = (String) project.getProperties().get(verValue);
         }
         return version;
+    }
+
+    private List<Dependency> filterForScopes(List<Dependency> dependencies){
+        if (skipScopes == null || skipScopes.trim().isEmpty() || dependencies == null || dependencies.isEmpty())
+            return dependencies;
+
+        String[] scopes = skipScopes.split(",");
+        List<Dependency> filtered = new ArrayList<Dependency>();
+        for (Dependency dependency : dependencies){
+            boolean ignoreScope = false;
+            for ( String scope : scopes ) {
+                if (dependency.getScope().toLowerCase().equals(scope.toLowerCase())){
+                    ignoreScope = true;
+                }
+            }
+            if (ignoreScope == false ){
+                filtered.add(dependency);
+            }
+        }
+        return filtered;
     }
 
 }

@@ -98,6 +98,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "licenseCheckBreakByUnknown" )
     protected Boolean licenseCheckBreakByUnknown = Boolean.FALSE;
 
+    @Parameter( property = "skipScopes" )
+    protected String skipScopes = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
