@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.4.0</version>
+  <version>3.5.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -106,10 +106,10 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.0</version>
         <configuration>
-          <!-- <projectId>544d0ff9512592562c000003</projectId> -->
-          <apiKey>bb241d0bb6fcbba54063</apiKey>
+          <!--<projectId>544d0ff9512592562c000003</projectId>-->
+          <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
           <!--<proxyPort>8888</proxyPort>-->
@@ -120,6 +120,7 @@
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
           <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
+          <!--<skipScopes>test,provided</skipScopes>-->
         </configuration>
       </plugin>
 
