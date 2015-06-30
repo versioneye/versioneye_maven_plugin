@@ -161,7 +161,11 @@ public class ProjectMojo extends SuperMojo {
         for (Dependency dependency : dependencies){
             boolean ignoreScope = false;
             for ( String scope : scopes ) {
-                if (dependency.getScope().toLowerCase().equals(scope.toLowerCase())){
+                if (scope != null &&
+                    dependency != null &&
+                    dependency.getScope() != null &&
+                    dependency.getScope().toLowerCase().equals(scope.toLowerCase()))
+                {
                     ignoreScope = true;
                 }
             }
