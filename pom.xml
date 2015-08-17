@@ -120,7 +120,7 @@
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
           <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
-          <!--<skipScopes>test,provided</skipScopes>-->
+          <!--<skipScopes>test</skipScopes>-->
         </configuration>
       </plugin>
 
