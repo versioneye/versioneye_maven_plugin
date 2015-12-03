@@ -50,8 +50,8 @@
 
   <properties>
     <!-- The minimum Maven version that should be supported. -->
-    <maven.version>3.3.3</maven.version>
-    <jackson.version>1.9.13</jackson.version>
+    <maven.version>3.3.9</maven.version>
+    <jackson.version>1.9.12</jackson.version>
     <httpcomponents.version>4.5.1</httpcomponents.version>
   </properties>
 
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.9.8</version>
+      <version>6.9.9</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
