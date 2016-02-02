@@ -101,6 +101,15 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "skipScopes" )
     protected String skipScopes = null;
 
+    @Parameter( property = "organisation" )
+    protected String organisation = null;
+
+    @Parameter( property = "visibility" )
+    protected String visibility = null;
+
+    @Parameter( property = "name" )
+    protected String name = null;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 

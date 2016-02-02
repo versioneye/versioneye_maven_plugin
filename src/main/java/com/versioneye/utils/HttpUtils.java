@@ -6,6 +6,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -47,13 +48,24 @@ public class HttpUtils {
         return response.toString();
     }
 
-    public static Reader post(String url, byte[] data, String dataName) throws Exception {
+    public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name) throws Exception {
         HttpClient client = new SystemDefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
+
         MultipartEntity multipartEntity = new MultipartEntity();
         multipartEntity.addPart(dataName, byteArrayBody);
-        httpPost.setEntity( multipartEntity );
+
+        if (visibility != null && !visibility.isEmpty())
+            multipartEntity.addPart("visibility", new StringBody(visibility));
+
+        if (name != null && !name.isEmpty())
+            multipartEntity.addPart("name", new StringBody(name));
+
+        if (orga_name != null && !orga_name.isEmpty())
+            multipartEntity.addPart("orga_name", new StringBody(orga_name));
+
+        httpPost.setEntity(multipartEntity);
         HttpResponse response = client.execute(httpPost);
 
         int statusCode = response.getStatusLine().getStatusCode();

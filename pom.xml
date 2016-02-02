@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.5.1</version>
+  <version>3.6.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -21,6 +21,8 @@
   </description>
 
   <scm>
+    <connection>scm:git:https://github.com/versioneye/versioneye_maven_plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/versioneye/versioneye_maven_plugin.git</developerConnection>
     <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
   </scm>
 
@@ -51,7 +53,7 @@
   <properties>
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.3.9</maven.version>
-    <jackson.version>1.9.12</jackson.version>
+    <jackson.version>1.9.13</jackson.version>
     <httpcomponents.version>4.5.1</httpcomponents.version>
   </properties>
 
@@ -95,7 +97,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.9.9</version>
+      <version>6.9.10</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -108,7 +110,6 @@
         <artifactId>versioneye-maven-plugin</artifactId>
         <version>3.5.1</version>
         <configuration>
-          <!--<projectId>544d0ff9512592562c000003</projectId>-->
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
@@ -121,6 +122,9 @@
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
           <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
           <!--<skipScopes>test</skipScopes>-->
+          <!--<organisation>versioneye</organisation>-->
+          <!--<name>NameOfTheProjectAtVersionEye</name>-->
+          <!--<visibility>TrueOrFalse</visibility>-->
         </configuration>
       </plugin>
 
@@ -137,6 +141,7 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
+
 
       <!-- mvn gpg:sign -->
       <!-- mvn gpg:sign-and-deploy-file -->
@@ -196,5 +201,22 @@
 
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <type>tag</type>
+          <tags>
+            <tag implementation="java.lang.String">3.5.1</tag>
+            <tag implementation="java.lang.String">3.6.0</tag>
+          </tags>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>
