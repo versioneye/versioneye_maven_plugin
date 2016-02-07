@@ -16,6 +16,8 @@ Summary
  - [mvn versioneye:create](#mvn-versioneyecreate)
  - [mvn versioneye:update](#mvn-versioneyeupdate)
  - [mvn versioneye:licenseCheck](#mvn-versioneyelicensecheck)
+ - [mvn versioneye:securityCheck] (#mvn-versioneyesecuritycheck)
+ - [mvn versioneye:securityAndLicenseCheck] (#mvn-versioneyesecurityandlicesecheck)
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Multi-Module Projects](#multi-module-projects)
