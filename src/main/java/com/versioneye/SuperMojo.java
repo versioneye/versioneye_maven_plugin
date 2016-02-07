@@ -104,6 +104,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "organisation" )
     protected String organisation = null;
 
+    @Parameter( property = "team" )
+    protected String team = null;
+
     @Parameter( property = "visibility" )
     protected String visibility = null;
 

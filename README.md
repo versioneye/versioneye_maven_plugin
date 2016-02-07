@@ -360,6 +360,7 @@ The VersionEye Maven Plugin has many configuration options.
           <!--<licenseCheckBreakByUnknown>true</licenseCheckBreakByUnknown>-->
           <!--<skipScopes>test,provided</skipScopes>-->
           <!--<organisation>versioneye</organisation>-->
+          <!--<team>backend_devs</team>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>public</visibility>-->
         </configuration>
@@ -384,6 +385,7 @@ trackPlugins  | By default the plugins who are defined in the pom.xml file are h
 licenseCheckBreakByUnknown | If this is true then the goal "versioneye:licenseCheck" will break the build if there is a component without any license.
 skipScopes    | Comma seperated list of scopes which should be ignored by this plugin.
 organisation  | The name of an organisation at VersionEye. If this is set the project will be assigend to that organisation!
+team          | The name of the team inside the organisation at VersionEye. If this is set the project will be assigend to that team! The team which is defined here has to exist in the organisation which is defined here!
 name          | With this property you can set explicitly the name of the VersionEye project.
 visibility    | 'public' of 'private'. Controls if the project on VersionEye will be public or private.
 

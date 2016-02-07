@@ -48,7 +48,7 @@ public class HttpUtils {
         return response.toString();
     }
 
-    public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name) throws Exception {
+    public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name, String team) throws Exception {
         HttpClient client = new SystemDefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
@@ -64,6 +64,9 @@ public class HttpUtils {
 
         if (orga_name != null && !orga_name.isEmpty())
             multipartEntity.addPart("orga_name", new StringBody(orga_name));
+
+        if (team != null && !team.isEmpty())
+            multipartEntity.addPart("team_name", new StringBody(team));
 
         httpPost.setEntity(multipartEntity);
         HttpResponse response = client.execute(httpPost);
