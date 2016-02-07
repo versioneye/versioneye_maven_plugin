@@ -14,6 +14,15 @@ public class ProjectJsonResponse {
     private Integer out_number;
     private Integer licenses_red = 0;
     private Integer licenses_unknown = 0;
+    private Integer sv_count = 0;
+
+    public Integer getSv_count() {
+        return sv_count;
+    }
+
+    public void setSv_count(Integer sv_count) {
+        this.sv_count = sv_count;
+    }
 
     public Integer getLicenses_red() {
         return licenses_red;
