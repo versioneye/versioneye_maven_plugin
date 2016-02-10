@@ -254,7 +254,7 @@ mvn versioneye:licenseCheck
 This goald will check if your dependencies have known security vulnerabilities:
 
 ```
-mvn versioneye:licenseCheck
+mvn versioneye:securityCheck
 ```
 
 If one of project dependencies has a known security vulnerability this goal will break your build!
@@ -264,7 +264,7 @@ If one of project dependencies has a known security vulnerability this goal will
 This goald will check if your dependencies have known security vulnerabilities or if they violate teh license whitelist on the server:
 
 ```
-mvn versioneye:licenseCheck
+mvn versioneye:securityAndLiceseCheck
 ```
 
 If one of the 2 is violated this goal will break your build!
