@@ -385,6 +385,7 @@ The VersionEye Maven Plugin has many configuration options.
           <!--<team>backend_devs</team>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>public</visibility>-->
+          <!--<ignoreDependencyManagement>false</ignoreDependencyManagement>-->
         </configuration>
       </plugin>
 ```
@@ -411,6 +412,7 @@ team          | The name of the team inside the organisation at VersionEye. If t
 name          | With this property you can set explicitly the name of the VersionEye project.
 visibility    | 'public' of 'private'. Controls if the project on VersionEye will be public or private.
 propertiesPath | The path to the versioneye.properties file. By default it is "/src/main/resources/"
+ignoreDependencyManagement | If this attribute is true the dependencies from "DependencyManagement" are ignored. By default it is false!
 
 
 ## Feedback
