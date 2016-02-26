@@ -205,7 +205,7 @@ public class SuperMojo extends AbstractMojo {
         }
         if (!file.exists()){
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            file = new File(propertiesPath);
+            new File(propertiesPath);
         }
         this.propertiesPath = propertiesPath;
         return propertiesPath;
