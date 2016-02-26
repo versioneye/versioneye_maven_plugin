@@ -27,7 +27,7 @@ public class HttpUtilsTest {
         mapper.writeValue(outstream, input);
 
         String url = "http://localhost:3000/api/v2/projects/1_54d11ffa6c13297974000002?api_key=f511fb2";
-        HttpUtils.post(url, outstream.toByteArray(), "project_file");
+        HttpUtils.post(url, outstream.toByteArray(), "project_file", null, null, null, null);
     }
 
 }
