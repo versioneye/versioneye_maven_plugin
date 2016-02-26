@@ -18,6 +18,7 @@ Summary
  - [mvn versioneye:licenseCheck](#mvn-versioneyelicensecheck)
  - [mvn versioneye:securityCheck] (#mvn-versioneyesecuritycheck)
  - [mvn versioneye:securityAndLicenseCheck] (#mvn-versioneyesecurityandlicesecheck)
+ - [mvn versioneye:delete](#mvn-versioneyedelete)
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Multi-Module Projects](#multi-module-projects)
@@ -139,8 +140,8 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>3.7.0</version>
       <configuration>
-	    <apiKey>MY_SECRET_API_KEY</apiKey>
-	  </configuration>
+        <apiKey>MY_SECRET_API_KEY</apiKey>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -174,8 +175,8 @@ If you want so you can configure another place for the versioneye.properties fil
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>3.7.0</version>
       <configuration>
-	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
-	  </configuration>
+        <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
+      </configuration>
     </plugin>
   </plugins>
 </build>
