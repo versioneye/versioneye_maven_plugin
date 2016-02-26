@@ -269,6 +269,14 @@ mvn versioneye:securityAndLiceseCheck
 
 If one of the 2 is violated this goal will break your build!
 
+## mvn versioneye:delete
+
+This goald will the project from the VersionEye server:
+
+```
+mvn versioneye:delete
+```
+
 ## Proxy
 
 If you are behind a proxy server you can configure the plugin for that like this.
@@ -285,7 +293,7 @@ If you are behind a proxy server you can configure the plugin for that like this
         <proxyPort>8888</proxyPort>
         <proxyUser>proxy_hopsi</proxyUser>
         <proxyPassword>dont_tell_anybody</proxyPassword>
-	  </configuration>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -310,8 +318,8 @@ The whole plugin snippet would look similar to this one.
       <version>3.7.0</version>
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
-	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
-	  </configuration>
+        <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -329,8 +337,8 @@ Assume you have a big Java Enterprise multi-module project with Maven and you wa
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>3.7.0</version>
       <configuration>
-	    <apiKey>MY_SECRET_API_KEY</apiKey>
-	  </configuration>
+        <apiKey>MY_SECRET_API_KEY</apiKey>
+      </configuration>
     </plugin>
   </plugins>
 </build>
