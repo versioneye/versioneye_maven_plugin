@@ -410,6 +410,7 @@ organisation  | The name of an organisation at VersionEye. If this is set the pr
 team          | The name of the team inside the organisation at VersionEye. If this is set the project will be assigend to that team! The team which is defined here has to exist in the organisation which is defined here!
 name          | With this property you can set explicitly the name of the VersionEye project.
 visibility    | 'public' of 'private'. Controls if the project on VersionEye will be public or private.
+propertiesPath | The path to the versioneye.properties file. By default it is "/src/main/resources/"
 
 
 ## Feedback
