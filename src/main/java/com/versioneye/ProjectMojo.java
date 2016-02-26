@@ -37,7 +37,8 @@ public class ProjectMojo extends SuperMojo {
             plugins = getPluginsFromXml();
         }
         List<Dependency> dependencies = project.getDependencies();
-        if (project.getDependencyManagement() != null &&
+        if (ignoreDependencyManagement == false &&
+                project.getDependencyManagement() != null &&
                 project.getDependencyManagement().getDependencies() != null &&
                 project.getDependencyManagement().getDependencies().size() > 0){
             dependencies.addAll(project.getDependencyManagement().getDependencies());
