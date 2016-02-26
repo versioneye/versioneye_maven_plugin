@@ -231,8 +231,8 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
       <artifactId>versioneye-maven-plugin</artifactId>
       <version>3.7.0</version>
       <configuration>
-	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
-	  </configuration>
+        <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -271,7 +271,7 @@ If one of the 2 is violated this goal will break your build!
 
 ## mvn versioneye:delete
 
-This goald will the project from the VersionEye server:
+This goal will delete the project from the VersionEye server:
 
 ```
 mvn versioneye:delete
