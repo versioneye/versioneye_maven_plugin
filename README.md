@@ -278,6 +278,8 @@ This goal will delete the project from the VersionEye server:
 mvn versioneye:delete
 ```
 
+This golad will also remove all related `versioneye.properties` files!
+
 ## Proxy
 
 If you are behind a proxy server you can configure the plugin for that like this.
