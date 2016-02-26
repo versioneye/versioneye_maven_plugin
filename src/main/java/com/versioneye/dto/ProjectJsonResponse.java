@@ -14,6 +14,7 @@ public class ProjectJsonResponse {
     private Integer out_number;
     private Integer licenses_red = 0;
     private Integer licenses_unknown = 0;
+    private ProjectDependency[] dependencies;
 
     public Integer getLicenses_red() {
         return licenses_red;
@@ -61,5 +62,13 @@ public class ProjectJsonResponse {
 
     public void setOut_number(Integer out_number) {
         this.out_number = out_number;
+    }
+
+    public ProjectDependency[] getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(ProjectDependency[] dependencies) {
+        this.dependencies = dependencies;
     }
 }
