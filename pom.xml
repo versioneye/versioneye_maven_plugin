@@ -108,9 +108,8 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
-          <apiKey>b7f7c65e66d38f511fb2</apiKey>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
