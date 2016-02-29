@@ -124,21 +124,46 @@ public class SuperMojo extends AbstractMojo {
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
-        Properties properties = fetchPropertiesFor("api_key");
-        apiKey = properties.getProperty("api_key");
-        if (apiKey == null || apiKey.isEmpty()){
-            String msg = "versioneye.properties found but without an API Key! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
-            getLog().error(msg);
-            throw new MojoExecutionException(msg);
+
+        apiKey = System.getenv().get("VERSIONEYE_API_KEY");
+
+        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+        String key = getPropertyFromPath(propertiesPath, "api_key");
+        if (key != null && !key.isEmpty()){
+            apiKey = key;
         }
+
+        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
+        key = getPropertyFromPath(propertiesPath, "api_key");
+        if (key != null && !key.isEmpty()){
+            apiKey = key;
+        }
+
+        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        key = getPropertyFromPath(propertiesPath, "api_key");
+        if (key != null && !key.isEmpty()){
+            apiKey = key;
+        }
+
         return apiKey;
     }
 
     protected String fetchProjectId() throws Exception {
         if (projectId != null && !projectId.isEmpty() )
             return projectId;
-        Properties properties = fetchPropertiesFor("project_id");
-        projectId = properties.getProperty("project_id");
+
+        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
+        String project_id = getPropertyFromPath(propertiesPath, "project_id");
+        if (project_id != null && !project_id.isEmpty()){
+            projectId = project_id;
+        }
+
+        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        project_id = getPropertyFromPath(propertiesPath, "project_id");
+        if (project_id != null && !project_id.isEmpty()){
+            projectId = project_id;
+        }
+
         if (projectId == null || projectId.isEmpty()){
             String msg = "versioneye.properties found but without project_id! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
             getLog().error(msg);
@@ -146,13 +171,6 @@ public class SuperMojo extends AbstractMojo {
         }
 
         return projectId;
-    }
-
-    protected Properties fetchPropertiesFor( String key ) throws Exception {
-        Properties properties = fetchProjectProperties();
-        if (properties == null || properties.getProperty( key ) == null)
-            properties = fetchHomeProperties();
-        return properties;
     }
 
     protected Properties fetchProjectProperties() throws Exception {
@@ -167,29 +185,6 @@ public class SuperMojo extends AbstractMojo {
         return properties;
     }
 
-    protected Properties fetchHomeProperties() throws Exception {
-        if (homeProperties != null)
-            return homeProperties;
-        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-        File file = new File(propertiesPath);
-        if (!file.exists()) {
-            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            file = new File(propertiesPath);
-            if (file.exists()) {
-                getLog().warn(propertiesFile + " exists in src/main/resources, should be moved to src/qa/resources");
-            }
-        }
-        if (!file.exists()){
-            String msg = propertiesPath + " is missing! Read the instructions at " +
-                    "https://github.com/versioneye/versioneye_maven_plugin";
-            getLog().error(msg);
-            throw new MojoExecutionException(msg);
-        }
-        PropertiesUtils propertiesUtils = new PropertiesUtils();
-        homeProperties = propertiesUtils.readProperties(propertiesPath);
-        return homeProperties;
-    }
-
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null)
             return this.propertiesPath;
@@ -200,12 +195,7 @@ public class SuperMojo extends AbstractMojo {
             file = new File(propertiesPath);
         }
         if (!file.exists()){
-            propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-            file = new File(propertiesPath);
-        }
-        if (!file.exists()){
-            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            new File(propertiesPath);
+            propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
         }
         this.propertiesPath = propertiesPath;
         return propertiesPath;
@@ -253,6 +243,16 @@ public class SuperMojo extends AbstractMojo {
         }
         System.getProperties().put("http.proxyUser", proxyUser);
         System.getProperties().put("http.proxyPassword", proxyPassword);
+    }
+
+    private String getPropertyFromPath(String propertiesPath, String propertiesKey ) throws Exception {
+        File file = new File(propertiesPath);
+        if (file.exists()){
+            PropertiesUtils propertiesUtils = new PropertiesUtils();
+            Properties homeProperties = propertiesUtils.readProperties(propertiesPath);
+            return homeProperties.getProperty(propertiesKey);
+        }
+        return null;
     }
 
 }
