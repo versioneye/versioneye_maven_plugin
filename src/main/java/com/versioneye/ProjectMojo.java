@@ -1,5 +1,6 @@
 package com.versioneye;
 
+import com.versioneye.dto.ProjectDependency;
 import com.versioneye.dto.ProjectJsonResponse;
 import com.versioneye.utils.DependencyUtils;
 import com.versioneye.utils.JsonUtils;
@@ -37,7 +38,8 @@ public class ProjectMojo extends SuperMojo {
             plugins = getPluginsFromXml();
         }
         List<Dependency> dependencies = project.getDependencies();
-        if (project.getDependencyManagement() != null &&
+        if (ignoreDependencyManagement == false &&
+                project.getDependencyManagement() != null &&
                 project.getDependencyManagement().getDependencies() != null &&
                 project.getDependencyManagement().getDependencies().size() > 0){
             dependencies.addAll(project.getDependencyManagement().getDependencies());
@@ -87,6 +89,12 @@ public class ProjectMojo extends SuperMojo {
         getLog().info("Project id: "   + response.getId());
         getLog().info("Dependencies: " + response.getDep_number());
         getLog().info("Outdated: "     + response.getOut_number());
+        for (ProjectDependency dependency : response.getDependencies() ){
+            if (dependency.getOutdated() == false){
+                continue;
+            }
+            getLog().info(" - " + dependency.getProd_key() + ":" + dependency.getVersion_requested() + " -> " + dependency.getVersion_current());
+        }
         getLog().info("");
         getLog().info("You can find your updated project here: " + baseUrl + "/user/projects/" + response.getId() );
         getLog().info("");

@@ -1,5 +1,5 @@
 - Version 2.0.1 with Maven 3.0.5 [![Dependency Status](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d/badge.svg?style=flat)](http://www.versioneye.com/user/projects/5379ad3f14c158ccc700002d)
-- Version 3.7.0 with Maven 3.3.3 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
+- Version 3.8.0 with Maven 3.3.3 [![Dependency Status](https://www.versioneye.com/user/projects/544d0ff9512592562c000003/badge.svg?style=flat)](https://www.versioneye.com/user/projects/544d0ff9512592562c000003)
 
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
@@ -18,6 +18,7 @@ Summary
  - [mvn versioneye:licenseCheck](#mvn-versioneyelicensecheck)
  - [mvn versioneye:securityCheck] (#mvn-versioneyesecuritycheck)
  - [mvn versioneye:securityAndLicenseCheck] (#mvn-versioneyesecurityandlicesecheck)
+ - [mvn versioneye:delete](#mvn-versioneyedelete)
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
  - [Multi-Module Projects](#multi-module-projects)
@@ -42,7 +43,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
     </plugin>
   </plugins>
 </build>
@@ -137,10 +138,10 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
-	    <apiKey>MY_SECRET_API_KEY</apiKey>
-	  </configuration>
+        <apiKey>MY_SECRET_API_KEY</apiKey>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -172,10 +173,10 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
-	    <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
-	  </configuration>
+        <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -229,10 +230,10 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
-	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
-	  </configuration>
+        <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -269,6 +270,16 @@ mvn versioneye:securityAndLiceseCheck
 
 If one of the 2 is violated this goal will break your build!
 
+## mvn versioneye:delete
+
+This goal will delete the project from the VersionEye server:
+
+```
+mvn versioneye:delete
+```
+
+This golad will also remove all related `versioneye.properties` files!
+
 ## Proxy
 
 If you are behind a proxy server you can configure the plugin for that like this.
@@ -279,13 +290,13 @@ If you are behind a proxy server you can configure the plugin for that like this
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
         <proxyHost>127.0.0.1</proxyHost>
         <proxyPort>8888</proxyPort>
         <proxyUser>proxy_hopsi</proxyUser>
         <proxyPassword>dont_tell_anybody</proxyPassword>
-	  </configuration>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -307,11 +318,11 @@ The whole plugin snippet would look similar to this one.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
-	    <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
-	  </configuration>
+        <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -327,10 +338,10 @@ Assume you have a big Java Enterprise multi-module project with Maven and you wa
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.0</version>
       <configuration>
-	    <apiKey>MY_SECRET_API_KEY</apiKey>
-	  </configuration>
+        <apiKey>MY_SECRET_API_KEY</apiKey>
+      </configuration>
     </plugin>
   </plugins>
 </build>
@@ -364,7 +375,7 @@ The VersionEye Maven Plugin has many configuration options.
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
           <projectId>544d0ff9512592562c000003</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
@@ -385,6 +396,7 @@ The VersionEye Maven Plugin has many configuration options.
           <!--<team>backend_devs</team>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>public</visibility>-->
+          <!--<ignoreDependencyManagement>false</ignoreDependencyManagement>-->
         </configuration>
       </plugin>
 ```
@@ -410,6 +422,8 @@ organisation  | The name of an organisation at VersionEye. If this is set the pr
 team          | The name of the team inside the organisation at VersionEye. If this is set the project will be assigend to that team! The team which is defined here has to exist in the organisation which is defined here!
 name          | With this property you can set explicitly the name of the VersionEye project.
 visibility    | 'public' of 'private'. Controls if the project on VersionEye will be public or private.
+propertiesPath | The path to the versioneye.properties file. By default it is "/src/main/resources/"
+ignoreDependencyManagement | If this attribute is true the dependencies from "DependencyManagement" are ignored. By default it is false!
 
 
 ## Feedback

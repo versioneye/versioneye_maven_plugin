@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.7.0</version>
+  <version>3.8.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -108,7 +108,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
@@ -188,7 +188,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>attach-sources</id>

@@ -113,6 +113,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "name" )
     protected String name = null;
 
+    @Parameter( property = "ignoreDependencyManagement" )
+    protected boolean ignoreDependencyManagement = false;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
@@ -202,7 +205,7 @@ public class SuperMojo extends AbstractMojo {
         }
         if (!file.exists()){
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            file = new File(propertiesPath);
+            new File(propertiesPath);
         }
         this.propertiesPath = propertiesPath;
         return propertiesPath;

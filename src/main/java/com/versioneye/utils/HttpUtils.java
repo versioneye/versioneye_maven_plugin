@@ -81,6 +81,29 @@ public class HttpUtils {
         return new InputStreamReader(response.getEntity().getContent());
     }
 
+    public static String delete(String url) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        con.setConnectTimeout(TEN_MINUTE);
+        con.setReadTimeout(TEN_MINUTE);
+        con.setRequestProperty("User-Agent", "VersionEye Maven Plugin");
+        con.setRequestMethod("DELETE");
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'DELETE' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
+    }
+
     private static String getErrorMessage(HttpResponse response) throws Exception {
         String errorMsg = getErrorFromJson(response);
         if (errorMsg != null){
