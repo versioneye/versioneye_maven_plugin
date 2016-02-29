@@ -225,6 +225,42 @@ public class SuperMojo extends AbstractMojo {
     }
 
     protected void setProxy(){
+        try{
+            if (proxyHost == null || proxyHost.isEmpty()){
+                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String host = getPropertyFromPath(propertiesPath, "proxyHost");
+                if (host != null && !host.isEmpty()){
+                    proxyHost = host;
+                }
+            }
+
+            if (proxyPort == null || proxyPort.isEmpty() ){
+                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String port = getPropertyFromPath(propertiesPath, "proxyPort");
+                if (port != null && !port.isEmpty()){
+                    proxyPort = port;
+                }
+            }
+
+            if (proxyUser == null || proxyUser.isEmpty()){
+                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String user = getPropertyFromPath(propertiesPath, "proxyUser");
+                if (user != null && !user.isEmpty()){
+                    proxyUser = user;
+                }
+            }
+
+            if (proxyPassword == null || proxyPassword.isEmpty()){
+                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String password = getPropertyFromPath(propertiesPath, "proxyPassword");
+                if (password != null && !password.isEmpty()){
+                    proxyPassword = password;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         boolean emptyProxyHost = proxyHost == null || proxyHost.isEmpty();
         boolean emptyProxyPort = proxyPort == null || proxyPort.isEmpty();
         if (emptyProxyHost && emptyProxyPort){
