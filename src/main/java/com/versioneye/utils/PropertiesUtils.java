@@ -11,7 +11,7 @@ public class PropertiesUtils {
     public void writeProperties(Properties properties, String filePath) throws Exception{
         File file = new File(filePath);
         OutputStream out = new FileOutputStream( file );
-        properties.store(out, " Properties for http://www.VersionEye.com");
+        properties.store(out, " Properties for https://www.VersionEye.com");
     }
 
     public Properties readProperties(String filePath) throws Exception{
