@@ -177,6 +177,7 @@ public class SuperMojo extends AbstractMojo {
         if (properties != null)
             return properties;
         String propertiesPath = getPropertiesPath();
+        System.out.println("propertiesPath: " + propertiesPath);
         File file = new File(propertiesPath);
         if (!file.exists())
             createPropertiesFile(file);
@@ -192,7 +193,7 @@ public class SuperMojo extends AbstractMojo {
         File file = new File(propertiesPath);
         if (!file.exists()) {
             propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            file = new File(propertiesPath);
+            new File(propertiesPath);
         }
         this.propertiesPath = propertiesPath;
         return propertiesPath;
@@ -236,7 +237,7 @@ public class SuperMojo extends AbstractMojo {
             }
 
             if (proxyPort == null || proxyPort.isEmpty() ){
-                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
                 String port = getPropertyFromPath(propertiesPath, "proxyPort");
                 if (port != null && !port.isEmpty()){
                     proxyPort = port;
@@ -244,7 +245,7 @@ public class SuperMojo extends AbstractMojo {
             }
 
             if (proxyUser == null || proxyUser.isEmpty()){
-                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
                 String user = getPropertyFromPath(propertiesPath, "proxyUser");
                 if (user != null && !user.isEmpty()){
                     proxyUser = user;
@@ -252,7 +253,7 @@ public class SuperMojo extends AbstractMojo {
             }
 
             if (proxyPassword == null || proxyPassword.isEmpty()){
-                propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
                 String password = getPropertyFromPath(propertiesPath, "proxyPassword");
                 if (password != null && !password.isEmpty()){
                     proxyPassword = password;
