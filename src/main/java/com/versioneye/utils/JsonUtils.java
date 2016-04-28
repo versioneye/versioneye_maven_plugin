@@ -113,6 +113,7 @@ public class JsonUtils {
         pom.put("name", getNameFor(project, nameStrategy));
         pom.put("group_id", project.getGroupId());
         pom.put("artifact_id", project.getArtifactId());
+        pom.put("version", project.getVersion());
         pom.put("language", "Java");
         pom.put("prod_type", "Maven2");
         pom.put("dependencies", dependencyHashes);
