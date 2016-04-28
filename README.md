@@ -49,7 +49,7 @@ You can add the plugin to your project by adding this snippet to your
 </build>
 ```
 
-The `versioneye-maven-plugin` is tested against Maven 3.2.1.
+The `versioneye-maven-plugin` is tested against Maven 3.3.9.
 If you are using Maven 3.0.5 or older you should use the
 `versioneye-maven-plugin` version 2.0.1.
 
