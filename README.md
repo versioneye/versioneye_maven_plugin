@@ -190,6 +190,14 @@ If the plugin can't find the API KEY in any of this locations it will look it up
 
 That means if you don't want to commit your *API KEY* to the server and share it with your team you can place the file in your *home* directory and keep it for you.
 
+Of course you can store the API key in an environment variable `VERSIONEYE_API_KEY` as well. 
+
+```
+export VERSIONEYE_API_KEY=my_secret_api_key
+```
+
+That's a good way to deal with the API key on an CI system. 
+
 ## mvn versioneye:create
 
 If your *API KEY* is in place you can create a new project at VersionEye based on the dependencies in your `pom.xml` file with this goal:
