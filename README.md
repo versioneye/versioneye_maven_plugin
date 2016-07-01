@@ -405,6 +405,7 @@ The VersionEye Maven Plugin has many configuration options.
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>public</visibility>-->
           <!--<ignoreDependencyManagement>false</ignoreDependencyManagement>-->
+          <!--<transitiveDependencies>false</transitiveDependencies>-->
         </configuration>
       </plugin>
 ```
@@ -432,6 +433,7 @@ name          | With this property you can set explicitly the name of the Versio
 visibility    | 'public' of 'private'. Controls if the project on VersionEye will be public or private.
 propertiesPath | The path to the versioneye.properties file. By default it is "/src/main/resources/"
 ignoreDependencyManagement | If this attribute is true the dependencies from "DependencyManagement" are ignored. By default it is false!
+transitiveDependencies | Resolve and send transitive dependencies to the VersionEye API. In this mode the properties `ignoreDependencyManagement` and `skipScopes` does not work.
 
 
 ## Feedback
