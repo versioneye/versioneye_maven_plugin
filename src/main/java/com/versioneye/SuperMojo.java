@@ -116,6 +116,9 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "ignoreDependencyManagement" )
     protected boolean ignoreDependencyManagement = false;
 
+    @Parameter( property = "transitiveDependencies" )
+    protected boolean transitiveDependencies = false;
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 

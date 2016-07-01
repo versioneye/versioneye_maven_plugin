@@ -25,12 +25,20 @@ public class UpdateMojo extends ProjectMojo {
         try{
             setProxy();
             prettyPrintStart();
-            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
-            if (jsonDirectDependenciesStream == null){
+
+            ByteArrayOutputStream jsonDependenciesStream = null;
+            if (transitiveDependencies == true){
+                jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
+            } else {
+                jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
+            }
+
+            if (jsonDependenciesStream == null){
                 prettyPrint0End();
                 return ;
             }
-            ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
+
+            ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             prettyPrint( response );
         } catch( Exception exception ){
             exception.printStackTrace();
