@@ -19,15 +19,21 @@ public class LicenseCheckMojo extends UpdateMojo {
         try{
             setProxy();
             prettyPrintStart();
-            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
-            if (jsonDirectDependenciesStream == null){
+
+            ByteArrayOutputStream jsonDependenciesStream = null;
+            if (transitiveDependencies == true){
+                jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
+            } else {
+                jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
+            }
+
+            if (jsonDependenciesStream == null){
                 prettyPrint0End();
                 return ;
             }
-            ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
 
+            ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             System.out.println(response.getLicenses_red());
-
             if (response.getLicenses_red() > 0){
                 throw new MojoExecutionException("Some components violate the license whitelist! " +
                         "More details here: " + baseUrl + "/user/projects/" + response.getId() );
