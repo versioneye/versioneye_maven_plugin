@@ -15,15 +15,21 @@ public class SecurityAndLicenseCheckMojo extends UpdateMojo {
         try{
             setProxy();
             prettyPrintStart();
-            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
-            if (jsonDirectDependenciesStream == null){
+
+            ByteArrayOutputStream jsonDependenciesStream = null;
+            if (transitiveDependencies == true){
+                jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
+            } else {
+                jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
+            }
+
+            if (jsonDependenciesStream == null){
                 prettyPrint0End();
                 return ;
             }
-            ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
 
+            ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             System.out.println("sv_count: " +  response.getSv_count());
-
             if (response.getSv_count() > 0){
                 throw new MojoExecutionException("Some components security vulnerabilities! " +
                         "More details here: " + baseUrl + "/user/projects/" + response.getId() );

@@ -32,11 +32,34 @@ import java.util.Map;
  */
 public class ProjectMojo extends SuperMojo {
 
+    protected ByteArrayOutputStream getTransitiveDependenciesJsonStream(String nameStrategy) throws Exception {
+        PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
+        DependencyNode root = getDependencyNode(nlg);
+        List<Artifact> transDependencies = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
+        List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
+        List<Dependency> dependencies = new ArrayList<Dependency>();
+        for (org.eclipse.aether.artifact.Artifact artifact : transDependencies) {
+            Dependency dep = new Dependency();
+            dep.setGroupId(artifact.getGroupId());
+            dep.setArtifactId(artifact.getArtifactId());
+            dep.setVersion(artifact.getVersion());
+            if (directDependencies.contains(artifact)) {
+                dep.setScope("direct");
+            } else {
+                dep.setScope("transitive");
+            }
+            dependencies.add(dep);
+        }
+        JsonUtils jsonUtils = new JsonUtils();
+        return jsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
+    }
+
     protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
         List<Plugin> plugins = new ArrayList<Plugin>();
         if (trackPlugins){
             plugins = getPluginsFromXml();
         }
+
         List<Dependency> dependencies = project.getDependencies();
         if (ignoreDependencyManagement == false &&
                 project.getDependencyManagement() != null &&

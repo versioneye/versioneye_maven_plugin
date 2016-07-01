@@ -28,12 +28,20 @@ public class CreateMojo extends ProjectMojo {
         try{
             setProxy();
             prettyPrintStart();
-            ByteArrayOutputStream jsonDirectDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
-            if (jsonDirectDependenciesStream == null){
+
+            ByteArrayOutputStream jsonDependenciesStream = null;
+            if (transitiveDependencies == true){
+                jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
+            } else {
+                jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
+            }
+
+            if (jsonDependenciesStream == null){
                 prettyPrint0End();
                 return ;
             }
-            ProjectJsonResponse response = uploadDependencies(jsonDirectDependenciesStream);
+
+            ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             merge(response.getId());
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
