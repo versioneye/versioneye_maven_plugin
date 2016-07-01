@@ -130,6 +130,7 @@
           <!--<organisation>versioneye</organisation>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>TrueOrFalse</visibility>-->
+          <transitiveDependencies>false</transitiveDependencies>
         </configuration>
       </plugin>
 
