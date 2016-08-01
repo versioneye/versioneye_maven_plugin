@@ -268,12 +268,12 @@ mvn versioneye:securityCheck
 
 If one of project dependencies has a known security vulnerability this goal will break your build!
 
-## mvn versioneye:securityAndLiceseCheck
+## mvn versioneye:securityAndLicenseCheck
 
-This goald will check if your dependencies have known security vulnerabilities or if they violate teh license whitelist on the server:
+This goald will check if your dependencies have known security vulnerabilities or if they violate the license whitelist on the server:
 
 ```
-mvn versioneye:securityAndLiceseCheck
+mvn versioneye:securityAndLicenseCheck
 ```
 
 If one of the 2 is violated this goal will break your build!
