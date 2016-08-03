@@ -440,7 +440,9 @@ transitiveDependencies | Resolve and send transitive dependencies to the Version
 
 For bugs and feature requests please use the [ticket system](https://github.com/versioneye/versioneye_maven_plugin/issues). Pull Requests are welcome ;-)
 
-For short questions contact me on [Twitter](https://twitter.com/RobertReiz).
+## Support
+
+For commercial support send a message to `support@versioneye.com`.
 
 ## License
 
