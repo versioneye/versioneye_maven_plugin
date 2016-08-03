@@ -17,7 +17,7 @@ Summary
  - [mvn versioneye:update](#mvn-versioneyeupdate)
  - [mvn versioneye:licenseCheck](#mvn-versioneyelicensecheck)
  - [mvn versioneye:securityCheck](#mvn-versioneyesecuritycheck)
- - [mvn versioneye:securityAndLicenseCheck](#mvn-versioneyesecurityandlicesecheck)
+ - [mvn versioneye:securityAndLicenseCheck](#mvn-versioneyesecurityandlicensecheck)
  - [mvn versioneye:delete](#mvn-versioneyedelete)
  - [Proxy](#proxy)
  - [VersionEye Enterprise](#versioneye-enterprise)
