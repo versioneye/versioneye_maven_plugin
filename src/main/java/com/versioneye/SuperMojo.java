@@ -177,7 +177,7 @@ public class SuperMojo extends AbstractMojo {
         }
 
         if (projectId == null || projectId.isEmpty()){
-            String msg = "Searched in " + pPath1 + " and " + pPath2 + " for project_id but could't find any. Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
+            String msg = "Searched in [" + pPath1 + ", " + pPath2 + ", "+ propertiesPath +"] for project_id but could't find any.";
             getLog().error(msg);
             throw new MojoExecutionException(msg);
         }
