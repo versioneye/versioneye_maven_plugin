@@ -37,7 +37,7 @@ Switch to the project where you want to use this plugin.
 You can add the plugin to your project by adding this snippet to your
 `pom.xml` file.
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -132,7 +132,7 @@ This plugin can push your dependencies to the VersionEye API, create a project a
 
 Now let the versioneye-maven-plugin know what your *API KEY* is.
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -167,7 +167,7 @@ src/main/resources/versioneye.properties
 
 If you want so you can configure another place for the versioneye.properties file. Just set the path explicitly in the pom.xml on the versioneye plugin configuration:
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -214,7 +214,7 @@ Besides that, the plugin will add a `project_id` to the `versioneye.properties` 
 
 If you don't want that the versioneye maven plugin creates/updates the `versioneye.properties` file you can skip that step with this line in the plugin configuration:
 
-```
+```xml
 <updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>
 ```
 
@@ -232,7 +232,7 @@ That will simply update the existing VersionEye project with the dependencies fr
 
 By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -292,7 +292,7 @@ This golad will also remove all related `versioneye.properties` files!
 
 If you are behind a proxy server you can configure the plugin for that like this.
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -320,7 +320,7 @@ If you are using the VersionEye Enterprise VM in your own private network you pr
 ```
 The whole plugin snippet would look similar to this one.
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -340,7 +340,7 @@ The whole plugin snippet would look similar to this one.
 
 Assume you have a big Java Enterprise multi-module project with Maven and you want to have all modules monitored by VersionEye. I furhter assume that all modules have the same parent pom and the modules are listed in the parent pom.xml file. In that case all you have to do is configuring the VersionEye Maven Plugin once in the parent pom.
 
-```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -379,7 +379,7 @@ Here is a YouTube video which demonstrates how to setup a multi-module project w
 
 The VersionEye Maven Plugin has many configuration options.
 
-```
+```xml
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
