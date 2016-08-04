@@ -54,7 +54,7 @@ If you are using Maven 3.0.5 or older you should use the
 `versioneye-maven-plugin` version 2.0.1.
 
 Alternatively you can add `versioneye` to the plugin group search path. You do this by adding
-```
+```xml
 <pluginGroups>
   <pluginGroup>com.versioneye</pluginGroup>
 </pluginGroups>
@@ -315,7 +315,7 @@ If you are behind a proxy server you can configure the plugin for that like this
 If you are using the VersionEye Enterprise VM in your own private network you probably want to use this plugin against the VersionEye Enterprise API. In that case you can change the baseUrl with this line:
 
 
-```
+```xml
 <baseUrl>http://versioneye.my-company.com</baseUrl>
 ```
 The whole plugin snippet would look similar to this one.
