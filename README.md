@@ -147,7 +147,7 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
 </build>
 ```
 
-If you don't want to store the api key in the pom.xml, alternatively you can store it in a `versioneye.properties` file.
+If you don't want to store the api key in the `pom.xml`, alternatively you can store it in a `versioneye.properties` file.
 
 ```
 echo "api_key=YOUR_API_KEY" > versioneye.properties
@@ -188,7 +188,7 @@ If the plugin can't find the API KEY in any of this locations it will look it up
 ~/.m2/versioneye.properties
 ```
 
-That means if you don't want to commit your *API KEY* to the server and share it with your team you can place the file in your *home* directory and keep it for you.
+That means if you don't want to commit your *API KEY* to the server and share it with your team you can place the file in your *home* directory and keep it for you. But *don't commit this file with secret*. So add it to `.gitignore` exclusions.
 
 Of course you can store the API key in an environment variable `VERSIONEYE_API_KEY` as well. 
 
@@ -230,7 +230,7 @@ mvn versioneye:update
 
 That will simply update the existing VersionEye project with the dependencies from your `pom.xml` file. It will **not** change your `pom.xml`. This goal usually gets executed on a Continuous Integration server after each build.
 
-By the way. If you don't like to have a `versioneye.properties` file you can set the project_id explicitly in the pom.xml. Just like this:
+By the way. If you don't like to have a `versioneye.properties` file you can set the `project_id` explicitly in the `pom.xml`. Just like this:
 
 ```
 <build>
