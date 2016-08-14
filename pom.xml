@@ -113,7 +113,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.10.2</version>
         <configuration>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
@@ -135,7 +135,7 @@
       </plugin>
 
       <!--http://central.sonatype.org/pages/apache-maven.html-->
-      <!--mvn clean deploy -Dgpg.passphrase=-->
+      <!--mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=-->
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
