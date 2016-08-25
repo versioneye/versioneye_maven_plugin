@@ -155,20 +155,29 @@ public class SuperMojo extends AbstractMojo {
         if (projectId != null && !projectId.isEmpty() )
             return projectId;
 
-        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
-        String project_id = getPropertyFromPath(propertiesPath, "project_id");
-        if (project_id != null && !project_id.isEmpty()){
-            projectId = project_id;
+        if (propertiesPath != null && !propertiesPath.isEmpty()){
+            String project_id = getPropertyFromPath(propertiesPath, "project_id");
+            if (project_id != null && !project_id.isEmpty()){
+                projectId = project_id;
+            }
         }
 
-        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-        project_id = getPropertyFromPath(propertiesPath, "project_id");
+        String pPath1 = projectDirectory + "/src/qa/resources/" + propertiesFile;
+        String project_id = getPropertyFromPath(pPath1, "project_id");
         if (project_id != null && !project_id.isEmpty()){
             projectId = project_id;
+            propertiesPath = pPath1;
+        }
+
+        String pPath2 = projectDirectory + "/src/main/resources/" + propertiesFile;
+        project_id = getPropertyFromPath(pPath2, "project_id");
+        if (project_id != null && !project_id.isEmpty()){
+            projectId = project_id;
+            propertiesPath = pPath2;
         }
 
         if (projectId == null || projectId.isEmpty()){
-            String msg = "versioneye.properties found but without project_id! Read the instructions at https://github.com/versioneye/versioneye_maven_plugin";
+            String msg = "Searched in [" + pPath1 + ", " + pPath2 + ", "+ propertiesPath +"] for project_id but could't find any.";
             getLog().error(msg);
             throw new MojoExecutionException(msg);
         }
@@ -292,6 +301,8 @@ public class SuperMojo extends AbstractMojo {
             PropertiesUtils propertiesUtils = new PropertiesUtils();
             Properties homeProperties = propertiesUtils.readProperties(propertiesPath);
             return homeProperties.getProperty(propertiesKey);
+        } else {
+            getLog().info("File " + propertiesPath + " does not exist");
         }
         return null;
     }
