@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
  * Updates an existing project at VersionEye with the dependencies from the current project AND
  * ensures that all used licenses are on a whitelist. If that is not the case it breaks the build.
  */
-@Mojo( name = "licenseCheck", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "licenseCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class LicenseCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {

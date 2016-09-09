@@ -15,7 +15,7 @@ import java.io.Reader;
 /**
  * Updates an existing project at VersionEye with the dependencies from the current project.
  */
-@Mojo( name = "update", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "update", defaultPhase = LifecyclePhase.PACKAGE )
 public class UpdateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects")
