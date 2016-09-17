@@ -51,7 +51,7 @@ public class UpdateMojo extends ProjectMojo {
     protected ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         String apiKey = fetchApiKey();
         String projectId = fetchProjectId();
-        String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
+        String url = fetchBaseUrl() + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
         Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file", null, null, null, null);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(reader, ProjectJsonResponse.class );

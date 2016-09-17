@@ -119,7 +119,7 @@ public class ProjectMojo extends SuperMojo {
             getLog().info(" - " + dependency.getProd_key() + ":" + dependency.getVersion_requested() + " -> " + dependency.getVersion_current());
         }
         getLog().info("");
-        getLog().info("You can find your updated project here: " + baseUrl + "/user/projects/" + response.getId() );
+        getLog().info("You can find your updated project here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
         getLog().info("");
     }
 

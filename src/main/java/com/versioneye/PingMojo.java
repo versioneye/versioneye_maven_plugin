@@ -22,7 +22,7 @@ public class PingMojo extends SuperMojo {
         try{
             setProxy();
             initTls();
-            InputStream inputStream = getInputStream(baseUrl + apiPath + "/services/ping");
+            InputStream inputStream = getInputStream(fetchBaseUrl() + apiPath + "/services/ping");
             BufferedReader input =  new BufferedReader( new InputStreamReader( inputStream ) );
             String line = "";
             getLog().info("");

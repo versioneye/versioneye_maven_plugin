@@ -151,6 +151,33 @@ public class SuperMojo extends AbstractMojo {
         return apiKey;
     }
 
+    protected String fetchBaseUrl() throws Exception {
+        if (baseUrl != null && !baseUrl.isEmpty() )
+            return baseUrl;
+
+        baseUrl = System.getenv().get("VERSIONEYE_BASE_URL");
+
+        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+        String key = getPropertyFromPath(propertiesPath, "base_url");
+        if (key != null && !key.isEmpty()){
+            baseUrl = key;
+        }
+
+        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
+        key = getPropertyFromPath(propertiesPath, "base_url");
+        if (key != null && !key.isEmpty()){
+            baseUrl = key;
+        }
+
+        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
+        key = getPropertyFromPath(propertiesPath, "base_url");
+        if (key != null && !key.isEmpty()){
+            baseUrl = key;
+        }
+
+        return baseUrl;
+    }
+
     protected String fetchProjectId() throws Exception {
         if (projectId != null && !projectId.isEmpty() )
             return projectId;
