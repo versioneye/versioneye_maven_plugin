@@ -8,7 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.ByteArrayOutputStream;
 
-@Mojo( name = "securityAndLicenseCheck", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "securityAndLicenseCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class SecurityAndLicenseCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
