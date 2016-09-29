@@ -31,7 +31,7 @@ public class SecurityAndLicenseCheckMojo extends UpdateMojo {
             ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             System.out.println("sv_count: " +  response.getSv_count());
             if (response.getSv_count() > 0){
-                throw new MojoExecutionException("Some components security vulnerabilities! " +
+                throw new MojoExecutionException("Some components have security vulnerabilities! " +
                         "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
