@@ -8,7 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.ByteArrayOutputStream;
 
-@Mojo( name = "securityCheck", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "securityCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class SecurityCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -31,8 +31,8 @@ public class SecurityCheckMojo extends UpdateMojo {
             ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             System.out.println("sv_count: " + response.getSv_count());
             if (response.getSv_count() > 0){
-                throw new MojoExecutionException("Some components security vulnerabilities! " +
-                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+                throw new MojoExecutionException("Some components have security vulnerabilities! " +
+                        "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
             prettyPrint( response );

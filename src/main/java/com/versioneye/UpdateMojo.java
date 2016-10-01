@@ -15,7 +15,7 @@ import java.io.Reader;
 /**
  * Updates an existing project at VersionEye with the dependencies from the current project.
  */
-@Mojo( name = "update", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "update", defaultPhase = LifecyclePhase.PACKAGE )
 public class UpdateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects")
@@ -51,7 +51,7 @@ public class UpdateMojo extends ProjectMojo {
     protected ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         String apiKey = fetchApiKey();
         String projectId = fetchProjectId();
-        String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
+        String url = fetchBaseUrl() + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
         Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file", null, null, null, null);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(reader, ProjectJsonResponse.class );

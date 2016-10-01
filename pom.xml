@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.4</version>
+      <version>3.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -153,7 +153,7 @@
           <!--<organisation>versioneye</organisation>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>TrueOrFalse</visibility>-->
-          <transitiveDependencies>false</transitiveDependencies>
+          <!--<transitiveDependencies>false</transitiveDependencies>-->
         </configuration>
       </plugin>
 
@@ -179,7 +179,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.5</version>
         <configuration>
           <goalPrefix>versioneye</goalPrefix>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>

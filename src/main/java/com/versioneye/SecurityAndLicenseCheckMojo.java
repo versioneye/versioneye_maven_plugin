@@ -8,7 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.ByteArrayOutputStream;
 
-@Mojo( name = "securityAndLicenseCheck", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "securityAndLicenseCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class SecurityAndLicenseCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -31,20 +31,20 @@ public class SecurityAndLicenseCheckMojo extends UpdateMojo {
             ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
             System.out.println("sv_count: " +  response.getSv_count());
             if (response.getSv_count() > 0){
-                throw new MojoExecutionException("Some components security vulnerabilities! " +
-                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+                throw new MojoExecutionException("Some components have security vulnerabilities! " +
+                        "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
             System.out.println("licenses_red: " +  response.getLicenses_red());
 
             if (response.getLicenses_red() > 0){
                 throw new MojoExecutionException("Some components violate the license whitelist! " +
-                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+                        "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
             if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown == true ){
                 throw new MojoExecutionException("Some components are without any license! " +
-                        "More details here: " + baseUrl + "/user/projects/" + response.getId() );
+                        "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
             prettyPrint( response );

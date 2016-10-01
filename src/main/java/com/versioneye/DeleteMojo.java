@@ -32,7 +32,7 @@ public class DeleteMojo extends ProjectMojo {
     protected void deleteProject() throws Exception {
         String apiKey = fetchApiKey();
         String projectId = fetchProjectId();
-        String url = baseUrl + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
+        String url = fetchBaseUrl() + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
 
         HttpUtils.delete(url);
     }
