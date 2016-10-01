@@ -1,6 +1,5 @@
 package com.versioneye;
 
-
 import com.versioneye.utils.HttpUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

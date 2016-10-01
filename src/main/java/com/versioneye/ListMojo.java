@@ -20,6 +20,7 @@ public class ListMojo extends ProjectMojo {
 
     public void execute() throws MojoExecutionException {
         versionEyeOutput();
+
         try{
             PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
             DependencyNode root = getDependencyNode(nlg);
@@ -52,9 +53,11 @@ public class ListMojo extends ProjectMojo {
         getLog().info("");
         getLog().info(directDependencies.size() + " Direct Dependencies: ");
         getLog().info("--------------------");
+
         for (Dependency dependency : directDependencies){
             getLog().info( dependency.getGroupId() + ":" + dependency.getArtifactId() + ":" + dependency.getVersion());
         }
+
         getLog().info("");
     }
 
@@ -77,5 +80,4 @@ public class ListMojo extends ProjectMojo {
         getLog().info("");
         getLog().info("");
     }
-
 }

@@ -3,6 +3,8 @@ package com.versioneye;
 import com.versioneye.dto.ProjectJsonResponse;
 import com.versioneye.utils.HttpUtils;
 import com.versioneye.utils.PropertiesUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -29,8 +31,8 @@ public class CreateMojo extends ProjectMojo {
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            ByteArrayOutputStream jsonDependenciesStream;
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
@@ -49,8 +51,8 @@ public class CreateMojo extends ProjectMojo {
             prettyPrint(response);
         } catch( Exception exception ){
             throw new MojoExecutionException("Oh no! Something went wrong :-( " +
-                    "Get in touch with the VersionEye guys and give them feedback." +
-                    "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
+              "Get in touch with the VersionEye guys and give them feedback." +
+              "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
 
@@ -78,16 +80,14 @@ public class CreateMojo extends ProjectMojo {
     }
 
     protected void merge(String childId) {
-        if (mergeAfterCreate == false) {
+        if (!mergeAfterCreate) {
             return ;
         }
         try {
 
-            if (parentGroupId == null || parentGroupId.isEmpty() ||
-                    parentArtifactId == null || parentArtifactId.isEmpty()){
+            if (StringUtils.isBlank(parentGroupId) || StringUtils.isBlank(parentArtifactId)) {
                 MavenProject mp = project.getParent();
-                if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
-                        mp.getArtifactId() == null || mp.getArtifactId().isEmpty()){
+                if (mp == null || StringUtils.isBlank(mp.getGroupId()) || StringUtils.isBlank(mp.getArtifactId()) ){
                     return ;
                 }
                 parentGroupId = mp.getGroupId();
@@ -110,5 +110,4 @@ public class CreateMojo extends ProjectMojo {
             getLog().error(ex);
         }
     }
-
 }

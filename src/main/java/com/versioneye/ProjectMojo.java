@@ -61,13 +61,15 @@ public class ProjectMojo extends SuperMojo {
         }
 
         List<Dependency> dependencies = project.getDependencies();
-        if (ignoreDependencyManagement == false &&
-                project.getDependencyManagement() != null &&
+        if (!ignoreDependencyManagement && project.getDependencyManagement() != null &&
                 project.getDependencyManagement().getDependencies() != null &&
                 project.getDependencyManagement().getDependencies().size() > 0){
-            dependencies.addAll(project.getDependencyManagement().getDependencies());
+
+                dependencies.addAll(project.getDependencyManagement().getDependencies());
         }
+
         List<Dependency> filteredDependencies = filterForScopes(dependencies);
+
         JsonUtils jsonUtils = new JsonUtils();
         return jsonUtils.dependenciesToJson(project, filteredDependencies, plugins, nameStrategy);
     }

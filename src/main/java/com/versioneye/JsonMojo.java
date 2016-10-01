@@ -33,5 +33,4 @@ public class JsonMojo extends ProjectMojo {
         getLog().info("You find your json file here: " + pathToJson);
         getLog().info("");
     }
-
 }

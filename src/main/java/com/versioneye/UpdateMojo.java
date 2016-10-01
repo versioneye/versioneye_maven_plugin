@@ -27,7 +27,7 @@ public class UpdateMojo extends ProjectMojo {
             prettyPrintStart();
 
             ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);

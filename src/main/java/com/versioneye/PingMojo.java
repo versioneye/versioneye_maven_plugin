@@ -24,7 +24,7 @@ public class PingMojo extends SuperMojo {
             initTls();
             InputStream inputStream = getInputStream(baseUrl + apiPath + "/services/ping");
             BufferedReader input =  new BufferedReader( new InputStreamReader( inputStream ) );
-            String line = "";
+            String line;
             getLog().info("");
             while((line = input.readLine())!=null){
                 getLog().info(line);
@@ -50,5 +50,4 @@ public class PingMojo extends SuperMojo {
             return urlConnection.getInputStream();
         }
     }
-
 }

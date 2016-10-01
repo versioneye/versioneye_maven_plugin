@@ -16,12 +16,14 @@ import java.io.ByteArrayOutputStream;
 public class LicenseCheckMojo extends UpdateMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+
         try{
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            ByteArrayOutputStream jsonDependenciesStream;
+
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
@@ -39,7 +41,7 @@ public class LicenseCheckMojo extends UpdateMojo {
                         "More details here: " + baseUrl + "/user/projects/" + response.getId() );
             }
 
-            if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown == true ){
+            if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown) {
                 throw new MojoExecutionException("Some components are without any license! " +
                         "More details here: " + baseUrl + "/user/projects/" + response.getId() );
             }
@@ -52,5 +54,4 @@ public class LicenseCheckMojo extends UpdateMojo {
                     "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
-
 }
