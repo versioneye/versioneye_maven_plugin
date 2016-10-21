@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.10.2</version>
+  <version>3.11.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -146,6 +146,7 @@
       <!-- mvn gpg:sign -->
       <!-- mvn gpg:sign-and-deploy-file -->
       <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
