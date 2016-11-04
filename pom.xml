@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.10.2</version>
+  <version>3.11.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -120,14 +120,10 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.9.10</version>
+      <version>6.9.13.6</version>
+
       <scope>test</scope>
     </dependency>
-    <!--<dependency0-->
-      <!--<groupId>io.reactivex</groupId>-->
-      <!--<artifactId>rxjava</artifactId>-->
-      <!--<version>[1.1.0,)</version>-->
-    <!--</dependency>-->
   </dependencies>
 
   <build>
@@ -174,6 +170,7 @@
       <!-- mvn gpg:sign -->
       <!-- mvn gpg:sign-and-deploy-file -->
       <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
 
       <plugin>

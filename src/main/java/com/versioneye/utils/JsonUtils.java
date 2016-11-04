@@ -20,7 +20,8 @@ public class JsonUtils {
 
     public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = new ArrayList<Map<String, Object>>();
-        if (dependencies != null && !dependencies.isEmpty()) {
+        if ((dependencies != null && !dependencies.isEmpty())
+                || (plugins != null && !plugins.isEmpty())) {
             dependencyHashes = getDependencyHashes(dependencies, plugins);
         }
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
@@ -60,7 +61,9 @@ public class JsonUtils {
 
     public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
         List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
-        hashes.addAll( generateHashFromDependencyList( directDependencies));
+        if (directDependencies != null && directDependencies.size() > 0){
+            hashes.addAll( generateHashFromDependencyList( directDependencies));
+        }
         if (plugins != null && plugins.size() > 0){
             hashes.addAll( generateHashFromPluginList(plugins));
         }
