@@ -15,6 +15,7 @@ import java.io.Reader;
 /**
  * Updates an existing project at VersionEye with the dependencies from the current project.
  */
+@SuppressWarnings("WeakerAccess")
 @Mojo( name = "update", defaultPhase = LifecyclePhase.PACKAGE )
 public class UpdateMojo extends ProjectMojo {
 
@@ -26,7 +27,7 @@ public class UpdateMojo extends ProjectMojo {
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
+            ByteArrayOutputStream jsonDependenciesStream;
             if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {

@@ -9,6 +9,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import java.net.URL;
 /**
  * Methods to deal with the HTTP protocol.
  */
+@SuppressWarnings("WeakerAccess")
 public class HttpUtils {
 
     public static Integer ONE_SECOND = 1000;
@@ -40,7 +42,7 @@ public class HttpUtils {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
@@ -56,16 +58,16 @@ public class HttpUtils {
         MultipartEntity multipartEntity = new MultipartEntity();
         multipartEntity.addPart(dataName, byteArrayBody);
 
-        if (visibility != null && !visibility.isEmpty())
+        if (StringUtils.isNotBlank(visibility))
             multipartEntity.addPart("visibility", new StringBody(visibility));
 
-        if (name != null && !name.isEmpty())
+        if (StringUtils.isNotBlank(name))
             multipartEntity.addPart("name", new StringBody(name));
 
-        if (orga_name != null && !orga_name.isEmpty())
+        if (StringUtils.isNotBlank(orga_name))
             multipartEntity.addPart("orga_name", new StringBody(orga_name));
 
-        if (team != null && !team.isEmpty())
+        if (StringUtils.isNotBlank(team))
             multipartEntity.addPart("team_name", new StringBody(team));
 
         httpPost.setEntity(multipartEntity);
@@ -96,7 +98,7 @@ public class HttpUtils {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
@@ -128,7 +130,7 @@ public class HttpUtils {
             InputStream content = response.getEntity().getContent();
             BufferedReader in = new BufferedReader(new InputStreamReader( content ) );
             String inputLine;
-            StringBuffer body = new StringBuffer();
+            StringBuilder body = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 body.append(inputLine);
             }
@@ -138,7 +140,5 @@ public class HttpUtils {
             exception.printStackTrace();
             return "";
         }
-
     }
-
 }

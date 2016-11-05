@@ -3,6 +3,7 @@ package com.versioneye.dto;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectDependency {
 

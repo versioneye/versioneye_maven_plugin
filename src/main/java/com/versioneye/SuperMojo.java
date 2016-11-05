@@ -1,20 +1,5 @@
 package com.versioneye;
 
-import com.versioneye.utils.PropertiesUtils;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -22,9 +7,28 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Properties;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.StringUtils;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
+
+import com.versioneye.utils.PropertiesUtils;
+
 /**
  * The Mother of all Mojos!
  */
+@SuppressWarnings("WeakerAccess")
 public class SuperMojo extends AbstractMojo {
 
     protected static final String propertiesFile = "versioneye.properties";
@@ -125,26 +129,26 @@ public class SuperMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {  }
 
     protected String fetchApiKey() throws Exception {
-        if (apiKey != null && !apiKey.isEmpty() )
+        if (StringUtils.isNotBlank(apiKey) )
             return apiKey;
 
         apiKey = System.getenv().get("VERSIONEYE_API_KEY");
 
         String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
         String key = getPropertyFromPath(propertiesPath, "api_key");
-        if (key != null && !key.isEmpty()){
+        if (StringUtils.isNotBlank(key)){
             apiKey = key;
         }
 
         propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
         key = getPropertyFromPath(propertiesPath, "api_key");
-        if (key != null && !key.isEmpty()){
+        if (StringUtils.isNotBlank(key)){
             apiKey = key;
         }
 
         propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
         key = getPropertyFromPath(propertiesPath, "api_key");
-        if (key != null && !key.isEmpty()){
+        if (StringUtils.isNotBlank(key)) {
             apiKey = key;
         }
 
@@ -152,7 +156,7 @@ public class SuperMojo extends AbstractMojo {
     }
 
     protected String fetchBaseUrl() throws Exception {
-        if (baseUrl != null && !baseUrl.isEmpty() )
+        if (StringUtils.isNotBlank(baseUrl))
             return baseUrl;
 
         baseUrl = System.getenv().get("VERSIONEYE_BASE_URL");

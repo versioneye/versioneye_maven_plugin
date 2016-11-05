@@ -1,5 +1,6 @@
 package com.versioneye.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
@@ -16,6 +17,7 @@ import java.util.*;
 /**
  * Methods to deal with JSON.
  */
+@SuppressWarnings("WeakerAccess")
 public class JsonUtils {
 
     public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
@@ -36,11 +38,13 @@ public class JsonUtils {
         return outstream;
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void dependenciesToJsonFile(String name, Map<String, Object> directDependencies, String file) throws Exception {
         File targetFile = getTargetFile(file);
         toJson(new FileOutputStream(targetFile), directDependencies);
     }
 
+    @SuppressWarnings("unused")
     public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
         File targetFile = getTargetFile(file);
@@ -54,16 +58,24 @@ public class JsonUtils {
     }
 
     public List<Map<String, Object>> getHashes(List<Artifact> directDependencies){
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>(directDependencies.size());
+        List<Map<String, Object>> hashes = new Vector<Map<String, Object>>(directDependencies.size());
         hashes.addAll( generateHashForJsonOutput( directDependencies));
         return hashes;
     }
 
     public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
+<<<<<<< Updated upstream
         List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
         if (directDependencies != null && directDependencies.size() > 0){
             hashes.addAll( generateHashFromDependencyList( directDependencies));
         }
+||||||| merged common ancestors
+        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
+        hashes.addAll( generateHashFromDependencyList( directDependencies));
+=======
+        List<Map<String, Object>> hashes = new Vector<Map<String, Object>>();
+        hashes.addAll( generateHashFromDependencyList( directDependencies));
+>>>>>>> Stashed changes
         if (plugins != null && plugins.size() > 0){
             hashes.addAll( generateHashFromPluginList(plugins));
         }
@@ -125,12 +137,12 @@ public class JsonUtils {
 
     private String getNameFor(MavenProject project, String nameStrategy){
         String name = "project";
-        if (nameStrategy == null || nameStrategy.isEmpty()){
+        if (StringUtils.isBlank(nameStrategy)) {
             nameStrategy = "name";
         }
         if (nameStrategy.equals("name")){
             name = project.getName();
-            if (name == null || name.isEmpty()){
+            if (StringUtils.isBlank(name)){
                 name = project.getArtifactId();
             }
         } else if (nameStrategy.equals("artifact_id")){
@@ -141,6 +153,7 @@ public class JsonUtils {
         return name;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private File getTargetFile(String file){
         File targetFile = new File(file);
         File parent = targetFile.getParentFile();
@@ -149,5 +162,4 @@ public class JsonUtils {
         }
         return targetFile;
     }
-
 }

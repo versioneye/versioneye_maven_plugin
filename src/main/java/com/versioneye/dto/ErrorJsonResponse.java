@@ -12,8 +12,8 @@ public class ErrorJsonResponse {
         return error;
     }
 
+    @SuppressWarnings("unused")
     public void setError(String error) {
         this.error = error;
     }
-
 }
