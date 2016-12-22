@@ -337,7 +337,7 @@ The whole plugin snippet would look similar to this one.
 
 ## Multi-Module Projects
 
-Assume you have a big Java Enterprise multi-module project with Maven and you want to have all modules monitored by VersionEye. I furhter assume that all modules have the same parent pom and the modules are listed in the parent pom.xml file. In that case all you have to do is configuring the VersionEye Maven Plugin once in the parent pom.
+Assume you have a big Java Enterprise multi-module project with Maven and you want to have all modules monitored by VersionEye. I further assume that all modules have the same parent pom and the modules are listed in the parent pom.xml file. In that case all you have to do is configuring the VersionEye Maven Plugin once in the parent pom.
 
 ```xml
 <build>
