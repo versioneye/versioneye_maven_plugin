@@ -119,6 +119,7 @@ public class JsonUtils {
         pom.put("version", project.getVersion());
         pom.put("language", "Java");
         pom.put("prod_type", "Maven2");
+        pom.put("licenses", project.getLicenses());
         pom.put("dependencies", dependencyHashes);
         return pom;
     }
