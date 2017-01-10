@@ -1,6 +1,7 @@
 package com.versioneye;
 
 import com.versioneye.utils.PropertiesUtils;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -32,11 +33,17 @@ public class SuperMojo extends AbstractMojo {
     @Component
     protected RepositorySystem system;
 
-    @Parameter( defaultValue="${project}" )
-    protected MavenProject project;
+    @Component
+    protected MavenSession mavenSession;
 
     @Parameter( defaultValue="${repositorySystemSession}" )
     protected RepositorySystemSession session;
+
+    @Parameter( defaultValue="${project}" )
+    protected MavenProject project;
+
+    @Parameter( defaultValue="${reactorProjects}" )
+    protected List<MavenProject> reactorProjects;
 
     @Parameter( defaultValue = "${project.remoteProjectRepositories}")
     protected List<RemoteRepository> repos;
@@ -124,6 +131,7 @@ public class SuperMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {  }
 
+
     protected String fetchApiKey() throws Exception {
         if (apiKey != null && !apiKey.isEmpty() )
             return apiKey;
@@ -148,8 +156,14 @@ public class SuperMojo extends AbstractMojo {
             apiKey = key;
         }
 
+        if (apiKey == null){
+            getLog().error("API Key can not be found!");
+            throw new Exception("API Key can not be found!");
+        }
+
         return apiKey;
     }
+
 
     protected String fetchBaseUrl() throws Exception {
         if (baseUrl != null && !baseUrl.isEmpty() )
@@ -177,6 +191,7 @@ public class SuperMojo extends AbstractMojo {
 
         return baseUrl;
     }
+
 
     protected String fetchProjectId() throws Exception {
         if (projectId != null && !projectId.isEmpty() )
@@ -212,6 +227,7 @@ public class SuperMojo extends AbstractMojo {
         return projectId;
     }
 
+
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
@@ -224,6 +240,7 @@ public class SuperMojo extends AbstractMojo {
         properties = propertiesUtils.readProperties(propertiesPath);
         return properties;
     }
+
 
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null && !this.propertiesPath.isEmpty())
@@ -238,6 +255,7 @@ public class SuperMojo extends AbstractMojo {
         return propertiesPath;
     }
 
+
     private void createPropertiesFile(File file) throws IOException {
         File parent = file.getParentFile();
         if (!parent.exists()){
@@ -249,6 +267,7 @@ public class SuperMojo extends AbstractMojo {
         }
         file.createNewFile();
     }
+
 
     protected void initTls(){
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
@@ -264,6 +283,7 @@ public class SuperMojo extends AbstractMojo {
             e.printStackTrace();
         }
     }
+
 
     protected void setProxy(){
         try{
@@ -322,6 +342,7 @@ public class SuperMojo extends AbstractMojo {
         System.getProperties().put("http.proxyPassword", proxyPassword);
     }
 
+
     private String getPropertyFromPath(String propertiesPath, String propertiesKey ) throws Exception {
         File file = new File(propertiesPath);
         if (file.exists()){
@@ -329,7 +350,7 @@ public class SuperMojo extends AbstractMojo {
             Properties homeProperties = propertiesUtils.readProperties(propertiesPath);
             return homeProperties.getProperty(propertiesKey);
         } else {
-            getLog().info("File " + propertiesPath + " does not exist");
+            getLog().debug("File " + propertiesPath + " does not exist");
         }
         return null;
     }

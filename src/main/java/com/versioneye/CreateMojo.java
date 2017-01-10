@@ -42,7 +42,12 @@ public class CreateMojo extends ProjectMojo {
             }
 
             ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
-            merge(response.getId());
+
+            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
+                mavenSession.getTopLevelProject().setContextValue("veye_project_id", response.getId());
+            }
+
+            merge( response.getId() );
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
             }
@@ -55,11 +60,7 @@ public class CreateMojo extends ProjectMojo {
     }
 
     private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
-        String apiKey = fetchApiKey();
-        String url = fetchBaseUrl() + apiPath + resource + apiKey;
-        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "upload", visibility, name, organisation, team);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(reader, ProjectJsonResponse.class );
+        return createNewProject(resource, outStream);
     }
 
     private void prettyPrintStart(){
@@ -68,47 +69,5 @@ public class CreateMojo extends ProjectMojo {
         getLog().info(".");
     }
 
-    protected void writeProperties(ProjectJsonResponse response) throws Exception {
-        Properties properties = fetchProjectProperties();
-        if (response.getId() != null) {
-            properties.setProperty("project_id", response.getId());
-        }
-        PropertiesUtils utils = new PropertiesUtils();
-        utils.writeProperties(properties, getPropertiesPath());
-    }
-
-    protected void merge(String childId) {
-        if (mergeAfterCreate == false) {
-            return ;
-        }
-        try {
-
-            if (parentGroupId == null || parentGroupId.isEmpty() ||
-                    parentArtifactId == null || parentArtifactId.isEmpty()){
-                MavenProject mp = project.getParent();
-                if (mp == null || mp.getGroupId() == null || mp.getGroupId().isEmpty() ||
-                        mp.getArtifactId() == null || mp.getArtifactId().isEmpty()){
-                    return ;
-                }
-                parentGroupId = mp.getGroupId();
-                parentArtifactId = mp.getArtifactId();
-            }
-
-            parentGroupId = parentGroupId.replaceAll("\\.", "~").replaceAll("/", ":");
-            parentArtifactId = parentArtifactId.replaceAll("\\.", "~").replaceAll("/", ":");
-
-            if (project.getGroupId().equals(parentGroupId) && project.getArtifactId().equals(parentArtifactId)){
-                return ;
-            }
-
-            getLog().debug("group: " + parentGroupId + " artifact: " + parentArtifactId);
-            String url = fetchBaseUrl() + apiPath + "/projects/" + parentGroupId + "/" + parentArtifactId + "/merge_ga/" + childId + "?api_key=" + fetchApiKey();
-
-            String response = HttpUtils.get(url);
-            getLog().debug("merge response: " + response);
-        } catch (Exception ex) {
-            getLog().error(ex);
-        }
-    }
 
 }
