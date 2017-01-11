@@ -18,6 +18,7 @@ public class UpdateMojo extends ProjectMojo {
     @Parameter( property = "resource", defaultValue = "/projects")
     private String resource;
 
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();

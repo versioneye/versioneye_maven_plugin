@@ -24,6 +24,7 @@ public class CreateMojo extends ProjectMojo {
     @Parameter( property = "resource", defaultValue = "/projects?api_key=")
     private String resource;
 
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();
@@ -59,9 +60,11 @@ public class CreateMojo extends ProjectMojo {
         }
     }
 
+
     private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         return createNewProject(resource, outStream);
     }
+
 
     private void prettyPrintStart(){
         getLog().info(".");
