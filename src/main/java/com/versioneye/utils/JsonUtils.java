@@ -63,24 +63,19 @@ public class JsonUtils {
         return hashes;
     }
 
-    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
-<<<<<<< Updated upstream
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
-        if (directDependencies != null && directDependencies.size() > 0){
-            hashes.addAll( generateHashFromDependencyList( directDependencies));
-        }
-||||||| merged common ancestors
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
-        hashes.addAll( generateHashFromDependencyList( directDependencies));
-=======
-        List<Map<String, Object>> hashes = new Vector<Map<String, Object>>();
-        hashes.addAll( generateHashFromDependencyList( directDependencies));
->>>>>>> Stashed changes
-        if (plugins != null && plugins.size() > 0){
-            hashes.addAll( generateHashFromPluginList(plugins));
-        }
-        return hashes;
+  public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
+
+    List<Map<String, Object>> hashes = new ArrayList<>();
+
+    if (CollectionUtils.collectionNotEmpty(directDependencies)) {
+      hashes.addAll( generateHashFromDependencyList( directDependencies));
     }
+
+    if (CollectionUtils.collectionNotEmpty(plugins)) {
+      hashes.addAll( generateHashFromPluginList(plugins));
+    }
+    return hashes;
+  }
 
     public static List<Map<String, Object>> generateHashForJsonOutput(List<Artifact> input) {
          List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
@@ -131,6 +126,7 @@ public class JsonUtils {
         pom.put("version", project.getVersion());
         pom.put("language", "Java");
         pom.put("prod_type", "Maven2");
+        pom.put("licenses", project.getLicenses());
         pom.put("dependencies", dependencyHashes);
         return pom;
     }

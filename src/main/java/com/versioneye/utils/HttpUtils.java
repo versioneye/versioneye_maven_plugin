@@ -76,7 +76,7 @@ public class HttpUtils {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != 200 && statusCode != 201){
             String err = getErrorMessage(response);
-            String errMsg = "Status Code: " + statusCode + " -> " + err;
+            String errMsg = "Status Code: " + statusCode + " -> " + err + " for URL: " + url;
             throw new Exception(errMsg);
         }
 

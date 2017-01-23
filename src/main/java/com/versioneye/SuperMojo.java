@@ -1,5 +1,50 @@
 package com.versioneye;
 
+//<<<<<<< HEAD
+//import java.io.File;
+//import java.io.IOException;
+//import java.security.SecureRandom;
+//import java.security.cert.X509Certificate;
+//import java.util.List;
+//import java.util.Properties;
+//
+//import javax.net.ssl.HttpsURLConnection;
+//import javax.net.ssl.SSLContext;
+//import javax.net.ssl.TrustManager;
+//import javax.net.ssl.X509TrustManager;
+//
+//=======
+//import com.versioneye.utils.PropertiesUtils;
+//import org.apache.maven.execution.MavenSession;
+//>>>>>>> parent/master
+//import org.apache.maven.plugin.AbstractMojo;
+
+//import org.apache.maven.plugin.MojoExecutionException;
+//import org.apache.maven.plugin.MojoFailureException;
+//import org.apache.maven.plugins.annotations.Component;
+//import org.apache.maven.plugins.annotations.Parameter;
+//import org.apache.maven.project.MavenProject;
+//import org.codehaus.plexus.util.StringUtils;
+//import org.eclipse.aether.RepositorySystem;
+//import org.eclipse.aether.RepositorySystemSession;
+//import org.eclipse.aether.repository.RemoteRepository;
+//
+//import com.versioneye.utils.PropertiesUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
+
+import com.versioneye.utils.PropertiesUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -12,35 +57,29 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
-
-import com.versioneye.utils.PropertiesUtils;
-
 /**
  * The Mother of all Mojos!
  */
 @SuppressWarnings("WeakerAccess")
-public class SuperMojo extends AbstractMojo {
+public class SuperMojo extends AbstractMojo
+{
 
     protected static final String propertiesFile = "versioneye.properties";
 
     @Component
     protected RepositorySystem system;
 
-    @Parameter( defaultValue="${project}" )
-    protected MavenProject project;
+    @Component
+    protected MavenSession mavenSession;
 
     @Parameter( defaultValue="${repositorySystemSession}" )
     protected RepositorySystemSession session;
+
+    @Parameter( defaultValue="${project}" )
+    protected MavenProject project;
+
+    @Parameter( defaultValue="${reactorProjects}" )
+    protected List<MavenProject> reactorProjects;
 
     @Parameter( defaultValue = "${project.remoteProjectRepositories}")
     protected List<RemoteRepository> repos;
@@ -126,7 +165,9 @@ public class SuperMojo extends AbstractMojo {
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
-    public void execute() throws MojoExecutionException, MojoFailureException {  }
+    public void execute() throws MojoExecutionException, MojoFailureException
+    {  }
+
 
     protected String fetchApiKey() throws Exception {
         if (StringUtils.isNotBlank(apiKey) )
@@ -152,8 +193,14 @@ public class SuperMojo extends AbstractMojo {
             apiKey = key;
         }
 
+        if (apiKey == null){
+            getLog().error("API Key can not be found!");
+            throw new Exception("API Key can not be found!");
+        }
+
         return apiKey;
     }
+
 
     protected String fetchBaseUrl() throws Exception {
         if (StringUtils.isNotBlank(baseUrl))
@@ -181,6 +228,7 @@ public class SuperMojo extends AbstractMojo {
 
         return baseUrl;
     }
+
 
     protected String fetchProjectId() throws Exception {
         if (projectId != null && !projectId.isEmpty() )
@@ -216,6 +264,7 @@ public class SuperMojo extends AbstractMojo {
         return projectId;
     }
 
+
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
@@ -228,6 +277,7 @@ public class SuperMojo extends AbstractMojo {
         properties = propertiesUtils.readProperties(propertiesPath);
         return properties;
     }
+
 
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null && !this.propertiesPath.isEmpty())
@@ -242,7 +292,9 @@ public class SuperMojo extends AbstractMojo {
         return propertiesPath;
     }
 
-    private void createPropertiesFile(File file) throws IOException {
+
+    private void createPropertiesFile(File file) throws IOException
+    {
         File parent = file.getParentFile();
         if (!parent.exists()){
             File grandpa = parent.getParentFile();
@@ -254,8 +306,10 @@ public class SuperMojo extends AbstractMojo {
         file.createNewFile();
     }
 
+
     protected void initTls(){
-        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+
+      TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
             public X509Certificate[] getAcceptedIssuers(){return null;}
             public void checkClientTrusted(X509Certificate[] certs, String authType){}
             public void checkServerTrusted(X509Certificate[] certs, String authType){}
@@ -268,6 +322,7 @@ public class SuperMojo extends AbstractMojo {
             e.printStackTrace();
         }
     }
+
 
     protected void setProxy(){
         try{
@@ -326,6 +381,7 @@ public class SuperMojo extends AbstractMojo {
         System.getProperties().put("http.proxyPassword", proxyPassword);
     }
 
+
     private String getPropertyFromPath(String propertiesPath, String propertiesKey ) throws Exception {
         File file = new File(propertiesPath);
         if (file.exists()){
@@ -333,7 +389,7 @@ public class SuperMojo extends AbstractMojo {
             Properties homeProperties = propertiesUtils.readProperties(propertiesPath);
             return homeProperties.getProperty(propertiesKey);
         } else {
-            getLog().info("File " + propertiesPath + " does not exist");
+            getLog().debug("File " + propertiesPath + " does not exist");
         }
         return null;
     }
