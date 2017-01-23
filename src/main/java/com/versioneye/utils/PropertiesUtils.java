@@ -22,5 +22,4 @@ public class PropertiesUtils {
         properties.load(inputStream);
         return properties;
     }
-
 }

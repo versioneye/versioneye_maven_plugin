@@ -1,16 +1,13 @@
 package com.versioneye;
 
 import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.HttpUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Reader;
 
 /**
  * Updates an existing project at VersionEye with the dependencies from the current project.
@@ -21,6 +18,7 @@ public class UpdateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects")
     private String resource;
+
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -49,13 +47,23 @@ public class UpdateMojo extends ProjectMojo {
         }
     }
 
+
     protected ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
-        String apiKey = fetchApiKey();
-        String projectId = fetchProjectId();
-        String url = fetchBaseUrl() + apiPath + resource + "/" + projectId + "?api_key=" + apiKey;
-        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "project_file", null, null, null, null);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(reader, ProjectJsonResponse.class );
+        try {
+            String projectId = fetchProjectId();
+            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
+                mavenSession.getTopLevelProject().setContextValue("veye_project_id", projectId);
+            }
+            return updateExistingProject(resource, projectId, outStream);
+        } catch (Exception ex) {
+            getLog().error("Error in UpdateMojo.uploadDependencies " + ex.getMessage());
+            ProjectJsonResponse response = createNewProject("/projects?api_key=", outStream);
+            if (updatePropertiesAfterCreate) {
+                writeProperties( response );
+            }
+            merge( response.getId() );
+            return response;
+        }
     }
 
     protected void prettyPrintStart(){
@@ -63,5 +71,4 @@ public class UpdateMojo extends ProjectMojo {
         getLog().info("Starting to update dependencies to server. This can take a couple seconds ... ");
         getLog().info(".");
     }
-
 }

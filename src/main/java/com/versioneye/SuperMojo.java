@@ -1,5 +1,18 @@
 package com.versioneye;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
+
+import com.versioneye.utils.PropertiesUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -12,35 +25,36 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
-
-import com.versioneye.utils.PropertiesUtils;
-
 /**
  * The Mother of all Mojos!
  */
-@SuppressWarnings("WeakerAccess")
-public class SuperMojo extends AbstractMojo {
+@SuppressWarnings({"WeakerAccess", "unused"})
+public abstract class SuperMojo extends AbstractMojo
+{
+    protected static final String VERSIONEYE_PROPERTIES_FILE = "versioneye.properties";
+    protected static final String API_KEY = "api_key";
 
-    protected static final String propertiesFile = "versioneye.properties";
+    protected static final String BASE_URL = "base_url";
+
+    protected static final String PROJECT_ID = "";
+
+    protected static final String SRC_QA_RESOURCES = "/src/qa/resources/";
+    protected static final String SRC_MAIN_RESOURCES = "/src/main/resources/";
 
     @Component
     protected RepositorySystem system;
 
-    @Parameter( defaultValue="${project}" )
-    protected MavenProject project;
+    @Component
+    protected MavenSession mavenSession;
 
     @Parameter( defaultValue="${repositorySystemSession}" )
     protected RepositorySystemSession session;
+
+    @Parameter( defaultValue="${project}" )
+    protected MavenProject project;
+
+    @Parameter( defaultValue="${reactorProjects}" )
+    protected List<MavenProject> reactorProjects;
 
     @Parameter( defaultValue = "${project.remoteProjectRepositories}")
     protected List<RemoteRepository> repos;
@@ -123,10 +137,10 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "transitiveDependencies" )
     protected boolean transitiveDependencies = false;
 
+    private static final String M2_PATH = "/.m2X/";
+
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
-
-    public void execute() throws MojoExecutionException, MojoFailureException {  }
 
     protected String fetchApiKey() throws Exception {
         if (StringUtils.isNotBlank(apiKey) )
@@ -134,26 +148,32 @@ public class SuperMojo extends AbstractMojo {
 
         apiKey = System.getenv().get("VERSIONEYE_API_KEY");
 
-        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-        String key = getPropertyFromPath(propertiesPath, "api_key");
+        String localPropertiesPath = homeDirectory + M2_PATH + VERSIONEYE_PROPERTIES_FILE;
+        String key = getPropertyFromPath(localPropertiesPath, API_KEY);
         if (StringUtils.isNotBlank(key)){
             apiKey = key;
         }
 
-        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
-        key = getPropertyFromPath(propertiesPath, "api_key");
+        localPropertiesPath = projectDirectory + SRC_QA_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        key = getPropertyFromPath(localPropertiesPath, API_KEY);
         if (StringUtils.isNotBlank(key)){
             apiKey = key;
         }
 
-        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-        key = getPropertyFromPath(propertiesPath, "api_key");
+        localPropertiesPath = projectDirectory + SRC_MAIN_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        key = getPropertyFromPath(localPropertiesPath, API_KEY);
         if (StringUtils.isNotBlank(key)) {
             apiKey = key;
         }
 
+        if (apiKey == null){
+            getLog().error("API Key can not be found!");
+            throw new Exception("API Key can not be found!");
+        }
+
         return apiKey;
     }
+
 
     protected String fetchBaseUrl() throws Exception {
         if (StringUtils.isNotBlank(baseUrl))
@@ -161,49 +181,52 @@ public class SuperMojo extends AbstractMojo {
 
         baseUrl = System.getenv().get("VERSIONEYE_BASE_URL");
 
-        String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-        String key = getPropertyFromPath(propertiesPath, "base_url");
-        if (key != null && !key.isEmpty()){
+        String localPropertiesPath = homeDirectory + M2_PATH + VERSIONEYE_PROPERTIES_FILE;
+        String key = getPropertyFromPath(localPropertiesPath, BASE_URL);
+        if (StringUtils.isNotBlank(key)) {
             baseUrl = key;
         }
 
-        propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
-        key = getPropertyFromPath(propertiesPath, "base_url");
-        if (key != null && !key.isEmpty()){
+        localPropertiesPath = projectDirectory + SRC_QA_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        key = getPropertyFromPath(localPropertiesPath, BASE_URL);
+        if (StringUtils.isNotBlank(key)){
             baseUrl = key;
         }
 
-        propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-        key = getPropertyFromPath(propertiesPath, "base_url");
-        if (key != null && !key.isEmpty()){
+        localPropertiesPath = projectDirectory + SRC_MAIN_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        key = getPropertyFromPath(localPropertiesPath, BASE_URL);
+        if (StringUtils.isNotBlank(key)){
             baseUrl = key;
         }
 
         return baseUrl;
     }
 
+
     protected String fetchProjectId() throws Exception {
-        if (projectId != null && !projectId.isEmpty() )
+        if (StringUtils.isNotBlank(projectId) )
             return projectId;
 
-        if (propertiesPath != null && !propertiesPath.isEmpty()){
-            String project_id = getPropertyFromPath(propertiesPath, "project_id");
-            if (project_id != null && !project_id.isEmpty()){
-                projectId = project_id;
+        String localProjectId;
+
+        if (StringUtils.isNotBlank(propertiesPath)){
+            localProjectId = getPropertyFromPath(propertiesPath, PROJECT_ID);
+            if (StringUtils.isNotBlank(localProjectId)){
+                projectId = localProjectId;
             }
         }
 
-        String pPath1 = projectDirectory + "/src/qa/resources/" + propertiesFile;
-        String project_id = getPropertyFromPath(pPath1, "project_id");
-        if (project_id != null && !project_id.isEmpty()){
-            projectId = project_id;
+        String pPath1 = projectDirectory + SRC_QA_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        localProjectId = getPropertyFromPath(pPath1, PROJECT_ID);
+        if (localProjectId != null && !localProjectId.isEmpty()){
+            projectId = localProjectId;
             propertiesPath = pPath1;
         }
 
-        String pPath2 = projectDirectory + "/src/main/resources/" + propertiesFile;
-        project_id = getPropertyFromPath(pPath2, "project_id");
-        if (project_id != null && !project_id.isEmpty()){
-            projectId = project_id;
+        String pPath2 = projectDirectory + SRC_MAIN_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+        localProjectId = getPropertyFromPath(pPath2, PROJECT_ID);
+        if (localProjectId != null && !localProjectId.isEmpty()){
+            projectId = localProjectId;
             propertiesPath = pPath2;
         }
 
@@ -216,33 +239,39 @@ public class SuperMojo extends AbstractMojo {
         return projectId;
     }
 
+
     protected Properties fetchProjectProperties() throws Exception {
         if (properties != null)
             return properties;
-        String propertiesPath = getPropertiesPath();
-        System.out.println("propertiesPath: " + propertiesPath);
-        File file = new File(propertiesPath);
+        String localPropertiesPath = getPropertiesPath();
+        System.out.println("propertiesPath: " + localPropertiesPath);
+        File file = new File(localPropertiesPath);
         if (!file.exists())
             createPropertiesFile(file);
         PropertiesUtils propertiesUtils = new PropertiesUtils();
-        properties = propertiesUtils.readProperties(propertiesPath);
+        properties = propertiesUtils.readProperties(localPropertiesPath);
         return properties;
     }
 
     protected String getPropertiesPath() throws Exception {
         if (this.propertiesPath != null && !this.propertiesPath.isEmpty())
             return this.propertiesPath;
-        String propertiesPath = projectDirectory + "/src/qa/resources/" + propertiesFile;
-        File file = new File(propertiesPath);
+
+        String localPropertiesPath = projectDirectory + SRC_QA_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+
+        File file = new File(localPropertiesPath);
+
         if (!file.exists()) {
-            propertiesPath = projectDirectory + "/src/main/resources/" + propertiesFile;
-            new File(propertiesPath);
+            localPropertiesPath = projectDirectory + SRC_MAIN_RESOURCES + VERSIONEYE_PROPERTIES_FILE;
+            new File(localPropertiesPath);
         }
-        this.propertiesPath = propertiesPath;
-        return propertiesPath;
+        this.propertiesPath = localPropertiesPath;
+        return localPropertiesPath;
     }
 
-    private void createPropertiesFile(File file) throws IOException {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createPropertiesFile(File file) throws IOException
+    {
         File parent = file.getParentFile();
         if (!parent.exists()){
             File grandpa = parent.getParentFile();
@@ -251,13 +280,17 @@ public class SuperMojo extends AbstractMojo {
             }
             parent.mkdirs();
         }
+
         file.createNewFile();
     }
 
     protected void initTls(){
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+            @Override
             public X509Certificate[] getAcceptedIssuers(){return null;}
+            @Override
             public void checkClientTrusted(X509Certificate[] certs, String authType){}
+            @Override
             public void checkServerTrusted(X509Certificate[] certs, String authType){}
         }};
         try {
@@ -269,36 +302,36 @@ public class SuperMojo extends AbstractMojo {
         }
     }
 
-    protected void setProxy(){
+
+    protected void setProxy() {
+
+        final String localPropertiesPath = homeDirectory + M2_PATH + VERSIONEYE_PROPERTIES_FILE;
+
         try{
-            if (proxyHost == null || proxyHost.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String host = getPropertyFromPath(propertiesPath, "proxyHost");
-                if (host != null && !host.isEmpty()){
+            if (StringUtils.isBlank(proxyHost)) {
+                String host = getPropertyFromPath(localPropertiesPath, "proxyHost");
+                if (StringUtils.isNotBlank(host)){
                     proxyHost = host;
                 }
             }
 
-            if (proxyPort == null || proxyPort.isEmpty() ){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String port = getPropertyFromPath(propertiesPath, "proxyPort");
-                if (port != null && !port.isEmpty()){
+            if (StringUtils.isNotBlank(proxyPort)) {
+                String port = getPropertyFromPath(localPropertiesPath, "proxyPort");
+                if (StringUtils.isNotBlank(port)){
                     proxyPort = port;
                 }
             }
 
-            if (proxyUser == null || proxyUser.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String user = getPropertyFromPath(propertiesPath, "proxyUser");
-                if (user != null && !user.isEmpty()){
+            if (StringUtils.isNotBlank(proxyUser)) {
+                String user = getPropertyFromPath(localPropertiesPath, "proxyUser");
+                if (StringUtils.isNotBlank(user)){
                     proxyUser = user;
                 }
             }
 
-            if (proxyPassword == null || proxyPassword.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String password = getPropertyFromPath(propertiesPath, "proxyPassword");
-                if (password != null && !password.isEmpty()){
+            if (StringUtils.isNotBlank(proxyPassword)) {
+                String password = getPropertyFromPath(localPropertiesPath, "proxyPassword");
+                if (StringUtils.isNotBlank(password)) {
                     proxyPassword = password;
                 }
             }
@@ -306,19 +339,22 @@ public class SuperMojo extends AbstractMojo {
             ex.printStackTrace();
         }
 
-        boolean emptyProxyHost = proxyHost == null || proxyHost.isEmpty();
-        boolean emptyProxyPort = proxyPort == null || proxyPort.isEmpty();
+        boolean emptyProxyHost = StringUtils.isBlank(proxyHost);
+        boolean emptyProxyPort = StringUtils.isBlank(proxyPort);
+
         if (emptyProxyHost && emptyProxyPort){
-            return ;
+            return;
         }
+
         System.setProperty("proxySet", "true");
         System.setProperty("http.proxyHost", proxyHost);
         System.setProperty("http.proxyPort", proxyPort);
         System.setProperty("https.proxyHost", proxyHost);
         System.setProperty("https.proxyPort", proxyPort);
 
-        boolean emptyProxyUser = proxyUser == null || proxyUser.isEmpty();
-        boolean emptyProxyPass = proxyPassword == null || proxyPassword.isEmpty();
+        boolean emptyProxyUser = StringUtils.isBlank(proxyUser);
+        boolean emptyProxyPass = StringUtils.isBlank(proxyPassword);
+
         if (emptyProxyUser && emptyProxyPass){
             return ;
         }
@@ -330,12 +366,11 @@ public class SuperMojo extends AbstractMojo {
         File file = new File(propertiesPath);
         if (file.exists()){
             PropertiesUtils propertiesUtils = new PropertiesUtils();
-            Properties homeProperties = propertiesUtils.readProperties(propertiesPath);
-            return homeProperties.getProperty(propertiesKey);
+            Properties localHomeProperties = propertiesUtils.readProperties(propertiesPath);
+            return localHomeProperties.getProperty(propertiesKey);
         } else {
-            getLog().info("File " + propertiesPath + " does not exist");
+            getLog().debug("File " + propertiesPath + " does not exist");
         }
         return null;
     }
-
 }

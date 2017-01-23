@@ -4,12 +4,12 @@
 
   <!-- Doesn't work on previous versions because of Eclipse/Sonatype Aether incompatibility. -->
   <prerequisites>
-    <maven>3.1</maven>
+    <maven>${maven.version}</maven>
   </prerequisites>
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.11.0</version>
+  <version>3.11.2-alg</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -51,10 +51,14 @@
   </distributionManagement>
 
   <properties>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.3.9</maven.version>
     <jackson.version>1.9.13</jackson.version>
     <httpcomponents.version>4.5.2</httpcomponents.version>
+    <surefire.version>2.19.1</surefire.version>
   </properties>
 
   <profiles>
@@ -65,6 +69,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -110,7 +115,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.4</version>
+      <version>3.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -125,19 +130,47 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.9.13.6</version>
-
+      <version>6.10</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>21.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.6.2</version>
     </dependency>
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
 
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.10.2</version>
+        <version>3.11.1</version>
         <configuration>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
@@ -154,7 +187,7 @@
           <!--<organisation>versioneye</organisation>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>TrueOrFalse</visibility>-->
-          <!--<transitiveDependencies>false</transitiveDependencies>-->
+          <!-- <transitiveDependencies>true</transitiveDependencies> -->
         </configuration>
       </plugin>
 
@@ -230,13 +263,25 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
     </plugins>
   </build>
 
   <reporting>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
         <version>2.3</version>
         <configuration>

@@ -26,6 +26,7 @@ public class CreateMojo extends ProjectMojo {
     @Parameter( property = "resource", defaultValue = "/projects?api_key=")
     private String resource;
 
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();
@@ -44,7 +45,12 @@ public class CreateMojo extends ProjectMojo {
             }
 
             ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
-            merge(response.getId());
+
+            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
+                mavenSession.getTopLevelProject().setContextValue("veye_project_id", response.getId());
+            }
+
+            merge( response.getId() );
             if (updatePropertiesAfterCreate) {
                 writeProperties( response );
             }
@@ -56,13 +62,11 @@ public class CreateMojo extends ProjectMojo {
         }
     }
 
+
     private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
-        String apiKey = fetchApiKey();
-        String url = fetchBaseUrl() + apiPath + resource + apiKey;
-        Reader reader = HttpUtils.post(url, outStream.toByteArray(), "upload", visibility, name, organisation, team);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(reader, ProjectJsonResponse.class );
+        return createNewProject(resource, outStream);
     }
+
 
     private void prettyPrintStart(){
         getLog().info(".");
