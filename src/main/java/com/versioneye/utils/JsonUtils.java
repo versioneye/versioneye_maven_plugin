@@ -75,12 +75,13 @@ public class JsonUtils {
         List<Map<String, Object>> hashes = new ArrayList<>();
 
         if (CollectionUtils.collectionNotEmpty(directDependencies)) {
-          hashes.addAll( generateHashFromDependencyList( directDependencies));
+            hashes.addAll( generateHashFromDependencyList( directDependencies));
         }
 
         if (CollectionUtils.collectionNotEmpty(plugins)) {
             hashes.addAll( generateHashFromPluginList(plugins));
         }
+
         return hashes;
     }
 

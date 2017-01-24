@@ -1,9 +1,5 @@
 package com.versioneye;
 
-import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.HttpUtils;
-import com.versioneye.utils.PropertiesUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -11,22 +7,25 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.jackson.map.ObjectMapper;
+
+import com.versioneye.dto.ProjectJsonResponse;
+import com.versioneye.utils.HttpUtils;
+import com.versioneye.utils.PropertiesUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Reader;
 import java.util.Properties;
 
 /**
  * Creates a project at VersionEye based on the dependencies from the current project.
  */
+@SuppressWarnings("unused")
 @Mojo( name = "create", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class CreateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects?api_key=")
     private String resource;
 
-
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();
@@ -74,6 +73,7 @@ public class CreateMojo extends ProjectMojo {
         getLog().info(".");
     }
 
+    @Override
     protected void writeProperties(ProjectJsonResponse response) throws Exception {
         Properties properties = fetchProjectProperties();
         if (response.getId() != null) {
@@ -83,6 +83,7 @@ public class CreateMojo extends ProjectMojo {
         utils.writeProperties(properties, getPropertiesPath());
     }
 
+    @Override
     protected void merge(String childId) {
         if (!mergeAfterCreate) {
             return ;

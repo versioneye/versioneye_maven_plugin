@@ -18,7 +18,7 @@ import java.net.URLConnection;
 @Mojo( name = "ping", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class PingMojo extends SuperMojo {
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException, MojoFailureException  {
         try{
             setProxy();
             initTls();

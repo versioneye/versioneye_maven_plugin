@@ -51,13 +51,13 @@
   </distributionManagement>
 
   <properties>
+    <httpcomponents.version>4.5.2</httpcomponents.version>
+    <jackson.version>1.9.13</jackson.version>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.3.9</maven.version>
-    <jackson.version>1.9.13</jackson.version>
-    <httpcomponents.version>4.5.2</httpcomponents.version>
     <surefire.version>2.19.1</surefire.version>
   </properties>
 
@@ -166,7 +166,6 @@
       </plugins>
     </pluginManagement>
     <plugins>
-
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>

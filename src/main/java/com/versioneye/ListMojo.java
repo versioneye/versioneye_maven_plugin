@@ -3,6 +3,7 @@ package com.versioneye;
 import com.versioneye.utils.DependencyUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.aether.artifact.Artifact;
@@ -18,7 +19,8 @@ import java.util.List;
 @Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class ListMojo extends ProjectMojo {
 
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoExecutionException, MojoFailureException
+    {
         versionEyeOutput();
 
         try{
