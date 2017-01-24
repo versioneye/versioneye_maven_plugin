@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -142,10 +141,6 @@ public abstract class SuperMojo extends AbstractMojo
 
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
-
-
-    public abstract void execute() throws MojoExecutionException, MojoFailureException;
-
 
     protected String fetchApiKey() throws Exception {
         if (StringUtils.isNotBlank(apiKey) )
@@ -292,11 +287,14 @@ public abstract class SuperMojo extends AbstractMojo
     protected void initTls(){
 
       TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-            public X509Certificate[] getAcceptedIssuers(){return null;}
-            @Override
-            public void checkClientTrusted(X509Certificate[] certs, String authType){}
-            @Override
-            public void checkServerTrusted(X509Certificate[] certs, String authType){}
+          @Override
+          public X509Certificate[] getAcceptedIssuers(){return null;}
+
+          @Override
+          public void checkClientTrusted(X509Certificate[] certs, String authType){}
+
+          @Override
+          public void checkServerTrusted(X509Certificate[] certs, String authType){}
         }};
         try {
             SSLContext sc = SSLContext.getInstance("TLS");

@@ -11,9 +11,11 @@ import java.util.Map;
 /**
  * Writes all direct dependencies into a JSON file.
  */
+@SuppressWarnings("unused")
 @Mojo( name = "json", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class JsonMojo extends ProjectMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             Map<String, Object> jsonMap = getDirectDependenciesJsonMap(nameStrategy);

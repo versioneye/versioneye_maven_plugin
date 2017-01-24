@@ -55,9 +55,9 @@ public class CreateMojo extends ProjectMojo {
             }
             prettyPrint(response);
         } catch( Exception exception ){
-            throw new MojoExecutionException("Oh no! Something went wrong :-( " +
-              "Get in touch with the VersionEye guys and give them feedback." +
-              "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
+              throw new MojoExecutionException("Oh no! Something went wrong :-( " +
+                  "Get in touch with the VersionEye guys and give them feedback." +
+                  "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
 
@@ -89,7 +89,6 @@ public class CreateMojo extends ProjectMojo {
             return ;
         }
         try {
-
             if (StringUtils.isBlank(parentGroupId) || StringUtils.isBlank(parentArtifactId)) {
                 MavenProject mp = project.getParent();
                 if (mp == null || StringUtils.isBlank(mp.getGroupId()) || StringUtils.isBlank(mp.getArtifactId()) ){

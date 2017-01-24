@@ -9,12 +9,14 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 @Mojo( name = "delete", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class DeleteMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects")
     private String resource;
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();

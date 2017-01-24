@@ -40,7 +40,7 @@ import java.util.Properties;
 /**
  * Methods required to deal with projects resource
  */
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getTransitiveDependenciesJsonStream(String nameStrategy) throws Exception {
@@ -190,7 +190,7 @@ public class ProjectMojo extends SuperMojo {
     }
 
     private List<Plugin> getPluginsFromXml(){
-        List<Plugin> plugins = new ArrayList<Plugin>();
+        List<Plugin> plugins = new ArrayList<>();
         try {
             File pom = project.getModel().getPomFile();
 

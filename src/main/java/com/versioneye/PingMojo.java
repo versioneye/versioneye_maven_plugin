@@ -15,9 +15,11 @@ import java.net.URLConnection;
 /**
  * Ping the VersionEye API. Expects a pong in response.
  */
+@SuppressWarnings("unused")
 @Mojo( name = "ping", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class PingMojo extends SuperMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException  {
         try{
             setProxy();

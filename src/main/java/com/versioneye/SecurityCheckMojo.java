@@ -8,16 +8,18 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.ByteArrayOutputStream;
 
+@SuppressWarnings("unused")
 @Mojo( name = "securityCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class SecurityCheckMojo extends UpdateMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            ByteArrayOutputStream jsonDependenciesStream;
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);

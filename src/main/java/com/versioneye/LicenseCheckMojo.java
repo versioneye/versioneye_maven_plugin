@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 @Mojo( name = "licenseCheck", defaultPhase = LifecyclePhase.VERIFY )
 public class LicenseCheckMojo extends UpdateMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
         try{

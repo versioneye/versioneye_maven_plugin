@@ -16,9 +16,11 @@ import java.util.List;
 /**
  * Lists all direct and recursive dependencies.
  */
+@SuppressWarnings("unused")
 @Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class ListMojo extends ProjectMojo {
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         versionEyeOutput();
@@ -28,7 +30,7 @@ public class ListMojo extends ProjectMojo {
             DependencyNode root = getDependencyNode(nlg);
             List<Artifact> dependencies          = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
             List<Artifact> directDependencies    = DependencyUtils.collectDirectDependencies(root.getChildren());
-            List<Artifact> recursiveDependencies = new ArrayList<Artifact>(dependencies);
+            List<Artifact> recursiveDependencies = new ArrayList<>(dependencies);
             recursiveDependencies.removeAll(directDependencies);
             List<Dependency> deps = project.getDependencies();
             produceNiceOutput(deps, recursiveDependencies);
