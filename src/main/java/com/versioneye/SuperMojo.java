@@ -142,7 +142,7 @@ public abstract class SuperMojo extends AbstractMojo
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
-    protected String fetchApiKey() throws Exception {
+    protected String fetchApiKey() throws IOException {
         if (StringUtils.isNotBlank(apiKey) )
             return apiKey;
 
@@ -168,14 +168,14 @@ public abstract class SuperMojo extends AbstractMojo
 
         if (apiKey == null){
             getLog().error("API Key can not be found!");
-            throw new Exception("API Key can not be found!");
+            throw new IllegalArgumentException("API Key can not be found!");
         }
 
         return apiKey;
     }
 
 
-    protected String fetchBaseUrl() throws Exception {
+    protected String fetchBaseUrl() throws IOException {
         if (StringUtils.isNotBlank(baseUrl))
             return baseUrl;
 
@@ -203,7 +203,8 @@ public abstract class SuperMojo extends AbstractMojo
     }
 
 
-    protected String fetchProjectId() throws Exception {
+    protected String fetchProjectId() throws IOException, MojoExecutionException
+    {
         if (StringUtils.isNotBlank(projectId) )
             return projectId;
 
@@ -240,7 +241,7 @@ public abstract class SuperMojo extends AbstractMojo
     }
 
 
-    protected Properties fetchProjectProperties() throws Exception {
+    protected Properties fetchProjectProperties() throws IOException {
         if (properties != null)
             return properties;
         String localPropertiesPath = getPropertiesPath();
@@ -253,7 +254,7 @@ public abstract class SuperMojo extends AbstractMojo
         return properties;
     }
 
-    protected String getPropertiesPath() throws Exception {
+    protected String getPropertiesPath() {
         if (this.propertiesPath != null && !this.propertiesPath.isEmpty())
             return this.propertiesPath;
 
@@ -270,8 +271,7 @@ public abstract class SuperMojo extends AbstractMojo
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void createPropertiesFile(File file) throws IOException
-    {
+    private void createPropertiesFile(File file) throws IOException {
         File parent = file.getParentFile();
         if (!parent.exists()){
             File grandpa = parent.getParentFile();
@@ -284,7 +284,7 @@ public abstract class SuperMojo extends AbstractMojo
         file.createNewFile();
     }
 
-    protected void initTls(){
+    protected void initTls() {
 
       TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
           @Override
@@ -318,21 +318,21 @@ public abstract class SuperMojo extends AbstractMojo
                 }
             }
 
-            if (StringUtils.isNotBlank(proxyPort)) {
+            if (StringUtils.isBlank(proxyPort)) {
                 String port = getPropertyFromPath(localPropertiesPath, "proxyPort");
                 if (StringUtils.isNotBlank(port)){
                     proxyPort = port;
                 }
             }
 
-            if (StringUtils.isNotBlank(proxyUser)) {
+            if (StringUtils.isBlank(proxyUser)) {
                 String user = getPropertyFromPath(localPropertiesPath, "proxyUser");
                 if (StringUtils.isNotBlank(user)){
                     proxyUser = user;
                 }
             }
 
-            if (StringUtils.isNotBlank(proxyPassword)) {
+            if (StringUtils.isBlank(proxyPassword)) {
                 String password = getPropertyFromPath(localPropertiesPath, "proxyPassword");
                 if (StringUtils.isNotBlank(password)) {
                     proxyPassword = password;
@@ -342,30 +342,31 @@ public abstract class SuperMojo extends AbstractMojo
             ex.printStackTrace();
         }
 
-        boolean emptyProxyHost = StringUtils.isBlank(proxyHost);
-        boolean emptyProxyPort = StringUtils.isBlank(proxyPort);
-
-        if (emptyProxyHost && emptyProxyPort){
-            return;
-        }
-
-        System.setProperty("proxySet", "true");
-        System.setProperty("http.proxyHost", proxyHost);
-        System.setProperty("http.proxyPort", proxyPort);
-        System.setProperty("https.proxyHost", proxyHost);
-        System.setProperty("https.proxyPort", proxyPort);
-
-        boolean emptyProxyUser = StringUtils.isBlank(proxyUser);
-        boolean emptyProxyPass = StringUtils.isBlank(proxyPassword);
-
-        if (emptyProxyUser && emptyProxyPass){
-            return ;
-        }
-        System.getProperties().put("http.proxyUser", proxyUser);
-        System.getProperties().put("http.proxyPassword", proxyPassword);
+      assignProxySystemProperties();
     }
 
-    private String getPropertyFromPath(String propertiesPath, String propertiesKey ) throws Exception {
+  public void assignProxySystemProperties() {
+    boolean emptyProxyHost = StringUtils.isBlank(proxyHost);
+    boolean emptyProxyPort = StringUtils.isBlank(proxyPort);
+
+    if (emptyProxyHost && emptyProxyPort){
+        return;
+    }
+
+    System.setProperty("proxySet", "true");
+    System.setProperty("http.proxyHost", proxyHost);
+    System.setProperty("http.proxyPort", proxyPort);
+    System.setProperty("https.proxyHost", proxyHost);
+    System.setProperty("https.proxyPort", proxyPort);
+
+    if (StringUtils.isBlank(proxyUser))
+        System.setProperty("http.proxyUser", proxyUser);
+
+    if (StringUtils.isBlank(proxyPassword))
+        System.setProperty("http.proxyPassword", proxyPassword);
+  }
+
+  private String getPropertyFromPath(String propertiesPath, String propertiesKey ) throws IOException {
         File file = new File(propertiesPath);
         if (file.exists()){
             PropertiesUtils propertiesUtils = new PropertiesUtils();
@@ -374,6 +375,7 @@ public abstract class SuperMojo extends AbstractMojo
         } else {
             getLog().debug("File " + propertiesPath + " does not exist");
         }
+
         return null;
     }
 }

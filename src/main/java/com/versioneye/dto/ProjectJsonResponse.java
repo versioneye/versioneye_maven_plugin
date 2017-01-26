@@ -17,6 +17,8 @@ public class ProjectJsonResponse {
     private Integer licenses_unknown = 0;
     private Integer sv_count = 0;
 
+    private ProjectDependency[] dependencies;
+
     public Integer getSv_count() {
         return sv_count;
     }
@@ -24,8 +26,6 @@ public class ProjectJsonResponse {
     public void setSv_count(Integer sv_count) {
         this.sv_count = sv_count;
     }
-
-    private ProjectDependency[] dependencies;
 
     public Integer getLicenses_red() {
         return licenses_red;

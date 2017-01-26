@@ -1,6 +1,5 @@
 package com.versioneye.utils;
 
-import com.versioneye.dto.ErrorJsonResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,7 +10,10 @@ import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.plexus.util.StringUtils;
 
+import com.versioneye.dto.ErrorJsonResponse;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -24,11 +26,11 @@ import java.net.URL;
 @SuppressWarnings("WeakerAccess")
 public class HttpUtils {
 
-    public static Integer ONE_SECOND = 1000;
-    public static Integer ONE_MINUTE = ONE_SECOND * 60;
-    public static Integer TEN_MINUTE = ONE_MINUTE * 10;
+    public static final Integer ONE_SECOND = 1000;
+    public static final Integer ONE_MINUTE = ONE_SECOND * 60;
+    public static final Integer TEN_MINUTE = ONE_MINUTE * 10;
 
-    public static String get(String url) throws Exception {
+    public static String get(String url) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -83,7 +85,7 @@ public class HttpUtils {
         return new InputStreamReader(response.getEntity().getContent());
     }
 
-    public static String delete(String url) throws Exception {
+    public static String delete(String url) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
@@ -106,7 +108,7 @@ public class HttpUtils {
         return response.toString();
     }
 
-    private static String getErrorMessage(HttpResponse response) throws Exception {
+    private static String getErrorMessage(HttpResponse response) {
         String errorMsg = getErrorFromJson(response);
         if (errorMsg != null){
             return errorMsg;
@@ -114,7 +116,7 @@ public class HttpUtils {
         return getPureBodyString(response);
     }
 
-    private static String getErrorFromJson(HttpResponse response){
+    private static String getErrorFromJson(HttpResponse response) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             ErrorJsonResponse error = mapper.readValue(response.getEntity().getContent(), ErrorJsonResponse.class);
@@ -125,7 +127,7 @@ public class HttpUtils {
         }
     }
 
-    private static String getPureBodyString(HttpResponse response){
+    private static String getPureBodyString(HttpResponse response) {
         try {
             InputStream content = response.getEntity().getContent();
             BufferedReader in = new BufferedReader(new InputStreamReader( content ) );

@@ -1,10 +1,11 @@
 package com.versioneye;
 
-import com.versioneye.utils.JsonUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+
+import com.versioneye.utils.JsonUtils;
 
 import java.util.Map;
 
@@ -25,8 +26,8 @@ public class JsonMojo extends ProjectMojo {
             prettyPrintEnd(filePath);
         } catch( Exception exception ){
             throw new MojoExecutionException( "Oh no! Something went wrong. " +
-                    "Get in touch with the VersionEye guys and give them feedback. " +
-                    "You find them on Twitter at https//twitter.com/VersionEye. ", exception );
+                "Get in touch with the VersionEye guys and give them feedback. " +
+                "You find them on Twitter at https//twitter.com/VersionEye. ", exception );
         }
     }
 

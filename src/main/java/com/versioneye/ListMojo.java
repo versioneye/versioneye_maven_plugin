@@ -1,6 +1,5 @@
 package com.versioneye;
 
-import com.versioneye.utils.DependencyUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -9,6 +8,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
+
+import com.versioneye.utils.DependencyUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,7 @@ import java.util.List;
 public class ListMojo extends ProjectMojo {
 
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException
-    {
+    public void execute() throws MojoExecutionException, MojoFailureException {
         versionEyeOutput();
 
         try{
@@ -41,19 +41,19 @@ public class ListMojo extends ProjectMojo {
         }
     }
 
-    private void produceNiceOutput(List<Dependency> directDependencies, List<Artifact> recursiveDependencies){
+    private void produceNiceOutput(List<Dependency> directDependencies, List<Artifact> recursiveDependencies) {
         productNiceOutputForDirectDependencies(directDependencies);
         productNiceOutputForRecursiveDependencies(recursiveDependencies);
         produceNiceOutputSummary(directDependencies.size(), recursiveDependencies.size());
     }
 
-    private void versionEyeOutput(){
+    private void versionEyeOutput() {
         getLog().info("");
         getLog().info("************* \\_/ VersionEye \\_/ *************");
         getLog().info("");
     }
 
-    private void productNiceOutputForDirectDependencies(List<Dependency> directDependencies){
+    private void productNiceOutputForDirectDependencies(List<Dependency> directDependencies) {
         getLog().info("");
         getLog().info(directDependencies.size() + " Direct Dependencies: ");
         getLog().info("--------------------");
@@ -65,7 +65,7 @@ public class ListMojo extends ProjectMojo {
         getLog().info("");
     }
 
-    private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
+    private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies) {
         getLog().info("");
         getLog().info(recursiveDependencies.size() + " Transitive Dependencies: ");
         getLog().info("--------------------");
@@ -79,8 +79,8 @@ public class ListMojo extends ProjectMojo {
         int allCount = directCount + recursiveCount;
         getLog().info("");
         getLog().info(directCount + " Direct dependencies and " +
-                recursiveCount + " transitive dependencies. This project has " +
-                allCount + " dependencies.");
+            recursiveCount + " transitive dependencies. This project has " +
+            allCount + " dependencies.");
         getLog().info("");
         getLog().info("");
     }

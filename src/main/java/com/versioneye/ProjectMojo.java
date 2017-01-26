@@ -1,13 +1,5 @@
 package com.versioneye;
 
-import com.versioneye.dto.ProjectDependency;
-import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.CollectionUtils;
-import com.versioneye.utils.DependencyUtils;
-import com.versioneye.utils.HttpUtils;
-import com.versioneye.utils.JsonUtils;
-import com.versioneye.utils.PropertiesUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -23,19 +15,29 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.versioneye.dto.ProjectDependency;
+import com.versioneye.dto.ProjectJsonResponse;
+import com.versioneye.utils.CollectionUtils;
+import com.versioneye.utils.DependencyUtils;
+import com.versioneye.utils.HttpUtils;
+import com.versioneye.utils.JsonUtils;
+import com.versioneye.utils.PropertiesUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Methods required to deal with projects resource
@@ -43,7 +45,8 @@ import java.util.Properties;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class ProjectMojo extends SuperMojo {
 
-    protected ByteArrayOutputStream getTransitiveDependenciesJsonStream(String nameStrategy) throws Exception {
+    protected ByteArrayOutputStream getTransitiveDependenciesJsonStream(String nameStrategy) throws Exception
+    {
         PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
         DependencyNode root = getDependencyNode(nlg);
         List<Artifact> transDependencies = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
@@ -65,7 +68,8 @@ public class ProjectMojo extends SuperMojo {
         return jsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
     }
 
-    protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
+    protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws IOException
+    {
         List<Plugin> plugins = new ArrayList<>();
         if (trackPlugins){
             plugins = getPluginsFromXml();
@@ -84,7 +88,7 @@ public class ProjectMojo extends SuperMojo {
         return jsonUtils.dependenciesToJson(project, filteredDependencies, plugins, nameStrategy);
     }
 
-    protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) throws Exception {
+    protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) {
         List<Dependency> dependencies = project.getDependencies();
         if (dependencies == null || dependencies.isEmpty()){
             return null;
@@ -96,7 +100,8 @@ public class ProjectMojo extends SuperMojo {
         return jsonUtils.getJsonPom(project, dependencyHashes, nameStrategy);
     }
 
-    protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
+    protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception
+    {
         DependencyNode root = getDependencyNode(new PreorderNodeListGenerator());
         List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
         JsonUtils jsonUtils = new JsonUtils();
@@ -112,13 +117,13 @@ public class ProjectMojo extends SuperMojo {
         return root;
     }
 
-    protected void prettyPrint0End() throws Exception {
+    protected void prettyPrint0End() {
         getLog().info(".");
         getLog().info("There are no dependencies in this project! - " + project.getId() );
         getLog().info(".");
     }
 
-    protected void prettyPrint(ProjectJsonResponse response) throws Exception {
+    protected void prettyPrint(ProjectJsonResponse response) throws IOException {
         getLog().info(".");
         getLog().info("Project name: " + response.getName());
         getLog().info("Project id: "   + response.getId());
@@ -174,7 +179,7 @@ public class ProjectMojo extends SuperMojo {
         }
     }
 
-    protected void writeProperties(ProjectJsonResponse response) throws Exception {
+    protected void writeProperties(ProjectJsonResponse response) throws IOException {
         Properties properties = fetchProjectProperties();
         if (response.getId() != null) {
             properties.setProperty("project_id", response.getId());
@@ -183,13 +188,13 @@ public class ProjectMojo extends SuperMojo {
         utils.writeProperties(properties, getPropertiesPath());
     }
 
-    private void iterateThrough(List<Dependency> dependencies){
+    private void iterateThrough(List<Dependency> dependencies) {
         for(Dependency dep: dependencies){
             getLog().info(" - dependency: " + dep.getGroupId() + "/" + dep.getArtifactId() + " " + dep.getVersion());
         }
     }
 
-    private List<Plugin> getPluginsFromXml(){
+    private List<Plugin> getPluginsFromXml() {
         List<Plugin> plugins = new ArrayList<>();
         try {
             File pom = project.getModel().getPomFile();
@@ -236,7 +241,7 @@ public class ProjectMojo extends SuperMojo {
         }
     }
 
-    private String parseVersionString(String version){
+    private String parseVersionString(String version) {
 
         String localVersion = version;
 
@@ -247,7 +252,7 @@ public class ProjectMojo extends SuperMojo {
         return localVersion;
     }
 
-    private List<Dependency> filterForScopes(List<Dependency> dependencies){
+    private List<Dependency> filterForScopes(List<Dependency> dependencies) {
         if (StringUtils.isBlank(skipScopes) || CollectionUtils.collectionIsEmpty(dependencies))
             return dependencies;
 
@@ -272,8 +277,7 @@ public class ProjectMojo extends SuperMojo {
     }
 
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException
-  {
+  public void execute() throws MojoExecutionException, MojoFailureException {
 
   }
 }

@@ -8,13 +8,12 @@ import java.util.Collection;
 @SuppressWarnings("WeakerAccess")
 public class CollectionUtils
 {
-  private CollectionUtils() {
-
-  }
+  private CollectionUtils() {}
 
   public static boolean collectionIsEmpty(Collection collection) {
     return collection == null || collection.isEmpty();
   }
+  
   public static boolean collectionNotEmpty(Collection collection) {
     return !collectionIsEmpty(collection);
   }

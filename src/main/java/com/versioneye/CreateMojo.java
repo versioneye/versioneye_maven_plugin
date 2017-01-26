@@ -13,6 +13,7 @@ import com.versioneye.utils.HttpUtils;
 import com.versioneye.utils.PropertiesUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -55,14 +56,15 @@ public class CreateMojo extends ProjectMojo {
             }
             prettyPrint(response);
         } catch( Exception exception ){
-              throw new MojoExecutionException("Oh no! Something went wrong :-( " +
-                  "Get in touch with the VersionEye guys and give them feedback." +
-                  "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
+            throw new MojoExecutionException("Oh no! Something went wrong :-( " +
+                "Get in touch with the VersionEye guys and give them feedback." +
+                "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
 
 
-    private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
+    private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception
+    {
         return createNewProject(resource, outStream);
     }
 
@@ -74,7 +76,7 @@ public class CreateMojo extends ProjectMojo {
     }
 
     @Override
-    protected void writeProperties(ProjectJsonResponse response) throws Exception {
+    protected void writeProperties(ProjectJsonResponse response) throws IOException {
         Properties properties = fetchProjectProperties();
         if (response.getId() != null) {
             properties.setProperty("project_id", response.getId());

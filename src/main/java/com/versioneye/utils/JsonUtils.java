@@ -11,6 +11,7 @@ import org.eclipse.aether.artifact.Artifact;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +29,8 @@ public class JsonUtils {
     private static final String NAME = "name";
     private static final String SCOPE = "scope";
 
-    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
+    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws
+      IOException {
         List<Map<String, Object>> dependencyHashes = new ArrayList<>();
         if ((CollectionUtils.collectionNotEmpty(dependencies)) || (CollectionUtils.collectionNotEmpty(plugins))) {
             dependencyHashes = getDependencyHashes(dependencies, plugins);
@@ -38,7 +40,7 @@ public class JsonUtils {
         return outstream;
     }
 
-    public ByteArrayOutputStream artifactsToJson(List<Artifact> directDependencies) throws Exception {
+    public ByteArrayOutputStream artifactsToJson(List<Artifact> directDependencies) throws IOException {
         List<Map<String, Object>> hashes = getHashes(directDependencies);
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         toJson(outstream, hashes);
@@ -46,31 +48,31 @@ public class JsonUtils {
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void dependenciesToJsonFile(String name, Map<String, Object> directDependencies, String file) throws Exception {
+    public void dependenciesToJsonFile(String name, Map<String, Object> directDependencies, String file) throws IOException {
         File targetFile = getTargetFile(file);
         toJson(new FileOutputStream(targetFile), directDependencies);
     }
 
     @SuppressWarnings("unused")
-    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file, String nameStrategy) throws Exception {
+    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file, String nameStrategy) throws IOException {
         List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
         File targetFile = getTargetFile(file);
         toJson(new FileOutputStream(targetFile), getJsonPom(project, dependencyHashes, nameStrategy));
     }
 
-    public static void toJson(OutputStream output, Object input) throws Exception {
+    public static void toJson(OutputStream output, Object input) throws IOException {
          ObjectMapper mapper = new ObjectMapper();
          mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
          mapper.writeValue(output, input);
     }
 
-    public List<Map<String, Object>> getHashes(List<Artifact> directDependencies){
+    public List<Map<String, Object>> getHashes(List<Artifact> directDependencies) {
         List<Map<String, Object>> hashes = new ArrayList<>(directDependencies.size());
         hashes.addAll( generateHashForJsonOutput( directDependencies));
         return hashes;
     }
 
-    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
+    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins) {
 
         List<Map<String, Object>> hashes = new ArrayList<>();
 
@@ -102,6 +104,7 @@ public class JsonUtils {
         }
 
         List<Map<String, Object>> output = new ArrayList<>(input.size());
+
         for (Dependency dependency : input) {
             Map<String, Object> map = new HashMap<>(2);
             map.put(VERSION, dependency.getVersion());
