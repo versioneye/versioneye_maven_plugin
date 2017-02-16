@@ -157,7 +157,7 @@
       <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
-      <!--<plugin>
+     <!-- <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>

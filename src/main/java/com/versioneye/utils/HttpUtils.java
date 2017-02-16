@@ -4,27 +4,38 @@ import com.versioneye.dto.ErrorJsonResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.SystemDefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+
+import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
 /**
  * Methods to deal with the HTTP protocol.
  */
 public class HttpUtils {
 
-    public static Integer ONE_SECOND = 1000;
-    public static Integer ONE_MINUTE = ONE_SECOND * 60;
-    public static Integer TEN_MINUTE = ONE_MINUTE * 10;
+    private static Integer ONE_SECOND = 1000;
+    private static Integer ONE_MINUTE = ONE_SECOND * 60;
+    private static Integer TEN_MINUTE = ONE_MINUTE * 10;
 
     public static String get(String url) throws Exception {
         URL obj = new URL(url);
@@ -40,7 +51,7 @@ public class HttpUtils {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
@@ -49,26 +60,35 @@ public class HttpUtils {
     }
 
     public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name, String team) throws Exception {
-        HttpClient client = new SystemDefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
-        ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+            public X509Certificate[] getAcceptedIssuers(){return null;}
+            public void checkClientTrusted(X509Certificate[] certs, String authType){}
+            public void checkServerTrusted(X509Certificate[] certs, String authType){}
+        }};
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext, new DefaultHostnameVerifier());
+        HttpClient client = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).build();
 
-        MultipartEntity multipartEntity = new MultipartEntity();
-        multipartEntity.addPart(dataName, byteArrayBody);
+        HttpPost httpPost = new HttpPost(url);
+        ByteArrayBody byteArrayBody = new ByteArrayBody(data, APPLICATION_JSON, "pom.json");
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addPart(dataName, byteArrayBody);
 
         if (visibility != null && !visibility.isEmpty())
-            multipartEntity.addPart("visibility", new StringBody(visibility));
+            builder.addPart("visibility", new StringBody(visibility, APPLICATION_JSON));
 
         if (name != null && !name.isEmpty())
-            multipartEntity.addPart("name", new StringBody(name));
+            builder.addPart("name", new StringBody(name, APPLICATION_JSON));
 
         if (orga_name != null && !orga_name.isEmpty())
-            multipartEntity.addPart("orga_name", new StringBody(orga_name));
+            builder.addPart("orga_name", new StringBody(orga_name, APPLICATION_JSON));
 
         if (team != null && !team.isEmpty())
-            multipartEntity.addPart("team_name", new StringBody(team));
+            builder.addPart("team_name", new StringBody(team, APPLICATION_JSON));
 
-        httpPost.setEntity(multipartEntity);
+        httpPost.setEntity(builder.build());
         HttpResponse response = client.execute(httpPost);
 
         int statusCode = response.getStatusLine().getStatusCode();
@@ -96,7 +116,7 @@ public class HttpUtils {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
@@ -128,7 +148,7 @@ public class HttpUtils {
             InputStream content = response.getEntity().getContent();
             BufferedReader in = new BufferedReader(new InputStreamReader( content ) );
             String inputLine;
-            StringBuffer body = new StringBuffer();
+            StringBuilder body = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 body.append(inputLine);
             }
