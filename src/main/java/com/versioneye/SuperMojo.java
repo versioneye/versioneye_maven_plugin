@@ -30,10 +30,10 @@ public class SuperMojo extends AbstractMojo {
 
     protected static final String propertiesFile = "versioneye.properties";
 
-    @Component
+    @Parameter( defaultValue = "${session}", readonly = true )
     protected RepositorySystem system;
 
-    @Component
+    @Parameter( defaultValue = "${session}", readonly = true )
     protected MavenSession mavenSession;
 
     @Parameter( defaultValue="${repositorySystemSession}" )

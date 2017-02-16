@@ -52,9 +52,12 @@
 
   <properties>
     <!-- The minimum Maven version that should be supported. -->
-    <maven.version>3.3.9</maven.version>
+    <maven.version>3.2.5</maven.version>
     <jackson.version>1.9.13</jackson.version>
     <httpcomponents.version>4.5.2</httpcomponents.version>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <dependencies>
@@ -148,7 +151,7 @@
       <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
       <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <executions>
@@ -160,7 +163,7 @@
                 </goals>
             </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -203,6 +206,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.4</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
