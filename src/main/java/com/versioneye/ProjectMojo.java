@@ -1,36 +1,17 @@
 package com.versioneye;
 
+import com.versioneye.dependency.DependencyResolver;
 import com.versioneye.dto.ProjectDependency;
 import com.versioneye.dto.ProjectJsonResponse;
-import com.versioneye.utils.DependencyUtils;
 import com.versioneye.utils.HttpUtils;
 import com.versioneye.utils.JsonUtils;
 import com.versioneye.utils.PropertiesUtils;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Plugin;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.collection.CollectRequest;
-import org.eclipse.aether.graph.DependencyNode;
-import org.eclipse.aether.resolution.DependencyRequest;
-import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Methods required to deal with projects resource
@@ -38,43 +19,54 @@ import java.util.Properties;
 public class ProjectMojo extends SuperMojo {
 
     protected ByteArrayOutputStream getTransitiveDependenciesJsonStream(String nameStrategy) throws Exception {
-        PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
-        DependencyNode root = getDependencyNode(nlg);
-        List<Artifact> transDependencies = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
-        List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
+
+        DependencyResolver dependencyResolver = new DependencyResolver(project, dependencyGraphBuilder, excludeScopes);
+
+        Set<org.apache.maven.artifact.Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
+
+        Set<org.apache.maven.artifact.Artifact> transitiveArtifacts = dependencyResolver.getTransitiveDependencies();
+
+        Set<org.apache.maven.artifact.Artifact> artifacts = new HashSet<>();
+        artifacts.addAll(directArtifacts);
+        artifacts.addAll(transitiveArtifacts);
+
         List<Dependency> dependencies = new ArrayList<Dependency>();
-        for (org.eclipse.aether.artifact.Artifact artifact : transDependencies) {
+        for (org.apache.maven.artifact.Artifact artifact : artifacts) {
             Dependency dep = new Dependency();
             dep.setGroupId(artifact.getGroupId());
             dep.setArtifactId(artifact.getArtifactId());
             dep.setVersion(artifact.getVersion());
-            if (directDependencies.contains(artifact)) {
+            if (directArtifacts.contains(artifact)) {
                 dep.setScope("direct");
             } else {
                 dep.setScope("transitive");
             }
             dependencies.add(dep);
         }
-        JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
+        return JsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
     }
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
-        List<Plugin> plugins = new ArrayList<Plugin>();
+        /*List<Plugin> plugins = new ArrayList<Plugin>();
         if (trackPlugins){
             plugins = getPluginsFromXml();
+        }*/
+
+        DependencyResolver dependencyResolver = new DependencyResolver(project, dependencyGraphBuilder, excludeScopes);
+
+        Set<org.apache.maven.artifact.Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
+
+        List<Dependency> dependencies = new ArrayList<Dependency>();
+        for (org.apache.maven.artifact.Artifact artifact : directArtifacts) {
+            Dependency dep = new Dependency();
+            dep.setGroupId(artifact.getGroupId());
+            dep.setArtifactId(artifact.getArtifactId());
+            dep.setVersion(artifact.getVersion());
+            dep.setScope("direct");
+            dependencies.add(dep);
         }
 
-        List<Dependency> dependencies = project.getDependencies();
-        if (ignoreDependencyManagement == false &&
-                project.getDependencyManagement() != null &&
-                project.getDependencyManagement().getDependencies() != null &&
-                project.getDependencyManagement().getDependencies().size() > 0){
-            dependencies.addAll(project.getDependencyManagement().getDependencies());
-        }
-        List<Dependency> filteredDependencies = filterForScopes(dependencies);
-        JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.dependenciesToJson(project, filteredDependencies, plugins, nameStrategy);
+        return JsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
     }
 
     protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) throws Exception {
@@ -84,25 +76,8 @@ public class ProjectMojo extends SuperMojo {
         } else {
             iterateThrough(dependencies);
         }
-        JsonUtils jsonUtils = new JsonUtils();
-        List<Map<String, Object>> dependencyHashes = jsonUtils.getDependencyHashes(dependencies, project.getPluginManagement().getPlugins());
-        return jsonUtils.getJsonPom(project, dependencyHashes, nameStrategy);
-    }
-
-    protected ByteArrayOutputStream getDirectArtifactsJsonStream() throws Exception {
-        DependencyNode root = getDependencyNode(new PreorderNodeListGenerator());
-        List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
-        JsonUtils jsonUtils = new JsonUtils();
-        return jsonUtils.artifactsToJson(directDependencies);
-    }
-
-    protected DependencyNode getDependencyNode(PreorderNodeListGenerator nlg) throws Exception {
-        CollectRequest collectRequest = DependencyUtils.getCollectRequest(project, repos);
-        DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
-        DependencyRequest dependencyRequest = new DependencyRequest(root, null);
-        system.resolveDependencies(session, dependencyRequest);
-        root.accept(nlg);
-        return root;
+        List<Map<String, Object>> dependencyHashes = JsonUtils.getDependencyHashes(dependencies, project.getPluginManagement().getPlugins());
+        return JsonUtils.getJsonPom(project, dependencyHashes, nameStrategy);
     }
 
     protected void prettyPrint0End() throws Exception {
@@ -181,7 +156,7 @@ public class ProjectMojo extends SuperMojo {
         }
     }
 
-    private List<Plugin> getPluginsFromXml(){
+ /*   private List<Plugin> getPluginsFromXml(){
         List<Plugin> plugins = new ArrayList<Plugin>();
         try {
             File pom = project.getModel().getPomFile();
@@ -206,8 +181,8 @@ public class ProjectMojo extends SuperMojo {
             getLog().error(exc);
         }
         return plugins;
-    }
-
+    }*/
+/*
     private void fillPlugin(Node node, Plugin plugin){
         for (int xi = 0 ; xi < node.getChildNodes().getLength() ; xi++ ){
             Node child = node.getChildNodes().item(xi);
@@ -225,7 +200,8 @@ public class ProjectMojo extends SuperMojo {
                 plugin.setVersion(version);
             }
         }
-    }
+    }*/
+/*
 
     private String parseVersionString(String version){
         if (version.startsWith("${")){
@@ -234,29 +210,6 @@ public class ProjectMojo extends SuperMojo {
         }
         return version;
     }
-
-    private List<Dependency> filterForScopes(List<Dependency> dependencies){
-        if (excludeScopes == null ||excludeScopes.size() == 0 || /*skipScopes.trim().isEmpty() ||*/ dependencies == null || dependencies.isEmpty())
-            return dependencies;
-
-//        String[] scopes = skipScopes.split(",");
-        List<Dependency> filtered = new ArrayList<Dependency>();
-        for (Dependency dependency : dependencies){
-            boolean ignoreScope = false;
-            for ( String scope : excludeScopes ) {
-                if (scope != null &&
-                    dependency != null &&
-                    dependency.getScope() != null &&
-                    dependency.getScope().toLowerCase().equals(scope.toLowerCase()))
-                {
-                    ignoreScope = true;
-                }
-            }
-            if (ignoreScope == false ){
-                filtered.add(dependency);
-            }
-        }
-        return filtered;
-    }
+*/
 
 }

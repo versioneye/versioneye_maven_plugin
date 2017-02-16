@@ -1,4 +1,4 @@
-package com.versioneye;
+package com.versioneye.dependency;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;

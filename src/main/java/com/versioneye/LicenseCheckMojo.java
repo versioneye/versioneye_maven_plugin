@@ -20,8 +20,8 @@ public class LicenseCheckMojo extends UpdateMojo {
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            ByteArrayOutputStream jsonDependenciesStream;
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
@@ -39,7 +39,7 @@ public class LicenseCheckMojo extends UpdateMojo {
                         "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }
 
-            if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown == true ){
+            if (response.getLicenses_unknown() > 0 && licenseCheckBreakByUnknown){
                 throw new MojoExecutionException("Some components are without any license! " +
                         "More details here: " + fetchBaseUrl() + "/user/projects/" + response.getId() );
             }

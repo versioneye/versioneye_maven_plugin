@@ -9,6 +9,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
@@ -39,6 +40,9 @@ public class SuperMojo extends AbstractMojo {
 
     @Parameter( defaultValue="${repositorySystemSession}" )
     protected RepositorySystemSession session;
+
+    @Component(hint = "default")
+    protected DependencyGraphBuilder dependencyGraphBuilder;
 
     @Parameter( defaultValue="${project}" )
     protected MavenProject project;

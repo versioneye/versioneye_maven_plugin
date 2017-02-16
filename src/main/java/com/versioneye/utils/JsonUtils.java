@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class JsonUtils {
 
-    public ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
+    public static ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = new ArrayList<Map<String, Object>>();
         if ((dependencies != null && !dependencies.isEmpty())
                 || (plugins != null && !plugins.isEmpty())) {
@@ -59,7 +59,7 @@ public class JsonUtils {
         return hashes;
     }
 
-    public List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
+    public static List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
         List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
         if (directDependencies != null && directDependencies.size() > 0){
             hashes.addAll( generateHashFromDependencyList( directDependencies));
@@ -111,7 +111,7 @@ public class JsonUtils {
         return output;
     }
 
-    public Map<String, Object> getJsonPom(MavenProject project, List<Map<String, Object>> dependencyHashes, String nameStrategy){
+    public static Map<String, Object> getJsonPom(MavenProject project, List<Map<String, Object>> dependencyHashes, String nameStrategy){
         Map<String, Object> pom = new HashMap<String, Object>();
         pom.put("name", getNameFor(project, nameStrategy));
         pom.put("group_id", project.getGroupId());
@@ -124,7 +124,7 @@ public class JsonUtils {
         return pom;
     }
 
-    private String getNameFor(MavenProject project, String nameStrategy){
+    private static String getNameFor(MavenProject project, String nameStrategy){
         String name = "project";
         if (nameStrategy == null || nameStrategy.isEmpty()){
             nameStrategy = "name";

@@ -1,5 +1,6 @@
 package com.versioneye;
 
+import com.versioneye.dependency.ExclusiveScopeFilter;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
