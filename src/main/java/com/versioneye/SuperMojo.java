@@ -5,6 +5,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -30,7 +31,7 @@ public class SuperMojo extends AbstractMojo {
 
     protected static final String propertiesFile = "versioneye.properties";
 
-    @Parameter( defaultValue = "${session}", readonly = true )
+    @Component
     protected RepositorySystem system;
 
     @Parameter( defaultValue = "${session}", readonly = true )
@@ -105,8 +106,8 @@ public class SuperMojo extends AbstractMojo {
     @Parameter( property = "licenseCheckBreakByUnknown" )
     protected Boolean licenseCheckBreakByUnknown = Boolean.FALSE;
 
-    @Parameter( property = "skipScopes" )
-    protected String skipScopes = null;
+    @Parameter( property = "excludeScopes" )
+    protected List<String> excludeScopes = null;
 
     @Parameter( property = "organisation" )
     protected String organisation = null;
@@ -129,7 +130,11 @@ public class SuperMojo extends AbstractMojo {
     protected Properties properties = null;     // Properties in src/main/resources
     protected Properties homeProperties = null; // Properties in ~/.m2/
 
-    public void execute() throws MojoExecutionException, MojoFailureException {  }
+    protected Log log;
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        log = getLog();
+    }
 
 
     protected String fetchApiKey() throws Exception {

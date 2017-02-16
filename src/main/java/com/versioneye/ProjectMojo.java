@@ -236,14 +236,14 @@ public class ProjectMojo extends SuperMojo {
     }
 
     private List<Dependency> filterForScopes(List<Dependency> dependencies){
-        if (skipScopes == null || skipScopes.trim().isEmpty() || dependencies == null || dependencies.isEmpty())
+        if (excludeScopes == null ||excludeScopes.size() == 0 || /*skipScopes.trim().isEmpty() ||*/ dependencies == null || dependencies.isEmpty())
             return dependencies;
 
-        String[] scopes = skipScopes.split(",");
+//        String[] scopes = skipScopes.split(",");
         List<Dependency> filtered = new ArrayList<Dependency>();
         for (Dependency dependency : dependencies){
             boolean ignoreScope = false;
-            for ( String scope : scopes ) {
+            for ( String scope : excludeScopes ) {
                 if (scope != null &&
                     dependency != null &&
                     dependency.getScope() != null &&

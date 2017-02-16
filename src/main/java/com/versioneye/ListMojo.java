@@ -1,16 +1,16 @@
 package com.versioneye;
 
-import com.versioneye.utils.DependencyUtils;
-import org.apache.maven.model.Dependency;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.graph.DependencyNode;
-import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
+import org.apache.maven.shared.dependency.graph.DependencyNode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Lists all direct and recursive dependencies.
@@ -18,17 +18,25 @@ import java.util.List;
 @Mojo( name = "list", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class ListMojo extends ProjectMojo {
 
-    public void execute() throws MojoExecutionException {
-        versionEyeOutput();
+    @Component(hint = "default")
+    private DependencyGraphBuilder dependencyGraphBuilder;
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        super.execute();
         try{
-            PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
-            DependencyNode root = getDependencyNode(nlg);
-            List<Artifact> dependencies          = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
-            List<Artifact> directDependencies    = DependencyUtils.collectDirectDependencies(root.getChildren());
-            List<Artifact> recursiveDependencies = new ArrayList<Artifact>(dependencies);
-            recursiveDependencies.removeAll(directDependencies);
-            List<Dependency> deps = project.getDependencies();
-            produceNiceOutput(deps, recursiveDependencies);
+            versionEyeOutput();
+            for(String scope : excludeScopes) log.debug(scope);
+
+            Visitor visitor = new Visitor();
+            ArtifactFilter filter = new ExclusiveScopeFilter(excludeScopes);
+            DependencyNode node = dependencyGraphBuilder.buildDependencyGraph(project, filter);
+            node.accept(visitor);
+            Set<Artifact> artifacts = visitor.getArtifacts();
+            for(Artifact artifact : artifacts) {
+                log.info( artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() + ":" + artifact.getScope());
+            }
+            produceNiceOutputSummary(artifacts.size());
+
         } catch( Exception exception ){
             throw new MojoExecutionException( "Oh no! Something went wrong. " +
                     "Get in touch with the VersionEye guys and give them feedback. " +
@@ -36,46 +44,16 @@ public class ListMojo extends ProjectMojo {
         }
     }
 
-    private void produceNiceOutput(List<Dependency> directDependencies, List<Artifact> recursiveDependencies){
-        productNiceOutputForDirectDependencies(directDependencies);
-        productNiceOutputForRecursiveDependencies(recursiveDependencies);
-        produceNiceOutputSummary(directDependencies.size(), recursiveDependencies.size());
-    }
-
     private void versionEyeOutput(){
-        getLog().info("");
-        getLog().info("************* \\_/ VersionEye \\_/ *************");
-        getLog().info("");
+        log.info("");
+        log.info("************* \\_/ VersionEye \\_/ *************");
+        log.info("");
     }
 
-    private void productNiceOutputForDirectDependencies(List<Dependency> directDependencies){
-        getLog().info("");
-        getLog().info(directDependencies.size() + " Direct Dependencies: ");
-        getLog().info("--------------------");
-        for (Dependency dependency : directDependencies){
-            getLog().info( dependency.getGroupId() + ":" + dependency.getArtifactId() + ":" + dependency.getVersion());
-        }
-        getLog().info("");
-    }
-
-    private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
-        getLog().info("");
-        getLog().info(recursiveDependencies.size() + " Transitive Dependencies: ");
-        getLog().info("--------------------");
-        for (Artifact artifact : recursiveDependencies){
-            getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
-        }
-        getLog().info("");
-    }
-
-    private void produceNiceOutputSummary(int directCount, int recursiveCount) {
-        int allCount = directCount + recursiveCount;
-        getLog().info("");
-        getLog().info(directCount + " Direct dependencies and " +
-                recursiveCount + " transitive dependencies. This project has " +
-                allCount + " dependencies.");
-        getLog().info("");
-        getLog().info("");
+    private void produceNiceOutputSummary(int count) {
+        log.info("");
+        log.info("This project has " + count + " dependencies.");
+        log.info("");
     }
 
 }
