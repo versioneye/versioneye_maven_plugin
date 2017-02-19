@@ -1,5 +1,6 @@
 package com.versioneye.dependency;
 
+import com.versioneye.log.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
@@ -9,7 +10,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.versioneye.log.Logger.getLogger;
+
 public class DirectVisitor implements DependencyNodeVisitor {
+    private static final Logger LOGGER = getLogger();
 
     private Map<String, Artifact> directArtifacts;
     private DependencyNode self;
@@ -21,10 +25,9 @@ public class DirectVisitor implements DependencyNodeVisitor {
 
     @Override
     public boolean visit(DependencyNode node) {
-        if (node.getParent() != null) {
-            if (node.getParent() == self) {
-                directArtifacts.put(node.toNodeString(), node.getArtifact());
-            }
+        if (node.getParent() != null && node.getParent() == self) {
+            LOGGER.debug("Including direct dep: " + node.getArtifact().getArtifactId());
+            directArtifacts.put(node.toNodeString(), node.getArtifact());
         }
         return true;
     }
