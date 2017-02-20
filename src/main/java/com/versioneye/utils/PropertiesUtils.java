@@ -16,9 +16,8 @@ public class PropertiesUtils {
 
     public Properties readProperties(String filePath) throws Exception{
         Properties properties = new Properties();
-        InputStream inputStream = null;
         File file = new File(filePath);
-        inputStream = new FileInputStream( file );
+        InputStream inputStream = new FileInputStream( file );
         properties.load(inputStream);
         return properties;
     }

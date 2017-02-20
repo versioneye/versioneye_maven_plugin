@@ -19,7 +19,7 @@ public class JsonMojo extends ProjectMojo {
             Map<String, Object> jsonMap = getDirectDependenciesJsonMap(nameStrategy);
             JsonUtils jsonUtils = new JsonUtils();
             String filePath = outputDirectory + "/pom.json";
-            jsonUtils.dependenciesToJsonFile(project.getName(), jsonMap, filePath);
+            jsonUtils.dependenciesToJsonFile(jsonMap, filePath);
             prettyPrintEnd(filePath);
         } catch( Exception exception ){
             throw new MojoExecutionException( "Oh no! Something went wrong. " +

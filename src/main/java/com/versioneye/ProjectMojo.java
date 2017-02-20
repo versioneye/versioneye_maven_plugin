@@ -44,15 +44,10 @@ public class ProjectMojo extends SuperMojo {
             }
             dependencies.add(dep);
         }
-        return JsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
+        return JsonUtils.dependenciesToJson(project, dependencies, nameStrategy);
     }
 
     protected ByteArrayOutputStream getDirectDependenciesJsonStream(String nameStrategy) throws Exception {
-        /*List<Plugin> plugins = new ArrayList<Plugin>();
-        if (trackPlugins){
-            plugins = getPluginsFromXml();
-        }*/
-
         DependencyResolver dependencyResolver = new DependencyResolver(project, dependencyGraphBuilder, excludeScopes);
 
         Set<Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
@@ -67,7 +62,7 @@ public class ProjectMojo extends SuperMojo {
             dependencies.add(dep);
         }
 
-        return JsonUtils.dependenciesToJson(project, dependencies, null, nameStrategy);
+        return JsonUtils.dependenciesToJson(project, dependencies, nameStrategy);
     }
 
     protected Map<String, Object> getDirectDependenciesJsonMap(String nameStrategy) throws Exception {

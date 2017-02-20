@@ -5,7 +5,6 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.eclipse.aether.artifact.Artifact;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -18,33 +17,19 @@ import java.util.*;
  */
 public class JsonUtils {
 
-    public static ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, List<Plugin> plugins, String nameStrategy) throws Exception {
+    public static ByteArrayOutputStream dependenciesToJson(MavenProject project, List<Dependency> dependencies, String nameStrategy) throws Exception {
         List<Map<String, Object>> dependencyHashes = new ArrayList<Map<String, Object>>();
-        if ((dependencies != null && !dependencies.isEmpty())
-                || (plugins != null && !plugins.isEmpty())) {
-            dependencyHashes = getDependencyHashes(dependencies, plugins);
+        if ((dependencies != null && !dependencies.isEmpty())) {
+            dependencyHashes = getDependencyHashes(dependencies, null);
         }
-        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        toJson(outstream, getJsonPom(project, dependencyHashes, nameStrategy));
-        return outstream;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        toJson(outputStream, getJsonPom(project, dependencyHashes, nameStrategy));
+        return outputStream;
     }
 
-    public ByteArrayOutputStream artifactsToJson(List<Artifact> directDependencies) throws Exception {
-        List<Map<String, Object>> hashes = getHashes(directDependencies);
-        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        toJson(outstream, hashes);
-        return outstream;
-    }
-
-    public void dependenciesToJsonFile(String name, Map<String, Object> directDependencies, String file) throws Exception {
+    public void dependenciesToJsonFile(Map<String, Object> directDependencies, String file) throws Exception {
         File targetFile = getTargetFile(file);
         toJson(new FileOutputStream(targetFile), directDependencies);
-    }
-
-    public void dependenciesToJsonFile(MavenProject project, List<Artifact> directDependencies, String file, String nameStrategy) throws Exception {
-        List<Map<String, Object>> dependencyHashes = getHashes(directDependencies);
-        File targetFile = getTargetFile(file);
-        toJson(new FileOutputStream(targetFile), getJsonPom(project, dependencyHashes, nameStrategy));
     }
 
     public static void toJson(OutputStream output, Object input) throws Exception {
@@ -53,14 +38,9 @@ public class JsonUtils {
          mapper.writeValue(output, input);
     }
 
-    public List<Map<String, Object>> getHashes(List<Artifact> directDependencies){
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>(directDependencies.size());
-        hashes.addAll( generateHashForJsonOutput( directDependencies));
-        return hashes;
-    }
 
     public static List<Map<String, Object>> getDependencyHashes(List<Dependency> directDependencies, List<Plugin> plugins){
-        List<Map<String, Object>> hashes = (List<Map<String, Object>>) new Vector<Map<String, Object>>();
+        List<Map<String, Object>> hashes = new Vector<Map<String, Object>>();
         if (directDependencies != null && directDependencies.size() > 0){
             hashes.addAll( generateHashFromDependencyList( directDependencies));
         }
@@ -68,17 +48,6 @@ public class JsonUtils {
             hashes.addAll( generateHashFromPluginList(plugins));
         }
         return hashes;
-    }
-
-    public static List<Map<String, Object>> generateHashForJsonOutput(List<Artifact> input) {
-         List<Map<String, Object>> output = new Vector<Map<String, Object>>(input.size());
-         for (Artifact artifact : input) {
-             HashMap<String, Object> hash = new HashMap<String, Object>(2);
-             hash.put("version", artifact.getVersion());
-             hash.put("name", artifact.getGroupId() + ":" + artifact.getArtifactId());
-             output.add(hash);
-         }
-         return output;
     }
 
     public static List<Map<String, Object>> generateHashFromDependencyList(List<Dependency> input) {

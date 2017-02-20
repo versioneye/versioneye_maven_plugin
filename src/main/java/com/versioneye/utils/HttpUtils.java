@@ -4,25 +4,18 @@ import com.versioneye.dto.ErrorJsonResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
@@ -58,16 +51,7 @@ public class HttpUtils {
     }
 
     public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name, String team) throws Exception {
-        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-            public X509Certificate[] getAcceptedIssuers(){return null;}
-            public void checkClientTrusted(X509Certificate[] certs, String authType){}
-            public void checkServerTrusted(X509Certificate[] certs, String authType){}
-        }};
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, trustAllCerts, new SecureRandom());
-        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext, new DefaultHostnameVerifier());
-        HttpClient client = HttpClients.custom().setSSLSocketFactory(sslSocketFactory).build();
-
+        HttpClient client = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, APPLICATION_JSON, "pom.json");
 
