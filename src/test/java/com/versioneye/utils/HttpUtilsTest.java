@@ -3,7 +3,7 @@ package com.versioneye.utils;
 
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class HttpUtilsTest {
 
-    @Test(expectedExceptions = Exception.class)
+    @Test(expected = Exception.class)
     public void postTestData() throws Exception{
         List<Map<String, Object>> input = new Vector<Map<String, Object>>(2);
         HashMap<String, Object> hash = new HashMap<String, Object>(2);

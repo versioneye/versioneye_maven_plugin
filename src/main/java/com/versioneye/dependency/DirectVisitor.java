@@ -20,7 +20,7 @@ public class DirectVisitor implements DependencyNodeVisitor {
 
     public DirectVisitor(DependencyNode self) {
         this.self = self;
-        this.directArtifacts = new HashMap<>();
+        this.directArtifacts = new HashMap<String, Artifact>();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DirectVisitor implements DependencyNodeVisitor {
     }
 
     public Set<Artifact> getDirectArtifacts() {
-        return new HashSet<>(directArtifacts.values());
+        return new HashSet<Artifact>(directArtifacts.values());
     }
 
 }

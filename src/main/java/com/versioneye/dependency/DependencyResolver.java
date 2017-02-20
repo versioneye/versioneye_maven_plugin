@@ -45,7 +45,7 @@ public class DependencyResolver {
     }
 
     public static Set<Artifact> mergeArtifactsWithStrongestScope(Set<Artifact> artifactSet1, Set<Artifact> artifactSet2) {
-        Set<Artifact> artifacts = new HashSet<>();
+        Set<Artifact> artifacts = new HashSet<Artifact>();
         for(Artifact artifactFromSet1 : artifactSet1) {
             DefaultArtifact artifact = new DefaultArtifact(artifactFromSet1.getGroupId(),
                     artifactFromSet1.getArtifactId(),

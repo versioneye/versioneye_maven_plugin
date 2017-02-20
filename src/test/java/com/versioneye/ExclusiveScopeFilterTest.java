@@ -4,19 +4,19 @@ import com.versioneye.dependency.ExclusiveScopeFilter;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.testng.AssertJUnit.assertFalse;
-import static org.testng.AssertJUnit.assertTrue;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 
 public class ExclusiveScopeFilterTest {
 
     @Test
     public void providedArtifactIsIncludedWhenTestIsExcluded() throws Exception {
-        String[] scopes = {"test"};
-        ArtifactFilter filter = new ExclusiveScopeFilter(Arrays.asList(scopes));
+        ArtifactFilter filter = new ExclusiveScopeFilter(Arrays.asList("test"));
 
         Artifact providedArtifact = new DefaultArtifact("groupid", "artifactid", "version", "provided", "type", "classifier", null);
 
@@ -27,8 +27,7 @@ public class ExclusiveScopeFilterTest {
 
     @Test
     public void testArtifactIsIncludedWhenTestIsExcluded() throws Exception {
-        String[] scopes = {"test"};
-        ArtifactFilter filter = new ExclusiveScopeFilter(Arrays.asList(scopes));
+        ArtifactFilter filter = new ExclusiveScopeFilter(Arrays.asList("test"));
 
         Artifact providedArtifact = new DefaultArtifact("groupid", "artifactid", "version", "test", "type", "classifier", null);
 

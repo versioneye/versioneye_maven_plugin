@@ -6,6 +6,7 @@ import com.versioneye.dto.ProjectJsonResponse;
 import com.versioneye.utils.HttpUtils;
 import com.versioneye.utils.JsonUtils;
 import com.versioneye.utils.PropertiesUtils;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -22,16 +23,16 @@ public class ProjectMojo extends SuperMojo {
 
         DependencyResolver dependencyResolver = new DependencyResolver(project, dependencyGraphBuilder, excludeScopes);
 
-        Set<org.apache.maven.artifact.Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
+        Set<Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
 
-        Set<org.apache.maven.artifact.Artifact> transitiveArtifacts = dependencyResolver.getTransitiveDependencies();
+        Set<Artifact> transitiveArtifacts = dependencyResolver.getTransitiveDependencies();
 
-        Set<org.apache.maven.artifact.Artifact> artifacts = new HashSet<>();
+        Set<Artifact> artifacts = new HashSet<Artifact>();
         artifacts.addAll(directArtifacts);
         artifacts.addAll(transitiveArtifacts);
 
         List<Dependency> dependencies = new ArrayList<Dependency>();
-        for (org.apache.maven.artifact.Artifact artifact : artifacts) {
+        for (Artifact artifact : artifacts) {
             Dependency dep = new Dependency();
             dep.setGroupId(artifact.getGroupId());
             dep.setArtifactId(artifact.getArtifactId());
@@ -54,10 +55,10 @@ public class ProjectMojo extends SuperMojo {
 
         DependencyResolver dependencyResolver = new DependencyResolver(project, dependencyGraphBuilder, excludeScopes);
 
-        Set<org.apache.maven.artifact.Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
+        Set<Artifact> directArtifacts = dependencyResolver.getDirectDependencies();
 
         List<Dependency> dependencies = new ArrayList<Dependency>();
-        for (org.apache.maven.artifact.Artifact artifact : directArtifacts) {
+        for (Artifact artifact : directArtifacts) {
             Dependency dep = new Dependency();
             dep.setGroupId(artifact.getGroupId());
             dep.setArtifactId(artifact.getArtifactId());

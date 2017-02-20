@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExclusiveScopeFilter implements ArtifactFilter {
-    private List<String> excludeScopes = new ArrayList<>();
+    private List<String> excludeScopes = new ArrayList<String>();
 
     public ExclusiveScopeFilter(List<String> excludeScopes) {
         for(String excludeScope : excludeScopes) {

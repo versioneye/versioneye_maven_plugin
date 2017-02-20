@@ -20,7 +20,7 @@ public class TransitiveVisitor implements DependencyNodeVisitor {
 
     public TransitiveVisitor(DependencyNode self) {
         this.self = self;
-        this.transitiveArtifacts = new HashMap<>();
+        this.transitiveArtifacts = new HashMap<String, Artifact>();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TransitiveVisitor implements DependencyNodeVisitor {
     }
 
     public Set<Artifact> getTransitiveArtifacts() {
-        return new HashSet<>(transitiveArtifacts.values());
+        return new HashSet<Artifact>(transitiveArtifacts.values());
     }
 
 }
