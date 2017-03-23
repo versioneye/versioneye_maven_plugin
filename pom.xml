@@ -54,7 +54,7 @@
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.3.9</maven.version>
     <jackson.version>1.9.13</jackson.version>
-    <httpcomponents.version>4.5.2</httpcomponents.version>
+    <httpcomponents.version>4.5.3</httpcomponents.version>
   </properties>
 
   <dependencies>
@@ -97,9 +97,14 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.10</version>
+      <version>6.11</version>
       <scope>test</scope>
     </dependency>
+    <!-- <dependency>
+      <groupId>org.gephi</groupId>
+      <artifactId>graph-api</artifactId>
+      <version>0.9.1</version>
+    </dependency> -->
   </dependencies>
 
   <build>
@@ -134,7 +139,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
+        <version>1.6.8</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>
