@@ -32,11 +32,11 @@ public class DependencyUtils {
         return result;
     }
 
-    public static CollectRequest getCollectRequest(MavenProject project, List<RemoteRepository> repos){
+    public static CollectRequest getCollectRequest(MavenProject project, List<RemoteRepository> repos, String scope){
         Artifact a = new DefaultArtifact( project.getArtifact().toString() );
         DefaultArtifact pom = new DefaultArtifact( a.getGroupId(), a.getArtifactId(), "pom", a.getVersion() );
         CollectRequest collectRequest = new CollectRequest();
-        collectRequest.setRoot(new Dependency(pom, "compile"));
+        collectRequest.setRoot(new Dependency(pom, scope ));
         collectRequest.setRepositories(repos);
         return collectRequest;
     }
