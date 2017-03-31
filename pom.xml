@@ -9,7 +9,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.11.2-alg</version>
+  <version>3.11.2</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -297,7 +297,14 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.6.2</version>
+      <scope>test</scope>
     </dependency>
+    <!-- <dependency>
+      <groupId>org.gephi</groupId>
+      <artifactId>graph-api</artifactId>
+      <version>0.9.1</version>
+    </dependency> -->
+
   </dependencies>
 
   <build>
@@ -317,7 +324,7 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.11.1</version>
+        <version>3.11.2</version>
         <configuration>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
@@ -330,17 +337,18 @@
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
           <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
           <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
-          <!--<skipScopes>test</skipScopes>-->
+          <!--<trackPlugins>false</trackPlugins>-->
+          <!--<skipScopes>test,provided</skipScopes>-->
           <!--<organisation>versioneye</organisation>-->
           <!--<name>NameOfTheProjectAtVersionEye</name>-->
           <!--<visibility>TrueOrFalse</visibility>-->
-          <!-- <transitiveDependencies>true</transitiveDependencies> -->
+          <!--<transitiveDependencies>true</transitiveDependencies>-->
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
+        <version>1.6.8</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>

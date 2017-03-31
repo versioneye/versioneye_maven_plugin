@@ -8,6 +8,7 @@ import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,31 +19,32 @@ public class DependencyUtils {
 
     private DependencyUtils() {}
 
-    public static List<Artifact> collectAllDependencies(List<Dependency> dependencies) {
+  public static List<Artifact> collectAllDependencies(List<Dependency> dependencies) {
+    List<Artifact> result = new ArrayList<>(dependencies.size());
 
-      List<Artifact> artifacts = dependencies.stream()
-          .map(Dependency::getArtifact)
-          .collect(Collectors.toList());
-
-      return artifacts;
+    for (Dependency dependency : dependencies) {
+      result.add(dependency.getArtifact());
     }
 
-    public static List<Artifact> collectDirectDependencies(List<DependencyNode> dependencies) {
+    return result;
+  }
 
-      List<Artifact> artifacts = dependencies.stream()
-          .map(DependencyNode::getDependency)
-          .map(Dependency::getArtifact)
-          .collect(Collectors.toList());
+  public static List<Artifact> collectDirectDependencies(List<DependencyNode> dependencies) {
+    List<Artifact> result = new ArrayList<>(dependencies.size());
 
-      return artifacts;
+    for (DependencyNode dependencyNode : dependencies) {
+      result.add(dependencyNode.getDependency().getArtifact());
     }
 
-    public static CollectRequest getCollectRequest(MavenProject project, List<RemoteRepository> repos) {
-          Artifact a = new DefaultArtifact( project.getArtifact().toString() );
-          DefaultArtifact pom = new DefaultArtifact( a.getGroupId(), a.getArtifactId(), "pom", a.getVersion() );
-          CollectRequest collectRequest = new CollectRequest();
-          collectRequest.setRoot(new Dependency(pom, "compile"));
-          collectRequest.setRepositories(repos);
-          return collectRequest;
-    }
+    return result;
+  }
+
+  public static CollectRequest getCollectRequest(MavenProject project, List<RemoteRepository> repos, String scope){
+    Artifact a = new DefaultArtifact( project.getArtifact().toString() );
+    DefaultArtifact pom = new DefaultArtifact( a.getGroupId(), a.getArtifactId(), "pom", a.getVersion() );
+    CollectRequest collectRequest = new CollectRequest();
+    collectRequest.setRoot(new Dependency(pom, scope ));
+    collectRequest.setRepositories(repos);
+    return collectRequest;
+  }
 }

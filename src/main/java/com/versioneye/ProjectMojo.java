@@ -10,6 +10,7 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.resolution.DependencyRequest;
+import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -49,18 +50,24 @@ public class ProjectMojo extends SuperMojo {
     {
         PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
         DependencyNode root = getDependencyNode(nlg);
-        List<Artifact> transDependencies = DependencyUtils.collectAllDependencies(nlg.getDependencies(true));
+        List<org.eclipse.aether.graph.Dependency> transDependencies = nlg.getDependencies(true);
         List<Artifact> directDependencies = DependencyUtils.collectDirectDependencies(root.getChildren());
-        List<Dependency> dependencies = new ArrayList<>();
-        for (org.eclipse.aether.artifact.Artifact artifact : transDependencies) {
+
+        List<Dependency> dependencies = new ArrayList<Dependency>();
+
+        for (org.eclipse.aether.graph.Dependency dependency : transDependencies) {
+            getLog().info(" scope: " + dependency.getScope());
+
             Dependency dep = new Dependency();
+            Artifact artifact = dependency.getArtifact();
             dep.setGroupId(artifact.getGroupId());
             dep.setArtifactId(artifact.getArtifactId());
             dep.setVersion(artifact.getVersion());
+            dep.setScope(dependency.getScope());
             if (directDependencies.contains(artifact)) {
-                dep.setScope("direct");
+                dep.setScope(dependency.getScope() + "_direct");
             } else {
-                dep.setScope("transitive");
+                dep.setScope(dependency.getScope() + "_transitive");
             }
             dependencies.add(dep);
         }
@@ -109,7 +116,7 @@ public class ProjectMojo extends SuperMojo {
     }
 
     protected DependencyNode getDependencyNode(PreorderNodeListGenerator nlg) throws Exception {
-        CollectRequest collectRequest = DependencyUtils.getCollectRequest(project, repos);
+        CollectRequest collectRequest = DependencyUtils.getCollectRequest(project, repos, JavaScopes.RUNTIME);
         DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
         DependencyRequest dependencyRequest = new DependencyRequest(root, null);
         system.resolveDependencies(session, dependencyRequest);
@@ -278,6 +285,6 @@ public class ProjectMojo extends SuperMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-
+    // no-op method
   }
 }
