@@ -140,6 +140,8 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
       <version>3.11.2</version>
       <configuration>
         <apiKey>MY_SECRET_API_KEY</apiKey>
+        <organisation>YOUR_ORGANISATION</organisation>
+        <team>Owners</team>
       </configuration>
     </plugin>
   </plugins>
@@ -175,6 +177,8 @@ If you want so you can configure another place for the versioneye.properties fil
       <version>3.11.2</version>
       <configuration>
         <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
+        <organisation>YOUR_ORGANISATION</organisation>
+        <team>Owners</team>
       </configuration>
     </plugin>
   </plugins>
@@ -240,6 +244,8 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
       <version>3.11.2</version>
       <configuration>
         <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+        <organisation>YOUR_ORGANISATION</organisation>
+        <team>Owners</team>
       </configuration>
     </plugin>
   </plugins>
@@ -329,6 +335,8 @@ The whole plugin snippet would look similar to this one.
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
         <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
+        <organisation>YOUR_ORGANISATION</organisation>
+        <team>Owners</team>
       </configuration>
     </plugin>
   </plugins>
@@ -348,6 +356,8 @@ Assume you have a big Java Enterprise multi-module project with Maven and you wa
       <version>3.11.2</version>
       <configuration>
         <apiKey>MY_SECRET_API_KEY</apiKey>
+        <organisation>YOUR_ORGANISATION</organisation>
+        <team>Owners</team>
       </configuration>
     </plugin>
   </plugins>

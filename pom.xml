@@ -58,7 +58,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <!-- The minimum Maven version that should be supported. -->
-    <maven.version>3.3.9</maven.version>
+    <maven.version>3.5.0</maven.version>
     <plexus.compiler.version>2.8.1</plexus.compiler.version>
     <plexus.utils.version>3.0.24</plexus.utils.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -159,8 +159,14 @@
         </pluginManagement>
       </build>
     </profile>
+
     <profile>
       <id>gpg</id>
+      <!-- mvn gpg:sign -->
+      <!-- mvn gpg:sign-and-deploy-file -->
+      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
       <build>
         <plugins>
           <plugin>
@@ -356,12 +362,6 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
-
-      <!-- mvn gpg:sign -->
-      <!-- mvn gpg:sign-and-deploy-file -->
-      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
-      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
-      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
