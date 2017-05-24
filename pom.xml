@@ -2,27 +2,28 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
+  <!-- Doesn't work on previous versions because of Eclipse/Sonatype Aether incompatibility. -->
+  <prerequisites>
+    <maven>3.1</maven>
+  </prerequisites>
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>2.0.1</version>
+  <version>3.11.3</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
   <url>https://github.com/versioneye/versioneye_maven_plugin</url>
   <description>
-      This is the maven plugin for http://www.VersionEye.com. It allows you to create and update
-      a project at VersionEye. You can find a complete documentation of this project on GitHub:
-      https://github.com/versioneye/versioneye_maven_plugin.
+    This is the maven plugin for http://www.VersionEye.com. It allows you to create and update
+    a project at VersionEye. You can find a complete documentation of this project on GitHub:
+    https://github.com/versioneye/versioneye_maven_plugin.
   </description>
 
   <scm>
-      <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
+    <connection>scm:git:https://github.com/versioneye/versioneye_maven_plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/versioneye/versioneye_maven_plugin.git</developerConnection>
+    <url>https://github.com/versioneye/versioneye_maven_plugin.git</url>
   </scm>
 
   <licenses>
@@ -37,72 +38,73 @@
       <name>Robert Reiz</name>
       <id>reiz</id>
       <organization>VersionEye</organization>
-      <organizationUrl>http://www.versioneye.com</organizationUrl>
+      <organizationUrl>https://www.VersionEye.com</organizationUrl>
     </developer>
   </developers>
 
+  <distributionManagement>
+      <downloadUrl>http://repo1.maven.org/maven2/com/versioneye/versioneye-maven-plugin</downloadUrl>
+      <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+  </distributionManagement>
+
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- The minimum Maven version that should be supported. -->
+    <maven.version>3.5.0</maven.version>
+    <jackson.version>1.9.13</jackson.version>
+    <httpcomponents.version>4.5.3</httpcomponents.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.2.1</version>
+      <version>${maven.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.3</version>
+      <version>3.5</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-compat</artifactId>
-      <version>3.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>3.0.17</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-api</artifactId>
-      <version>1.13.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-util</artifactId>
-      <version>1.13.1</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-core-lgpl</artifactId>
-      <version>1.9.13</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-mapper-lgpl</artifactId>
-      <version>1.9.13</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.3</version>
+      <version>${httpcomponents.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpmime</artifactId>
-      <version>4.3.3</version>
+      <version>${httpcomponents.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.11</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- <dependency>
+      <groupId>org.gephi</groupId>
+      <artifactId>graph-api</artifactId>
+      <version>0.9.1</version>
+    </dependency> -->
   </dependencies>
 
   <build>
@@ -111,18 +113,65 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>2.0.1</version>
+        <version>3.11.3</version>
         <configuration>
-            <!-- <baseUrl>https://www.versioneye.com</baseUrl> -->
-            <!--<baseUrl>http://127.0.0.1:3000</baseUrl>-->
-            <projectId>51e2af93cbe2eb000203df22</projectId>
+          <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
+          <!--<baseUrl>http://localhost:3000</baseUrl>-->
+          <!--<proxyHost>127.0.0.1</proxyHost>-->
+          <!--<proxyPort>8888</proxyPort>-->
+          <!--<proxyUser>proxy_hopsi</proxyUser>-->
+          <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
+          <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
+          <!--<mergeAfterCreate>false</mergeAfterCreate>--> <!-- This is only for multi module projects! -->
+          <!--<parentGroupId>com.versioneye</parentGroupId>-->
+          <!--<parentArtifactId>versioneye-maven-plugin</parentArtifactId>-->
+          <!--<nameStrategy>GA</nameStrategy>--> <!-- Default value is 'name'. Other options are 'GA' and 'artifact_id'. -->
+          <!--<trackPlugins>false</trackPlugins>-->
+          <!--<skipScopes>test,provided</skipScopes>-->
+          <!--<organisation>versioneye</organisation>-->
+          <!--<name>NameOfTheProjectAtVersionEye</name>-->
+          <!--<visibility>TrueOrFalse</visibility>-->
+          <!--<transitiveDependencies>true</transitiveDependencies>-->
         </configuration>
+      </plugin>
+
+      <!--http://central.sonatype.org/pages/apache-maven.html-->
+      <!--mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=-->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
+      <!-- mvn gpg:sign -->
+      <!-- mvn gpg:sign-and-deploy-file -->
+      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+            <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                    <goal>sign</goal>
+                </goals>
+            </execution>
+        </executions>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.2</version>
+        <version>3.5</version>
         <configuration>
           <goalPrefix>versioneye</goalPrefix>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
@@ -144,34 +193,50 @@
       </plugin>
 
       <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>3.0.1</version>
         <executions>
-            <execution>
-                <id>attach-sources</id>
-                <goals>
-                    <goal>jar-no-fork</goal>
-                </goals>
-            </execution>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9.1</version>
         <executions>
-            <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                    <goal>jar</goal>
-                </goals>
-            </execution>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
 
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <type>tag</type>
+          <tags>
+            <tag implementation="java.lang.String">3.5.1</tag>
+            <tag implementation="java.lang.String">3.6.0</tag>
+          </tags>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>

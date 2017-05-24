@@ -1,13 +1,13 @@
 package com.versioneye;
 
+import com.versioneye.utils.DependencyUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
-import com.versioneye.utils.DependencyUtils;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ListMojo extends ProjectMojo {
 
     private void productNiceOutputForRecursiveDependencies(List<Artifact> recursiveDependencies){
         getLog().info("");
-        getLog().info(recursiveDependencies.size() + " Recursive Dependencies: ");
+        getLog().info(recursiveDependencies.size() + " Transitive Dependencies: ");
         getLog().info("--------------------");
         for (Artifact artifact : recursiveDependencies){
             getLog().info(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
@@ -72,7 +72,7 @@ public class ListMojo extends ProjectMojo {
         int allCount = directCount + recursiveCount;
         getLog().info("");
         getLog().info(directCount + " Direct dependencies and " +
-                recursiveCount + " recursive dependencies. This project has " +
+                recursiveCount + " transitive dependencies. This project has " +
                 allCount + " dependencies.");
         getLog().info("");
         getLog().info("");
