@@ -287,59 +287,125 @@ public class SuperMojo extends AbstractMojo {
 
     protected void setProxy(){
         try{
-            if (proxyHost == null || proxyHost.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String host = getPropertyFromPath(propertiesPath, "proxyHost");
-                if (host != null && !host.isEmpty()){
-                    proxyHost = host;
-                }
+            proxyHost = fetchProxyHost();
+            proxyPort = fetchProxyPort();
+            proxyUser = fetchProxyUser();
+            proxyPassword = fetchProxyPassword();
+
+            boolean emptyProxyHost = proxyHost == null || proxyHost.isEmpty();
+            boolean emptyProxyPort = proxyPort == null || proxyPort.isEmpty();
+            if (emptyProxyHost && emptyProxyPort){
+                return ;
             }
 
-            if (proxyPort == null || proxyPort.isEmpty() ){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String port = getPropertyFromPath(propertiesPath, "proxyPort");
-                if (port != null && !port.isEmpty()){
-                    proxyPort = port;
-                }
+            System.setProperty("proxySet", "true");
+            System.setProperty("http.proxyHost", proxyHost);
+            System.setProperty("http.proxyPort", proxyPort);
+            System.setProperty("https.proxyHost", proxyHost);
+            System.setProperty("https.proxyPort", proxyPort);
+
+            boolean emptyProxyUser = proxyUser == null || proxyUser.isEmpty();
+            boolean emptyProxyPass = proxyPassword == null || proxyPassword.isEmpty();
+            if (emptyProxyUser && emptyProxyPass ) {
+                return ;
             }
 
-            if (proxyUser == null || proxyUser.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String user = getPropertyFromPath(propertiesPath, "proxyUser");
-                if (user != null && !user.isEmpty()){
-                    proxyUser = user;
-                }
-            }
+            System.setProperty("http.proxyUser", proxyUser);
+            System.setProperty("http.proxyPassword", proxyPassword);
+            System.setProperty("https.proxyUser", proxyUser);
+            System.setProperty("https.proxyPassword", proxyPassword);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-            if (proxyPassword == null || proxyPassword.isEmpty()){
-                String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
-                String password = getPropertyFromPath(propertiesPath, "proxyPassword");
-                if (password != null && !password.isEmpty()){
-                    proxyPassword = password;
-                }
+
+    private String fetchProxyHost(){
+        if (proxyHost != null && !proxyHost.isEmpty()){
+            return proxyHost;
+        }
+        try{
+            String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+            String host = getPropertyFromPath(propertiesPath, "proxyHost");
+            if (host != null && !host.isEmpty()){
+                proxyHost = host;
+                return proxyHost;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        boolean emptyProxyHost = proxyHost == null || proxyHost.isEmpty();
-        boolean emptyProxyPort = proxyPort == null || proxyPort.isEmpty();
-        if (emptyProxyHost && emptyProxyPort){
-            return ;
+        String host = System.getenv().get("VERSIONEYE_PROXY_HOST");
+        if (host != null && !host.isEmpty()){
+            proxyHost = host;
+            return proxyHost;
         }
-        System.setProperty("proxySet", "true");
-        System.setProperty("http.proxyHost", proxyHost);
-        System.setProperty("http.proxyPort", proxyPort);
-        System.setProperty("https.proxyHost", proxyHost);
-        System.setProperty("https.proxyPort", proxyPort);
+        return null;
+    }
 
-        boolean emptyProxyUser = proxyUser == null || proxyUser.isEmpty();
-        boolean emptyProxyPass = proxyPassword == null || proxyPassword.isEmpty();
-        if (emptyProxyUser && emptyProxyPass){
-            return ;
+    private String fetchProxyPort(){
+        if (proxyPort != null && !proxyPort.isEmpty()){
+            return proxyPort;
         }
-        System.getProperties().put("http.proxyUser", proxyUser);
-        System.getProperties().put("http.proxyPassword", proxyPassword);
+        try{
+            String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+            String port = getPropertyFromPath(propertiesPath, "proxyPort");
+            if (port != null && !port.isEmpty()){
+                proxyPort = port;
+                return proxyPort;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String port = System.getenv().get("VERSIONEYE_PROXY_PORT");
+        if (port != null && !port.isEmpty()){
+            proxyPort = port;
+            return proxyPort;
+        }
+        return null;
+    }
+
+    private String fetchProxyUser(){
+        if (proxyUser != null && !proxyUser.isEmpty()){
+            return proxyUser;
+        }
+        try{
+            String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+            String user = getPropertyFromPath(propertiesPath, "proxyUser");
+            if (user != null && !user.isEmpty()){
+                proxyUser = user;
+                return proxyUser;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String user = System.getenv().get("VERSIONEYE_PROXY_USER");
+        if (user != null && !user.isEmpty()){
+            proxyUser = user;
+            return proxyUser;
+        }
+        return null;
+    }
+
+    private String fetchProxyPassword(){
+        if (proxyPassword != null && !proxyPassword.isEmpty()){
+            return proxyPassword;
+        }
+        try{
+            String propertiesPath = homeDirectory + "/.m2/" + propertiesFile;
+            String pass = getPropertyFromPath(propertiesPath, "proxyPassword");
+            if (pass != null && !pass.isEmpty()){
+                proxyPassword = pass;
+                return proxyPassword;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String password = System.getenv().get("VERSIONEYE_PROXY_PASSWORD");
+        if (password != null && !password.isEmpty()){
+            proxyPassword = password;
+            return proxyPassword;
+        }
+        return null;
     }
 
 
