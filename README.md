@@ -42,7 +42,7 @@ You can add the plugin to your project by adding this snippet to your
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
     </plugin>
   </plugins>
 </build>
@@ -137,7 +137,7 @@ Now let the versioneye-maven-plugin know what your *API KEY* is.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <apiKey>MY_SECRET_API_KEY</apiKey>
         <organisation>YOUR_ORGANISATION</organisation>
@@ -174,7 +174,7 @@ If you want so you can configure another place for the versioneye.properties fil
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <propertiesPath>${basedir}/versioneye.properties</propertiesPath>
         <organisation>YOUR_ORGANISATION</organisation>
@@ -241,7 +241,7 @@ By the way. If you don't like to have a `versioneye.properties` file you can set
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
         <organisation>YOUR_ORGANISATION</organisation>
@@ -320,7 +320,7 @@ VersionEye Maven Plugin:
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <proxyHost>127.0.0.1</proxyHost>
         <proxyPort>8888</proxyPort>
@@ -360,7 +360,7 @@ The whole plugin snippet would look similar to this one.
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <baseUrl>http://versioneye.my-company.com</baseUrl>
         <projectId>_YOUR_VERSONEYE_PROJECT_ID_</projectId>
@@ -382,7 +382,7 @@ Assume you have a big Java Enterprise multi-module project with Maven and you wa
     <plugin>
       <groupId>com.versioneye</groupId>
       <artifactId>versioneye-maven-plugin</artifactId>
-      <version>3.11.2</version>
+      <version>3.11.4</version>
       <configuration>
         <apiKey>MY_SECRET_API_KEY</apiKey>
         <organisation>YOUR_ORGANISATION</organisation>
@@ -421,7 +421,7 @@ The VersionEye Maven Plugin has many configuration options.
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.11.2</version>
+        <version>3.11.4</version>
         <configuration>
           <projectId>544d0ff9512592562c000003</projectId>
           <!--<apiKey>my_secret_api_key</apiKey>-->
