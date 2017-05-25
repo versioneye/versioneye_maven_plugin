@@ -295,23 +295,7 @@ This golad will also remove all related `versioneye.properties` files!
 
 ## Proxy
 
-Generally a proxy for Maven can be configured in the `${user.home}/.m2/settings.xml)`
-file like described here: https://maven.apache.org/guides/mini/guide-proxies.html.
-
-Beside that the proxy can be configured via command line on each goal separately.
-Here an example:
-
-```
-mvn -DproxySet=true -DproxyHost=myproxy.com -DproxyPort=8888 versioneye:update
-```
-
-Or:
-
-```
-mvn -DproxySet=true -Dhttp.proxyHost=myproxy.com -Dhttp.proxyPort=8888 -Dhttp.proxyUser=proxy_user -Dhttp.proxyPassword=yarrrrr versioneye:update
-```
-
-Alternatively you can set the proxy settings directly in the configuration of the
+Please configure the proxy settings directly in the configuration of the
 VersionEye Maven Plugin:
 
 ```xml
@@ -342,6 +326,9 @@ global environment variables:
 
 If you don't want to store the proxy settings in the source code you should use
 the environment variables above.
+
+Generally a proxy for Maven can be configured in the `${user.home}/.m2/settings.xml)`
+file like described here: https://maven.apache.org/guides/mini/guide-proxies.html.
 
 
 ## VersionEye Enterprise
