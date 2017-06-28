@@ -125,7 +125,7 @@ It will take all your direct dependencies and convert them into `/target/pom.jso
 
 ## API Key
 
-This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will automatically check your project and notify you about outdated dependencies. You can use some of the resources at the VersionEye API without an *API KEY*, but for the project resource you need one. If you are [signed up](https://www.versioneye.com/signup) you can find your *API KEY* here: [https://www.versioneye.com/settings/api](https://www.versioneye.com/settings/api).
+This plugin can push your dependencies to the VersionEye API, create a project at VersionEye and tell you which of your dependencies are outdated. VersionEye will automatically check your project and notify you about outdated dependencies. You can use some of the resources at the VersionEye API without an *API KEY*, but for the project resource you need one. If you are [signed up](https://www.versioneye.com/signup) you can find your *API KEY* in your organisation under this structure: https://www.versioneye.com/organisations/<YOUR_ORGANISATION>/apikey.
 
 ![VersionEye Dependencies](src/site/images/VersionEyeApiKey.png)
 
