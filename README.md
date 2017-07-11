@@ -1,6 +1,6 @@
 [![VersionEye Dependencies](src/site/images/VersionEyeLogo.png)](https://www.versioneye.com)
 
-[![Dependency Status](https://www.versioneye.com/user/projects/5926d8a9368b08001261e989/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5926d8a9368b08001261e989)
+[![Dependency Status](https://www.versioneye.com/user/projects/595f2eae368b080016eb8701/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/595f2eae368b080016eb8701)
 
 # VersionEye Maven Plugin
 
