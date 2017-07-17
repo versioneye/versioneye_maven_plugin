@@ -25,6 +25,10 @@ Summary
  - [Feedback](#feedback)
  - [License](#license)
 
+## Minimum Requirement
+
+We at VersionEye are using [LetsEncrypt](https://letsencrypt.org/) for our SSL certificates. Old Java versions don't support that certificate. The minimum required version is 8u101. More details on [StackOverflow](https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/34111150#34111150).
+
 ## Install binary
 
 The VersionEye Maven plugin is available on the [Maven Central Repository](http://search.maven.org).
