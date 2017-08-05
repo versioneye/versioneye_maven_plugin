@@ -4,7 +4,7 @@
 
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
-  <version>3.11.2</version>
+  <version>3.11.4</version>
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-plugin</name>
@@ -329,14 +329,14 @@
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
-        <version>3.11.2</version>
+        <version>3.11.4</version>
         <configuration>
           <!--<apiKey>YOUR_API_KEY</apiKey> --> <!-- To find here: https://www.versioneye.com/settings/api -->
           <!--<baseUrl>http://localhost:3000</baseUrl>-->
           <!--<proxyHost>127.0.0.1</proxyHost>-->
-          <!--<proxyPort>8888</proxyPort>-->
-          <!--<proxyUser>proxy_hopsi</proxyUser>-->
-          <!--<proxyPassword>dont_tell_anybody</proxyPassword>-->
+          <!--<proxyPort>3128</proxyPort>-->
+          <!--<proxyUser>test</proxyUser>-->
+          <!--<proxyPassword>test1</proxyPassword>-->
           <!--<updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>-->
           <!--<mergeAfterCreate>false</mergeAfterCreate>--> <!-- This is only for multi module projects! -->
           <!--<parentGroupId>com.versioneye</parentGroupId>-->
@@ -440,8 +440,8 @@
         <configuration>
           <type>tag</type>
           <tags>
-            <tag implementation="java.lang.String">3.5.1</tag>
-            <tag implementation="java.lang.String">3.6.0</tag>
+            <tag implementation="java.lang.String">3.11.3</tag>
+            <tag implementation="java.lang.String">3.11.4</tag>
           </tags>
         </configuration>
       </plugin>

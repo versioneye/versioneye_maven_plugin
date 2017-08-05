@@ -1,11 +1,18 @@
 package com.versioneye.utils;
 
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.plexus.util.StringUtils;
@@ -13,12 +20,10 @@ import org.codehaus.plexus.util.StringUtils;
 import com.versioneye.dto.ErrorJsonResponse;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 
 /**
  * Methods to deal with the HTTP protocol.
@@ -30,13 +35,13 @@ public class HttpUtils {
     public static final Integer ONE_MINUTE = ONE_SECOND * 60;
     public static final Integer TEN_MINUTE = ONE_MINUTE * 10;
 
-    public static String get(String url) throws IOException {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+    public static String get(String url) throws Exception {
+        HttpURLConnection con = createConnection(url);
+        setProxyAuthIfAvailable();
         con.setRequestMethod("GET");
         con.setConnectTimeout(TEN_MINUTE);
         con.setReadTimeout(TEN_MINUTE);
-        con.setRequestProperty( "User-Agent", "VersionEye Maven Plugin" );
+        con.setRequestProperty("User-Agent", "VersionEye Maven Plugin");
 
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + url);
@@ -53,10 +58,9 @@ public class HttpUtils {
     }
 
     public static Reader post(String url, byte[] data, String dataName, String visibility, String name, String orga_name, String team) throws Exception {
-        HttpClient client = new SystemDefaultHttpClient();
+        HttpClient client = createHttpClient();
         HttpPost httpPost = new HttpPost(url);
         ByteArrayBody byteArrayBody = new ByteArrayBody(data, "application/json", "pom.json");
-
         MultipartEntity multipartEntity = new MultipartEntity();
         multipartEntity.addPart(dataName, byteArrayBody);
 
@@ -73,6 +77,8 @@ public class HttpUtils {
             multipartEntity.addPart("team_name", new StringBody(team));
 
         httpPost.setEntity(multipartEntity);
+
+        setProxyIfAvailable(httpPost);
         HttpResponse response = client.execute(httpPost);
 
         int statusCode = response.getStatusLine().getStatusCode();
@@ -85,9 +91,10 @@ public class HttpUtils {
         return new InputStreamReader(response.getEntity().getContent());
     }
 
-    public static String delete(String url) throws IOException {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+    public static String delete(String url) throws Exception {
+        HttpURLConnection con = createConnection(url);
+        setProxyAuthIfAvailable();
+
         con.setRequestMethod("GET");
         con.setConnectTimeout(TEN_MINUTE);
         con.setReadTimeout(TEN_MINUTE);
@@ -108,7 +115,7 @@ public class HttpUtils {
         return response.toString();
     }
 
-    private static String getErrorMessage(HttpResponse response) {
+    private static String getErrorMessage(HttpResponse response) throws Exception {
         String errorMsg = getErrorFromJson(response);
         if (errorMsg != null){
             return errorMsg;
@@ -141,6 +148,57 @@ public class HttpUtils {
         } catch (Exception exception) {
             exception.printStackTrace();
             return "";
+        }
+    }
+
+    private static HttpClient createHttpClient(){
+        HttpClient client = null;
+        String host = System.getProperty("https.proxyHost");
+        String port = System.getProperty("https.proxyPort");
+        String user = System.getProperty("https.proxyUser");
+        String pass = System.getProperty("https.proxyPassword");
+        if (user != null && !user.isEmpty() && pass != null && !pass.isEmpty() &&
+                host != null && !host.isEmpty() && port != null && !port.isEmpty()){
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(new AuthScope(host, Integer.parseInt(port)), new UsernamePasswordCredentials(user, pass));
+            client = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+        } else {
+            client = new SystemDefaultHttpClient();
+        }
+        return client;
+    }
+
+
+    private static void setProxyIfAvailable(HttpPost httpPost){
+        String host = System.getProperty("https.proxyHost");
+        String port = System.getProperty("https.proxyPort");
+        if (host != null && !host.isEmpty() && port != null && !port.isEmpty()){
+            HttpHost proxy = new HttpHost(host, Integer.parseInt(port));
+            RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+            httpPost.setConfig(config);
+        }
+    }
+
+
+    private static HttpURLConnection createConnection(String url) throws Exception{
+        URL obj = new URL(url);
+        HttpURLConnection con = null;
+        String host = System.getProperty("https.proxyHost");
+        String port = System.getProperty("https.proxyPort");
+        if (host != null && !host.isEmpty() && port != null && !port.isEmpty()){
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, Integer.parseInt(port)));
+            con = (HttpURLConnection) obj.openConnection(proxy);
+        } else {
+            con = (HttpURLConnection) obj.openConnection();
+        }
+        return con;
+    }
+
+    private static void setProxyAuthIfAvailable(){
+        String user = System.getProperty("https.proxyUser");
+        String pass = System.getProperty("https.proxyPassword");
+        if (user != null && !user.isEmpty() && pass != null && !pass.isEmpty()){
+            Authenticator.setDefault(new ProxyAuthenticator(user, pass));
         }
     }
 }
