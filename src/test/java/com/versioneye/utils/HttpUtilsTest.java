@@ -30,4 +30,10 @@ public class HttpUtilsTest {
         HttpUtils.post(url, outstream.toByteArray(), "project_file", null, null, null, null);
     }
 
+    @Test
+    public void myProjectTest() throws Exception {
+
+        String url = "https://www.versioneye.com/api/v2/projects/570d35bffcd19a0045440b35?api_key=1d207d70adb7021e7bc9";
+    }
+
 }

@@ -1,31 +1,33 @@
 package com.versioneye;
 
-import com.versioneye.dto.ProjectJsonResponse;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.versioneye.dto.ProjectJsonResponse;
+
 import java.io.ByteArrayOutputStream;
 
 /**
  * Updates an existing project at VersionEye with the dependencies from the current project.
  */
+@SuppressWarnings("WeakerAccess")
 @Mojo( name = "update", defaultPhase = LifecyclePhase.PACKAGE )
 public class UpdateMojo extends ProjectMojo {
 
     @Parameter( property = "resource", defaultValue = "/projects")
     private String resource;
 
-
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             setProxy();
             prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
+            ByteArrayOutputStream jsonDependenciesStream;
+            if (transitiveDependencies){
                 jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
             } else {
                 jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
@@ -41,8 +43,8 @@ public class UpdateMojo extends ProjectMojo {
         } catch( Exception exception ){
             exception.printStackTrace();
             throw new MojoExecutionException("Oh no! Something went wrong. " +
-                    "Get in touch with the VersionEye guys and give them feedback. " +
-                    "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
+                "Get in touch with the VersionEye guys and give them feedback. " +
+                "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
         }
     }
 
@@ -50,7 +52,7 @@ public class UpdateMojo extends ProjectMojo {
     protected ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
         try {
             String projectId = fetchProjectId();
-            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
+            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())) {
                 mavenSession.getTopLevelProject().setContextValue("veye_project_id", projectId);
             }
             return updateExistingProject(resource, projectId, outStream);
@@ -65,12 +67,9 @@ public class UpdateMojo extends ProjectMojo {
         }
     }
 
-
-    protected void prettyPrintStart(){
+    protected void prettyPrintStart() {
         getLog().info(".");
         getLog().info("Starting to update dependencies to server. This can take a couple seconds ... ");
         getLog().info(".");
     }
-
-
 }

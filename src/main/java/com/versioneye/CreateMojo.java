@@ -21,56 +21,56 @@ import java.util.Properties;
 @Mojo( name = "create", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class CreateMojo extends ProjectMojo {
 
-    @Parameter( property = "resource", defaultValue = "/projects?api_key=")
-    private String resource;
+  @Parameter( property = "resource", defaultValue = "/projects?api_key=")
+  private String resource;
 
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        try{
-            setProxy();
-            prettyPrintStart();
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    try{
+      setProxy();
+      prettyPrintStart();
 
-            ByteArrayOutputStream jsonDependenciesStream = null;
-            if (transitiveDependencies == true){
-                jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
-            } else {
-                jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
-            }
+      ByteArrayOutputStream jsonDependenciesStream = null;
+      if (transitiveDependencies == true){
+        jsonDependenciesStream = getTransitiveDependenciesJsonStream(nameStrategy);
+      } else {
+        jsonDependenciesStream = getDirectDependenciesJsonStream(nameStrategy);
+      }
 
-            if (jsonDependenciesStream == null){
-                prettyPrint0End();
-                return ;
-            }
+      if (jsonDependenciesStream == null){
+        prettyPrint0End();
+        return ;
+      }
 
-            ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
+      ProjectJsonResponse response = uploadDependencies(jsonDependenciesStream);
 
-            if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
-                mavenSession.getTopLevelProject().setContextValue("veye_project_id", response.getId());
-            }
+      if (mavenSession.getTopLevelProject().getId().equals(mavenSession.getCurrentProject().getId())){
+        mavenSession.getTopLevelProject().setContextValue("veye_project_id", response.getId());
+      }
 
-            merge( response.getId() );
-            if (updatePropertiesAfterCreate) {
-                writeProperties( response );
-            }
-            prettyPrint(response);
-        } catch( Exception exception ){
-            throw new MojoExecutionException("Oh no! Something went wrong :-( " +
-                    "Get in touch with the VersionEye guys and give them feedback." +
-                    "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
-        }
+      merge( response.getId() );
+      if (updatePropertiesAfterCreate) {
+        writeProperties( response );
+      }
+      prettyPrint(response);
+    } catch( Exception exception ){
+      throw new MojoExecutionException("Oh no! Something went wrong :-( " +
+        "Get in touch with the VersionEye guys and give them feedback." +
+        "You find them on Twitter at https//twitter.com/VersionEye. ", exception);
     }
+  }
 
 
-    private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
-        return createNewProject(resource, outStream);
-    }
+  private ProjectJsonResponse uploadDependencies(ByteArrayOutputStream outStream) throws Exception {
+    return createNewProject(resource, outStream);
+  }
 
 
-    private void prettyPrintStart(){
-        getLog().info(".");
-        getLog().info("Starting to upload dependencies. This can take a couple seconds ... ");
-        getLog().info(".");
-    }
+  private void prettyPrintStart(){
+    getLog().info(".");
+    getLog().info("Starting to upload dependencies. This can take a couple seconds ... ");
+    getLog().info(".");
+  }
 
 
 }

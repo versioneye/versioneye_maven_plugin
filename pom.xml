@@ -2,11 +2,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Doesn't work on previous versions because of Eclipse/Sonatype Aether incompatibility. -->
-  <prerequisites>
-    <maven>3.1</maven>
-  </prerequisites>
-
   <groupId>com.versioneye</groupId>
   <artifactId>versioneye-maven-plugin</artifactId>
   <version>3.11.4</version>
@@ -50,14 +45,194 @@
       </repository>
   </distributionManagement>
 
+  <prerequisites>
+    <maven>${maven.version}</maven>
+  </prerequisites>
+
   <properties>
+    <errorprone.compiler.version>2.0.18</errorprone.compiler.version>
+    <httpcomponents.version>4.5.3</httpcomponents.version>
+    <jackson.version>1.9.13</jackson.version>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <!-- The minimum Maven version that should be supported. -->
     <maven.version>3.5.0</maven.version>
-    <jackson.version>1.9.13</jackson.version>
-    <httpcomponents.version>4.5.3</httpcomponents.version>
+    <plexus.compiler.version>2.8.1</plexus.compiler.version>
+    <plexus.utils.version>3.0.24</plexus.utils.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <slf4j.version>1.7.25</slf4j.version>
+    <surefire.version>2.20</surefire.version>
   </properties>
 
+  <profiles>
+    <profile>
+      <id>enforcer</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.4.1</version>
+            <executions>
+              <execution>
+                <id>enforce-dependency-convergence</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <rules>
+                <DependencyConvergence/>
+                <bannedDependencies>
+                  <searchTransitive>true</searchTransitive>
+                  <excludes>
+                    <!-- use slf4j -->
+                    <exclude>commons-logging</exclude>
+                    <exclude>log4j</exclude>
+                    <exclude>log4j:log4j</exclude>
+                    <exclude>slf4j-to-log4j</exclude>
+                    <!-- use org.jdom -->
+                    <exclude>jdom:jdom</exclude>
+                    <!-- use commons-io:commons-io -->
+                    <exclude>org.apache.commons:commons-io</exclude>
+                  </excludes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>errorprone-compiler</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.6.1</version>
+              <configuration>
+                <compilerId>javac-with-errorprone</compilerId>
+                <forceJavacCompilerUse>true</forceJavacCompilerUse>
+              </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_annotations</artifactId>
+                  <version>${errorprone.compiler.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>${errorprone.compiler.version}</version>
+                </dependency>
+
+                <dependency>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-compiler-javac-errorprone</artifactId>
+                  <version>${plexus.compiler.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-compiler-api</artifactId>
+                  <version>${plexus.compiler.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-compiler-manager</artifactId>
+                  <version>${plexus.compiler.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-utils</artifactId>
+                  <version>${plexus.utils.version}</version>
+                </dependency>
+
+              </dependencies>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+
+    <profile>
+      <id>gpg</id>
+      <!-- mvn gpg:sign -->
+      <!-- mvn gpg:sign-and-deploy-file -->
+      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
+      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.5</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-artifact</artifactId>
+        <version>${maven.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>21.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>3.0.24</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-annotations</artifactId>
+        <version>1.7.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
@@ -85,9 +260,20 @@
       <version>${jackson.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.5</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>${httpcomponents.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -100,16 +286,46 @@
       <version>6.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>21.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.6.2</version>
+      <scope>test</scope>
+    </dependency>
     <!-- <dependency>
       <groupId>org.gephi</groupId>
       <artifactId>graph-api</artifactId>
       <version>0.9.1</version>
     </dependency> -->
+
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
-
       <plugin>
         <groupId>com.versioneye</groupId>
         <artifactId>versioneye-maven-plugin</artifactId>
@@ -134,9 +350,6 @@
           <!--<transitiveDependencies>true</transitiveDependencies>-->
         </configuration>
       </plugin>
-
-      <!--http://central.sonatype.org/pages/apache-maven.html-->
-      <!--mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=-->
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -147,25 +360,6 @@
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
-      </plugin>
-
-      <!-- mvn gpg:sign -->
-      <!-- mvn gpg:sign-and-deploy-file -->
-      <!-- mvn clean deploy -Dgpg.passphrase=my_secret_passphrase -->
-      <!-- mvn clean deploy -Dmaven.test.skip=true -Dgpg.passphrase=my_secret_passphrase -->
-      <!-- mvn clean install -Dgpg.passphrase=my_secret_passphrase -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <executions>
-            <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                    <goal>sign</goal>
-                </goals>
-            </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -199,6 +393,7 @@
         <executions>
           <execution>
             <id>attach-sources</id>
+            <phase>verify</phase>
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
@@ -209,9 +404,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.4</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
+            <phase>verify</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -219,13 +416,25 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.0.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
     </plugins>
   </build>
 
   <reporting>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changelog-plugin</artifactId>
         <version>2.3</version>
         <configuration>

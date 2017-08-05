@@ -1,6 +1,5 @@
 package com.versioneye.utils;
 
-import com.versioneye.dto.ErrorJsonResponse;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -16,6 +15,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.SystemDefaultHttpClient;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.plexus.util.StringUtils;
+
+import com.versioneye.dto.ErrorJsonResponse;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,11 +28,12 @@ import java.net.*;
 /**
  * Methods to deal with the HTTP protocol.
  */
+@SuppressWarnings("WeakerAccess")
 public class HttpUtils {
 
-    public static Integer ONE_SECOND = 1000;
-    public static Integer ONE_MINUTE = ONE_SECOND * 60;
-    public static Integer TEN_MINUTE = ONE_MINUTE * 10;
+    public static final Integer ONE_SECOND = 1000;
+    public static final Integer ONE_MINUTE = ONE_SECOND * 60;
+    public static final Integer TEN_MINUTE = ONE_MINUTE * 10;
 
     public static String get(String url) throws Exception {
         HttpURLConnection con = createConnection(url);
@@ -40,14 +43,13 @@ public class HttpUtils {
         con.setReadTimeout(TEN_MINUTE);
         con.setRequestProperty("User-Agent", "VersionEye Maven Plugin");
 
-
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + url);
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
@@ -62,16 +64,16 @@ public class HttpUtils {
         MultipartEntity multipartEntity = new MultipartEntity();
         multipartEntity.addPart(dataName, byteArrayBody);
 
-        if (visibility != null && !visibility.isEmpty())
+        if (StringUtils.isNotBlank(visibility))
             multipartEntity.addPart("visibility", new StringBody(visibility));
 
-        if (name != null && !name.isEmpty())
+        if (StringUtils.isNotBlank(name))
             multipartEntity.addPart("name", new StringBody(name));
 
-        if (orga_name != null && !orga_name.isEmpty())
+        if (StringUtils.isNotBlank(orga_name))
             multipartEntity.addPart("orga_name", new StringBody(orga_name));
 
-        if (team != null && !team.isEmpty())
+        if (StringUtils.isNotBlank(team))
             multipartEntity.addPart("team_name", new StringBody(team));
 
         httpPost.setEntity(multipartEntity);
@@ -92,6 +94,7 @@ public class HttpUtils {
     public static String delete(String url) throws Exception {
         HttpURLConnection con = createConnection(url);
         setProxyAuthIfAvailable();
+
         con.setRequestMethod("GET");
         con.setConnectTimeout(TEN_MINUTE);
         con.setReadTimeout(TEN_MINUTE);
@@ -104,14 +107,13 @@ public class HttpUtils {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
         in.close();
         return response.toString();
     }
-
 
     private static String getErrorMessage(HttpResponse response) throws Exception {
         String errorMsg = getErrorFromJson(response);
@@ -121,7 +123,7 @@ public class HttpUtils {
         return getPureBodyString(response);
     }
 
-    private static String getErrorFromJson(HttpResponse response){
+    private static String getErrorFromJson(HttpResponse response) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             ErrorJsonResponse error = mapper.readValue(response.getEntity().getContent(), ErrorJsonResponse.class);
@@ -132,12 +134,12 @@ public class HttpUtils {
         }
     }
 
-    private static String getPureBodyString(HttpResponse response){
+    private static String getPureBodyString(HttpResponse response) {
         try {
             InputStream content = response.getEntity().getContent();
             BufferedReader in = new BufferedReader(new InputStreamReader( content ) );
             String inputLine;
-            StringBuffer body = new StringBuffer();
+            StringBuilder body = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 body.append(inputLine);
             }
@@ -147,7 +149,6 @@ public class HttpUtils {
             exception.printStackTrace();
             return "";
         }
-
     }
 
     private static HttpClient createHttpClient(){
@@ -200,5 +201,4 @@ public class HttpUtils {
             Authenticator.setDefault(new ProxyAuthenticator(user, pass));
         }
     }
-
 }

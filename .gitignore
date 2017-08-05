@@ -15,9 +15,11 @@ capybara-*.html
 /coverage/
 .idea/
 .env
-versioneye-maven-plugin.iml
-versioneye-maven-plugin.ipr
-versioneye-maven-plugin.iws
+*.iml
+*.ipr
+*.iws
+*.log
 .classpath
 .project
 .settings
+atlassian-ide-plugin.xml
