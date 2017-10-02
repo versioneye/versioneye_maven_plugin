@@ -117,8 +117,10 @@ public class ProjectMojo extends SuperMojo {
 
     protected void prettyPrint(ProjectJsonResponse response) throws Exception {
         getLog().info(".");
-        getLog().info("Project name: " + response.getName());
         getLog().info("Project id: "   + response.getId());
+        getLog().info("Project name: " + response.getName());
+        getLog().info("Project groupId: "   + response.getGroup_id());
+        getLog().info("Project artifactId: "   + response.getArtifact_id());
         getLog().info("Dependencies: " + response.getDep_number());
         getLog().info("Outdated: "     + response.getOut_number());
         for (ProjectDependency dependency : response.getDependencies() ){

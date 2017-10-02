@@ -9,12 +9,30 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ProjectJsonResponse {
 
     private String name;
+    private String group_id;
+    private String artifact_id;
     private String id;
     private Integer dep_number;
     private Integer out_number;
     private Integer licenses_red = 0;
     private Integer licenses_unknown = 0;
     private Integer sv_count = 0;
+
+    public String getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+
+    public String getArtifact_id() {
+        return artifact_id;
+    }
+
+    public void setArtifact_id(String artifact_id) {
+        this.artifact_id = artifact_id;
+    }
 
     public Integer getSv_count() {
         return sv_count;
